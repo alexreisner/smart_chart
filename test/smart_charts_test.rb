@@ -2,6 +2,18 @@ require 'test_helper'
 
 class SmartChartTest < Test::Unit::TestCase
 
+  # --- map -----------------------------------------------------------------
+  
+  def test_map
+    g = SmartChart::Map.new(
+      :width  => 400,
+      :height => 200,
+      :data   => [1, 2, 3, 4, 5]
+    )
+    assert_equal "cht=t&chs=400x200&d=s:APet9", g.to_query_string(false)
+  end
+  
+  
   # --- encoding ------------------------------------------------------------
   
   def test_simple_encoding
@@ -49,11 +61,11 @@ class SmartChartTest < Test::Unit::TestCase
 
   # --- validation ----------------------------------------------------------
   
-  def test_required_parameters_validation
-    assert_raise SmartChart::MissingRequiredParameterError do
+  def test_required_attributes_validation
+    assert_raise SmartChart::MissingRequiredAttributeError do
       SmartChart::Map.new(:width => 500, :height => 50).validate!
     end
-    assert_raise SmartChart::MissingRequiredParameterError do
+    assert_raise SmartChart::MissingRequiredAttributeError do
       SmartChart::Map.new(:data => []).validate!
     end
     assert_nothing_raised do
@@ -91,8 +103,8 @@ class SmartChartTest < Test::Unit::TestCase
   
   # --- exceptions ----------------------------------------------------------
   
-  def test_chart_parameter_error
-    assert_raise SmartChart::NoParameterError do
+  def test_chart_attribute_error
+    assert_raise SmartChart::NoAttributeError do
       SmartChart::LineGraph.new(:asdf => "hi")
     end
   end

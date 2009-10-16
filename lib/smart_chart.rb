@@ -5,6 +5,8 @@ require 'cgi'
 require 'base'
 require 'encoder'
 require 'exceptions'
+require 'chart_type'
+require 'chart_data'
 
 # chart types
 require 'line_graph'

@@ -3,7 +3,7 @@ module SmartChart
   class SmartChartError < StandardError #:nodoc:
   end
   
-  class NoParameterError < SmartChartError #:nodoc:
+  class NoAttributeError < SmartChartError #:nodoc:
     def initialize(chart, param)
       chart_type = chart.class.to_s.sub(/^SmartChart::/, "")
       super("The #{chart_type} chart type does not accept the '#{param}' parameter.")
@@ -16,7 +16,7 @@ module SmartChart
   class ValidationError < SmartChartError #:nodoc:
   end
   
-  class MissingRequiredParameterError < ValidationError #:nodoc:
+  class MissingRequiredAttributeError < ValidationError #:nodoc:
     def initialize(chart, param)
       chart_type = chart.class.to_s.sub(/^SmartChart::/, "")
       super("The #{chart_type} chart type requires the '#{param}' parameter.")

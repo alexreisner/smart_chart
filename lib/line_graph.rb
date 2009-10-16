@@ -5,10 +5,12 @@ module SmartChart
 #  .new(
 #    :y_max  => 80,
 #    :y_min  => -40,
-#    :x_grid => {
-#      :step   => 10,
-#      :offset => 2,
-#      :style  => :dashed },
+#    :grids => {
+#      :x => {
+#        :step   => 10,
+#        :offset => 2,
+#        :style  => :dashed }
+#      },
 #    :line => {
 #      :width => 2,
 #      :color => '552255',
@@ -24,5 +26,13 @@ module SmartChart
 #      :class => "graph" }
 #  )
   
+    private # ---------------------------------------------------------------
+    
+    ##
+    # Specify the Google Chart type.
+    #
+    def type
+      ChartType.new(:lc)
+    end
   end
 end
