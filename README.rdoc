@@ -1,0 +1,150 @@
+= SmartChart
+
+Google Charts is a useful service, obscured by an annoying interface--the syntax is obscure and it provides very little feedback when you do something wrong. This gem provides an interface that should make sense to someone constructing a graph. Grid and label placement are specified according to data points (instead of chart dimensions), and the best data encoding is selected automatically. There's no way a chart author should have to think about Google's data encoding. Forget I even mentioned it.
+
+...
+
+always uses "data scaling" in Google's terminology
+...
+
+Other gems effectively just give chart parameters different names; this one is designed from a chart author's perspective, not Google's. So if you're asking yourself why you would want to learn an API to an API, let me assure you: this one is worth your while.
+
+
+== Example
+
+  SmartChart::LineGraph.new(
+    :y_max  => 80,
+    :y_min  => -40,
+    :x_grid => {
+      :step   => 10,
+      :offset => 2,
+      :style  => :dashed },
+    :line => {
+      :width => 2,
+      :color => '552255',
+      :style => SmartChart
+    },
+    :data => [
+      [1,2,3,4],
+      [2,4,6,8],
+      [7,5,3,1]
+    ],
+    :html => {
+      :id => "stock_graph",
+      :class => "graph" }
+  )
+  
+  SmartChart::SparkBar.new(
+    :data => [22,7,6,9,23,6],
+    :bars => {
+      :width => 4,
+      :gap   => 2,
+      :color => ['3f3f3f', '222222'] },
+    :background => 
+  )
+
+  SmartChart::PieChart.new(
+    :3d => false,
+    ...
+  )
+
+  # specify style of grid line or data line:
+  SmartChart::Components::Line.new(
+    :solid => 2,
+    :blank => 4,
+    :width => 1,
+    :color => '999999'
+  )
+  # or use shortcut:
+  SmartChart::Components::Line.new(
+    :dashed, 1, '999999'
+  )
+  
+  # display
+  g = SmartChart::LineGraph.new(...)
+  g.to_url
+  g.to_html
+
+
+== Requirements
+
+* The best encoding type should be selected automatically (whatever is shortest with enough granularity). Tries to avoid URLs longer than 2048 characters (after %-encoding; Google actually limits to 2074 -- emit warning if more than 2074).
+
+* Would be great to simulate sparkline bar graphs by hiding 1px from left and bottom of image (display as bg image of a div).
+
+* Inline legends (line up with ends of lines). See http://code.google.com/p/graphy/wiki/UserGuide
+
+* Gridlines and labels can be placed by two methods:
+
+  # 1. even distribution
+  :step => 30, :offset => 4
+
+  # 2. manual placement at data indices
+  {1 => "Jan", 32 => "Feb", 50 => "Mar", 81 => "Apr", ...}
+
+* Shortcuts for gridline styles (eg: ":style => :dashed") may be given, or use a GridLine object for full configurability.
+
+
+
+== Choosing Optimal Encoding
+
+Default to Extended, but use Simple if:
+  
+  * image is less than 100px tall
+  * URL would be more than 2000 chars
+
+
+== How To Handle?
+
+* labels on other axes (top and right)
+
+* multiple rows of labels on same axis
+
+* "padding" at top and bottom
+  * have to scale data into smaller window of total range
+  * allow specifying :y_min, :y_max, :x_min, :x_max
+
+
+== Future Features
+
+* data granularity adjustment (curve smoothing, rolling average?)
+  * see bottom: http://code.google.com/apis/chart/formats.html
+
+* sync labels with gridlines or vice versa:
+  :x_grid => {:at_labels => true, :style => :dashed}
+  or:
+  :x_labels => {:at_grid => true, :text => %w[Jan Feb Mar Apr]}
+
+
+See what other libraries do:
+http://groups.google.com/group/google-chart-api/web/useful-links-to-api-libraries
+
+
+
+== Exploring Questions
+
+Encoding/scaling: confirm that 40 is actually 40/61 or 40/4096.
+
+  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=e:Bkaa
+  http://chart.apis.google.com/chart?cht=lc&chd=
+  http://chart.apis.google.com/chart?cht=lc&chd=
+  http://chart.apis.google.com/chart?cht=lc&chd=
+
+
+# chxr parameter: does it really give us access to data instead of width percentage?
+
+  http://chart.apis.google.com/chart?cht=lc&chd=
+
+
+# what happens when data sets have different numbers of points
+
+  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=s:Bkaq,rZ5w
+  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=s:Bkaq,rZ5_
+  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=t:65,20,35,-1|20,80,10,45
+
+  # answer: need to use underscore (or -1 in text encoding) to fill in missing points
+
+
+== Copyright
+
+Copyright (c) 2009 Alex Reisner. See LICENSE for details.
