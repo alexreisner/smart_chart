@@ -1,4 +1,9 @@
 module SmartChart
+  
+  ##
+  # Maximum length of URL accepted by Google.
+  #
+  URL_MAX_LENGTH = 2074
 
   ##
   # Method names are called attributes, data for URL are called parameters.
@@ -29,23 +34,23 @@ module SmartChart
     ##
     # Get the chart URL query string.
     #
-    def to_query_string(encode = true)
-      validate
+    def to_query_string(encode = true, validation = true)
+      validate if validation
       query_string(encode)
     end
     
     ##
     # Get the full chart URL.
     #
-    def to_url(encode = true)
-      "http://chart.apis.google.com/chart?" + to_query_string(encode)
+    def to_url(encode = true, validation = true)
+      "http://chart.apis.google.com/chart?" + to_query_string(encode, validation)
     end
     
     ##
     # Chart as an HTML tag.
     #
-    def to_html(encode = true)
-      '<img src="%s" />' % to_url(encode)
+    def to_html(encode = true, validation = true)
+      '<img src="%s" />' % to_url(encode, validation)
     end
     
     ##
@@ -123,7 +128,8 @@ module SmartChart
     def validations
       [
         :required_attrs,
-        :dimensions
+        :dimensions,
+        :url_length
       ]
     end
     
@@ -176,6 +182,13 @@ module SmartChart
           raise MissingRequiredAttributeError.new(self, param)
         end
       end
+    end
+    
+    ##
+    # Make sure encoded URL is no longer than the maximum allowed length.
+    #
+    def validate_url_length
+      raise UrlLengthError unless to_url(true, false).size <= URL_MAX_LENGTH
     end
   end
 end
