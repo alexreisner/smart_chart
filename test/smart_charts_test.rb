@@ -10,7 +10,7 @@ class SmartChartTest < Test::Unit::TestCase
       :height => 200,
       :data   => [1, 2, 3, 4, 5]
     )
-    assert_equal "cht=t&chs=400x200&d=s:APet9", g.to_query_string(false)
+    assert_equal "cht=t&chs=400x200&chd=s:APet9", g.to_query_string(false)
   end
   
   

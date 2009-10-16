@@ -14,6 +14,9 @@ module SmartChart
     
     # dimensions of chart image, in pixels
     attr_writer :width, :height
+    
+    # chart background
+    attr_writer :background
 
     # chart data
     attr_writer :data
@@ -89,20 +92,6 @@ module SmartChart
     end
     
     ##
-    # Chart size URL parameter.
-    #
-    def size
-      "chs=#{@width}x#{@height}"
-    end
-    
-    ##
-    # 
-    #
-    def data
-      ChartData.new(@data)
-    end
-    
-    ##
     # Array of names of required attributes.
     #
     def required_attrs
@@ -110,15 +99,6 @@ module SmartChart
         :width,
         :height,
         :data
-      ]
-    end
-    
-    ##
-    # Array of names of optional attributes.
-    #
-    def optional_attrs
-      [
-        :background
       ]
     end
     
@@ -146,23 +126,12 @@ module SmartChart
     # --- subclasses should not overwrite anything below this line ----------
     
     ##
-    # Array of names of all possible query string parameters in the order
-    # in which they are output (for easier testing).
-    #
-    def query_string_params
-      [
-        :type,
-        :size,
-        :data
-      ]
-    end
-    
-    ##
     # The encoded query string for the chart. Uses %-encoding unless first
     # argument is false.
     #
     def query_string(encode = true)
-      qs = query_string_params.map{ |p| send(p).to_s }.join("&")
+      values = query_string_params.map{ |p| send(p).to_s }
+      qs = values.reject{ |v| v.nil? or v.size == 0 }.join("&")
       encode ? CGI.escape(qs) : qs
     end
     
@@ -189,6 +158,144 @@ module SmartChart
     #
     def validate_url_length
       raise UrlLengthError unless to_url(true, false).size <= URL_MAX_LENGTH
+    end
+    
+    
+    # --- URL parameter list and methods ------------------------------------
+    
+    ##
+    # Array of names of all possible query string parameters in the order
+    # in which they are output (for easier testing).
+    #
+    def query_string_params
+      [
+        :type,                 # cht
+        :size,                 # chs
+        :data,                 # chd
+        :color,                # chco
+        :fill,                 # chf
+        
+        :labels,               # chl
+        :axis_type,            # chxt
+        :axis_labels,          # chxl
+        :axis_label_positions, # chxp
+        :axis_range,           # chxr
+        :axis_style,           # chxs
+        :margins,              # chma
+        
+        :bar_spacing,          # chbh
+        :bar_chart_zero_line,  # chp
+
+        :markers,              # chm
+        :line_styles,          # chls
+        :grid_lines,           # chg
+
+        :title,                # chtt
+        :legend,               # chdl
+        :legend_position,      # chdlp
+        
+        :data_scaling          # chds -- never used
+      ]
+    end
+
+    # chs
+    def size
+      "chs=#{@width}x#{@height}"
+    end
+    
+    # chd
+    def data
+      ChartData.new(@data)
+    end
+    
+    # chco
+    def color
+      ""
+    end
+    
+    # chf
+    def fill
+      ""
+    end
+
+    # chl
+    def labels
+      ""
+    end
+    
+    # chxt
+    def axis_type
+      ""
+    end
+
+    # chxl
+    def axis_labels
+      ""
+    end
+
+    # chxp
+    def axis_label_positions
+      ""
+    end
+
+    # chxr
+    def axis_range
+      ""
+    end
+
+    # chxs
+    def axis_style
+      ""
+    end
+
+    # chma
+    def margins
+      ""
+    end
+
+    # chbh
+    def bar_spacing
+      ""
+    end
+
+    # chp
+    def bar_chart_zero_line
+      ""
+    end
+
+    # chm
+    def markers
+      ""
+    end
+
+    # chls
+    def line_styles
+      ""
+    end
+
+    # chg
+    def grid_lines
+      ""
+    end
+
+    # chtt
+    def title
+      ""
+    end
+
+    # chdl
+    def legend
+      ""
+    end
+
+    # chdlp
+    def legend_position
+      ""
+    end
+
+    # chds -- never used
+    def data_scaling          
+      ""
     end
   end
 end

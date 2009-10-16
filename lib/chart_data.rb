@@ -6,7 +6,7 @@ module SmartChart
     end
     
     def to_s
-      "d=" + Encoder::Simple.new(@data).to_s
+      "chd=" + Encoder::Simple.new(@data).to_s
     end
   end
 end
