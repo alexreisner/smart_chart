@@ -7,6 +7,7 @@ module SmartChart
     # an actual Encoder, your subclass should implement _only_ these private
     # methods:
     # 
+    #   token       # the single character encoding name
     #   digits      # the "alphabet" of the encoding (array)
     #   missing     # digit used for missing data
     #   delimiter   # only if there is a delimiter
@@ -22,10 +23,10 @@ module SmartChart
       end
       
       ##
-      # The data, encoded as a string.
+      # The data, encoded as a string (eg: "s:e5Gf4").
       #
       def to_s
-        encode
+        token + ":" + encode
       end
       
       
@@ -50,6 +51,14 @@ module SmartChart
       end
       
       ##
+      # The single-character name of the encoding, as specified in URLs.
+      # All encoders must implement this method.
+      #
+      def token
+        fail
+      end
+      
+      ##
       # An array of "digits": the encoding's alphabet, in order.
       # All encoders must implement this method.
       #
@@ -66,7 +75,7 @@ module SmartChart
       end
       
       ##
-      # Data point separator.
+      # Data point delimiter.
       #
       def delimiter
         ""
@@ -107,6 +116,10 @@ module SmartChart
     class Simple < Base
       private
       
+      def token
+        "s"
+      end
+      
       ##
       # ABC...XYZabc...xyz0123456789
       #
@@ -125,6 +138,10 @@ module SmartChart
     #
     class Text < Base
       private
+      
+      def token
+        "t"
+      end
       
       ##
       # ABC...XYZabc...xyz0123456789
@@ -148,6 +165,10 @@ module SmartChart
     #
     class Extended < Base
       private
+      
+      def token
+        "e"
+      end
       
       ##
       # AA, AB, AC, ..., .8, .9, .-, ..
