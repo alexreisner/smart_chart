@@ -2,6 +2,8 @@ require 'test_helper'
 
 class SmartChartTest < Test::Unit::TestCase
 
+  # --- encoding ------------------------------------------------------------
+  
   def test_simple_encoding
     [
       [[0, 10],          nil, nil, 's:A9'],
@@ -41,6 +43,57 @@ class SmartChartTest < Test::Unit::TestCase
     ].each do |data,min,max,encoding|
       assert_equal encoding,
         SmartChart::Encoder::Extended.new(data, min, max).to_s
+    end
+  end
+  
+
+  # --- validation ----------------------------------------------------------
+  
+  def test_required_parameters_validation
+    assert_raise SmartChart::MissingRequiredParameterError do
+      SmartChart::Map.new(:width => 500, :height => 50).validate!
+    end
+    assert_raise SmartChart::MissingRequiredParameterError do
+      SmartChart::Map.new(:data => []).validate!
+    end
+    assert_nothing_raised do
+      SmartChart::Map.new(:data => [], :width => 50, :height => 50).validate!
+    end
+  end
+
+  def test_map_width_validation
+    assert_raise SmartChart::DimensionsError do
+      SmartChart::Map.new(:data => [], :width => 500, :height => 50).validate!
+    end
+    assert_nothing_raised do
+      SmartChart::Map.new(:data => [], :width => 400, :height => 50).validate!
+    end
+  end
+
+  def test_map_height_validation
+    assert_raise SmartChart::DimensionsError do
+      SmartChart::Map.new(:data => [], :width => 50, :height => 300).validate!
+    end
+    assert_nothing_raised do
+      SmartChart::Map.new(:data => [], :width => 50, :height => 200).validate!
+    end
+  end
+  
+  def test_dimensions_validation
+    assert_raise SmartChart::DimensionsError do
+      SmartChart::LineGraph.new(:data => [], :width => 800, :height => 600).validate!
+    end
+    assert_nothing_raised do
+      SmartChart::LineGraph.new(:data => [], :width => 400, :height => 600).validate!
+    end
+  end
+  
+  
+  # --- exceptions ----------------------------------------------------------
+  
+  def test_chart_parameter_error
+    assert_raise SmartChart::NoParameterError do
+      SmartChart::LineGraph.new(:asdf => "hi")
     end
   end
 end

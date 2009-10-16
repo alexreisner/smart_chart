@@ -1,5 +1,7 @@
 = SmartChart
 
+<b>SmartChart is still in the very early stages of development. It does not work at all yet. However, much of the interface is described below and if you'd like to contribute, please do.</b>
+
 Google Charts is a useful service, obscured by an annoying interface--the syntax is obscure and it provides very little feedback when you do something wrong. This gem provides an interface that should make sense to someone constructing a graph. Grid and label placement are specified according to data points (instead of chart dimensions), and the best data encoding is selected automatically. There's no way a chart author should have to think about Google's data encoding. Forget I even mentioned it.
 
 ...
@@ -8,6 +10,8 @@ always uses "data scaling" in Google's terminology
 ...
 
 Other gems effectively just give chart parameters different names; this one is designed from a chart author's perspective, not Google's. So if you're asking yourself why you would want to learn an API to an API, let me assure you: this one is worth your while.
+
+validates chart parameters and raises helpful exceptions before Google gives you a useless chart
 
 
 == Example
