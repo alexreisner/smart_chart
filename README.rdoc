@@ -92,11 +92,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == Prioritized To-do List
 
-1. Strengthen distinction between attributes and parameters: rename parameter-fetching methods to mimick Google's names. We don't want any confusion between the two, and we want full attr_accessors for attributes since we may not be able to assign their entire values at once (eg, assign one line style, then add more as we interate through datasets).
-
-2. Parameter methods should not output their name (eg, "chd=", "chs="); they should be called by a dispatcher that prefixes their output (if non-blank). Subclasses of Base should implement whatever parameter methods they need.
-
-3. Use modules as mix-ins to package common parameter method implementations.
+1. Subclasses of Base should implement whatever parameter methods they need. Use modules as mix-ins to package common parameter method implementations.
 
 
 == Functional Requirements

@@ -117,7 +117,7 @@ module SmartChart
     # Make sure chart dimensions are within Google's 300,000 pixel limit.
     #
     def validate_dimensions
-      unless @width * @height <= 300000
+      unless width * height <= 300000
         raise DimensionsError
       end
     end
@@ -156,7 +156,7 @@ module SmartChart
     #
     def validate_required_attrs
       required_attrs.each do |param|
-        if instance_variable_get("@" + param.to_s).nil?
+        if send(param).nil?
           raise MissingRequiredAttributeError.new(self, param)
         end
       end
@@ -214,12 +214,12 @@ module SmartChart
     
     # chs
     def chs
-      "#{@width}x#{@height}"
+      "#{width}x#{height}"
     end
     
     # chd
     def chd
-      ChartData.new(@data)
+      ChartData.new(data)
     end
     
     # chco
