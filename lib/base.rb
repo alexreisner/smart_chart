@@ -130,9 +130,18 @@ module SmartChart
     # argument is false.
     #
     def query_string(encode = true)
-      values = query_string_params.map{ |p| send(p).to_s }
+      values = query_string_params.map{ |p| print_param(p) }
       qs = values.reject{ |v| v.nil? or v.size == 0 }.join("&")
       encode ? CGI.escape(qs) : qs
+    end
+    
+    ##
+    # Print a query string parameter (string: name=value).
+    #
+    def print_param(name)
+      unless (value = send(name).to_s) == ""
+        name.to_s + '=' + value
+      end
     end
     
     ##
@@ -200,12 +209,12 @@ module SmartChart
 
     # cht
     def cht
-      "cht=#{type.to_s}"
+      type.to_s
     end
     
     # chs
     def chs
-      "chs=#{@width}x#{@height}"
+      "#{@width}x#{@height}"
     end
     
     # chd
