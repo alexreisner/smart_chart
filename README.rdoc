@@ -121,6 +121,10 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 * data granularity adjustment (curve smoothing, rolling average?)
   * see bottom: http://code.google.com/apis/chart/formats.html
+  * at least 1 pixel per data point
+
+* note: invisible data series available for marker positioning
+  see: http://code.google.com/apis/chart/formats.html#multiple_data_series
 
 * sync labels with gridlines or vice versa:
   :x_grid => {:at_labels => true, :style => :dashed}
