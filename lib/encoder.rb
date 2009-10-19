@@ -9,16 +9,17 @@ module SmartChart
     #   token       # the single character encoding name
     #   digits      # the "alphabet" of the encoding (array)
     #   missing     # digit used for missing data
-    #   delimiter   # only if there is a delimiter
+    #   delimiter   # between data points
+    #   separator   # between data series
     #
     class Base
       
-      attr_accessor :data, :min, :max
+      attr_accessor :data_sets, :min, :max
       
-      def initialize(data, min = nil, max = nil)
-        self.data = data
-        self.min  = min || data.compact.min
-        self.max  = max || data.compact.max
+      def initialize(data_sets, min = nil, max = nil)
+        self.data_sets = data_sets
+        self.min       = min || data_sets.flatten.compact.min
+        self.max       = max || data_sets.flatten.compact.max
       end
       
       ##
@@ -32,21 +33,24 @@ module SmartChart
       private # -------------------------------------------------------------
       
       ##
-      # The business end: map an array of numbers onto a range of characters.
+      # The business end: map arrays of numbers onto a range of characters.
       # See http://code.google.com/apis/chart/formats.html for specs.
       #
       def encode
         encoded = []
-        data.each do |d|
-          if d.nil?
-            encoded << missing
-          else
-            i = (d - min).to_f / (max - min).to_f
-            i = (i * (digits.size - 1)).floor
-            encoded << digits[i]
+        data_sets.each_with_index do |set,i|
+          encoded[i] = []
+          set.each do |d|
+            if d.nil?
+              encoded[i] << missing
+            else
+              n = (d - min).to_f / (max - min).to_f
+              n = (n * (digits.size - 1)).floor
+              encoded[i] << digits[n]
+            end
           end
         end
-        encoded.join(delimiter)
+        encoded.map{ |set| set.join(delimiter) }.join(separator)
       end
       
       ##
@@ -70,6 +74,13 @@ module SmartChart
       # All encoders must implement this method.
       #
       def missing
+        fail
+      end
+      
+      ##
+      # Data series separator.
+      #
+      def separator
         fail
       end
       
@@ -129,6 +140,10 @@ module SmartChart
       def missing
         "_"
       end
+
+      def separator
+        ","
+      end
     end
     
     
@@ -153,6 +168,10 @@ module SmartChart
         "-1"
       end
       
+      def separator
+        "|"
+      end
+
       def delimiter
         ","
       end
@@ -185,6 +204,10 @@ module SmartChart
       
       def missing
         "__"
+      end
+
+      def separator
+        ","
       end
     end
   end

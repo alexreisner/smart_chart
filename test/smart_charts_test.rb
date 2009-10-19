@@ -2,6 +2,18 @@ require 'test_helper'
 
 class SmartChartTest < Test::Unit::TestCase
 
+  # --- line graph ----------------------------------------------------------
+  
+  def test_line_graph
+    g = SmartChart::LineGraph.new(
+      :width  => 400,
+      :height => 200,
+      :data   => [1, 2, 3, 4, 5]
+    )
+    assert_equal "cht=lc&chs=400x200&chd=s:APet9", g.to_query_string(false)
+  end
+  
+  
   # --- map -----------------------------------------------------------------
   
   def test_map
@@ -21,12 +33,12 @@ class SmartChartTest < Test::Unit::TestCase
       [[0, 10],          nil, nil, 's:A9'],
       [[0, 10],            0,  61, 's:AK'],
       [[0, 11],            0,  61, 's:AL'],
-      [[0, 10, 26,  27], nil, nil, 's:AW69'],
+      [[0, 10,  26, 27], nil, nil, 's:AW69'],
       [[0, 10, nil, 27], nil, nil, 's:AW_9']
       
     ].each do |data,min,max,encoding|
       assert_equal encoding,
-        SmartChart::Encoder::Simple.new(data, min, max).to_s
+        SmartChart::Encoder::Simple.new([data], min, max).to_s
     end
   end
 
@@ -40,7 +52,7 @@ class SmartChartTest < Test::Unit::TestCase
       
     ].each do |data,min,max,encoding|
       assert_equal encoding,
-        SmartChart::Encoder::Text.new(data, min, max).to_s
+        SmartChart::Encoder::Text.new([data], min, max).to_s
     end
   end
 
@@ -49,13 +61,18 @@ class SmartChartTest < Test::Unit::TestCase
       [[0, 10],          nil,  nil, 'e:AA..'],
       [[0, 10],            0, 4095, 'e:AAAK'],
       [[0, 11],            0, 4095, 'e:AAAL'],
-      [[0, 10, 26,  27], nil,  nil, 'e:AAXs9n..'],
+      [[0, 10,  26, 27], nil,  nil, 'e:AAXs9n..'],
       [[0, 10, nil, 27], nil,  nil, 'e:AAXs__..']
       
     ].each do |data,min,max,encoding|
       assert_equal encoding,
-        SmartChart::Encoder::Extended.new(data, min, max).to_s
+        SmartChart::Encoder::Extended.new([data], min, max).to_s
     end
+  end
+  
+  def test_encoding_multiple_data_sets
+    assert_equal "s:ANbo,GUhv",
+      SmartChart::Encoder::Simple.new([[1,3,5,7], [2,4,6,8]], 1, 10).to_s
   end
   
 
