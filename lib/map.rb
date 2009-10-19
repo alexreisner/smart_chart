@@ -8,7 +8,7 @@ module SmartChart
     # Specify the Google Chart type.
     #
     def type
-      ChartType.new(:t)
+      :t
     end
     
     ##

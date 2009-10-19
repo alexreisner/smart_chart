@@ -32,7 +32,7 @@ module SmartChart
     # Specify the Google Chart type.
     #
     def type
-      ChartType.new(:lc)
+      :lc
     end
   end
 end

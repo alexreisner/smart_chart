@@ -207,9 +207,14 @@ module SmartChart
       ]
     end
 
+    #
+    # All parameter methods should return a string, or an object that 
+    # renders itself as a string via the to_s method.
+    #
+
     # cht
     def cht
-      type.to_s
+      type
     end
     
     # chs
