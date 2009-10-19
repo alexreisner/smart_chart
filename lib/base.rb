@@ -13,13 +13,13 @@ module SmartChart
   class Base
     
     # dimensions of chart image, in pixels
-    attr_writer :width, :height
+    attr_accessor :width, :height
     
     # chart background
-    attr_writer :background
+    attr_accessor :background
 
     # chart data
-    attr_writer :data
+    attr_accessor :data
     
     ##
     # Accept attributes and attempt to assign each to an attribute.
@@ -169,132 +169,137 @@ module SmartChart
     #
     def query_string_params
       [
-        :type,                 # cht
-        :size,                 # chs
-        :data,                 # chd
-        :color,                # chco
-        :fill,                 # chf
+        :cht,   # type
+        :chs,   # size
+        :chd,   # data
+        :chco,  # color
+        :chf,   # fill
         
-        :labels,               # chl
-        :axis_type,            # chxt
-        :axis_labels,          # chxl
-        :axis_label_positions, # chxp
-        :axis_range,           # chxr
-        :axis_style,           # chxs
-        :margins,              # chma
+        :chl,   # labels
+        :chxt,  # axis_type
+        :chxl,  # axis_labels
+        :chxp,  # axis_label_positions
+        :chxr,  # axis_range
+        :chxs,  # axis_style
+        :chma,  # margins
         
-        :bar_spacing,          # chbh
-        :bar_chart_zero_line,  # chp
+        :chbh,  # bar_spacing
+        :chp,   # bar_chart_zero_line
 
-        :markers,              # chm
-        :line_styles,          # chls
-        :grid_lines,           # chg
+        :chm,   # markers
+        :chls,  # line_styles
+        :chg,   # grid_lines
 
-        :title,                # chtt
-        :legend,               # chdl
-        :legend_position,      # chdlp
+        :chtt,  # title
+        :chdl,  # legend
+        :chdlp, # legend_position
         
-        :data_scaling          # chds -- never used
+        :chds   # data_scaling -- never used
       ]
     end
 
+    # cht
+    def cht
+      "cht=#{type.to_s}"
+    end
+    
     # chs
-    def size
+    def chs
       "chs=#{@width}x#{@height}"
     end
     
     # chd
-    def data
+    def chd
       ChartData.new(@data)
     end
     
     # chco
-    def color
+    def chco
       ""
     end
     
     # chf
-    def fill
+    def chf
       ""
     end
 
     # chl
-    def labels
+    def chl
       ""
     end
     
     # chxt
-    def axis_type
+    def chxt
       ""
     end
 
     # chxl
-    def axis_labels
+    def chxl
       ""
     end
 
     # chxp
-    def axis_label_positions
+    def chxp
       ""
     end
 
     # chxr
-    def axis_range
+    def chxr
       ""
     end
 
     # chxs
-    def axis_style
+    def chxs
       ""
     end
 
     # chma
-    def margins
+    def chma
       ""
     end
 
     # chbh
-    def bar_spacing
+    def chbh
       ""
     end
 
     # chp
-    def bar_chart_zero_line
+    def chp
       ""
     end
 
     # chm
-    def markers
+    def chm
       ""
     end
 
     # chls
-    def line_styles
+    def chls
       ""
     end
 
     # chg
-    def grid_lines
+    def chg
       ""
     end
 
     # chtt
-    def title
+    def chtt
       ""
     end
 
     # chdl
-    def legend
+    def chdl
       ""
     end
 
     # chdlp
-    def legend_position
+    def chdlp
       ""
     end
 
     # chds -- never used
-    def data_scaling          
+    def chds          
       ""
     end
   end

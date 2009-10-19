@@ -6,7 +6,7 @@ module SmartChart
     end
   
     def to_s
-      "cht=#{@name}"
+      @name
     end
   end
 end
