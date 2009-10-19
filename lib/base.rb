@@ -126,20 +126,20 @@ module SmartChart
     # --- subclasses should not overwrite anything below this line ----------
     
     ##
-    # The encoded query string for the chart. Uses %-encoding unless first
-    # argument is false.
+    # The query string for the chart.
     #
     def query_string(encode = true)
-      values = query_string_params.map{ |p| print_param(p) }
-      qs = values.reject{ |v| v.nil? or v.size == 0 }.join("&")
-      encode ? CGI.escape(qs) : qs
+      values = query_string_params.map{ |p| format_param(p, encode) }
+      values.compact.join("&")
     end
     
     ##
-    # Print a query string parameter (string: name=value).
+    # Format a query string parameter for a URL (string: name=value). Uses
+    # %-encoding unless second argument is false.
     #
-    def print_param(name)
+    def format_param(name, encode = true)
       unless (value = send(name).to_s) == ""
+        value = CGI.escape(value) if encode
         name.to_s + '=' + value
       end
     end
@@ -181,6 +181,7 @@ module SmartChart
         :cht,   # type
         :chs,   # size
         :chd,   # data
+
         :chco,  # color
         :chf,   # fill
         
@@ -229,92 +230,92 @@ module SmartChart
     
     # chco
     def chco
-      ""
+      nil
     end
     
     # chf
     def chf
-      ""
+      nil
     end
 
     # chl
     def chl
-      ""
+      nil
     end
     
     # chxt
     def chxt
-      ""
+      nil
     end
 
     # chxl
     def chxl
-      ""
+      nil
     end
 
     # chxp
     def chxp
-      ""
+      nil
     end
 
     # chxr
     def chxr
-      ""
+      nil
     end
 
     # chxs
     def chxs
-      ""
+      nil
     end
 
     # chma
     def chma
-      ""
+      nil
     end
 
     # chbh
     def chbh
-      ""
+      nil
     end
 
     # chp
     def chp
-      ""
+      nil
     end
 
     # chm
     def chm
-      ""
+      nil
     end
 
     # chls
     def chls
-      ""
+      nil
     end
 
     # chg
     def chg
-      ""
+      nil
     end
 
     # chtt
     def chtt
-      ""
+      nil
     end
 
     # chdl
     def chdl
-      ""
+      nil
     end
 
     # chdlp
     def chdlp
-      ""
+      nil
     end
 
     # chds -- never used
     def chds          
-      ""
+      nil
     end
   end
 end
