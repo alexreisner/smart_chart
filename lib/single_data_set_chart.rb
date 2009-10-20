@@ -7,15 +7,10 @@ module SmartChart
     
     private # -----------------------------------------------------------------
     
-    # chco
-    def chco
-      colors.join(',') unless colors.nil?
-    end
-
     ##
     # Data to be encoded.
     #
-    def data_set_values
+    def data_values
       [data.values]
     end
     
@@ -25,7 +20,7 @@ module SmartChart
     def labels
       data.keys
     end
-    
+
     ##
     # Raise an exception unless the provided data is given as an array.
     #
@@ -33,6 +28,11 @@ module SmartChart
       unless data.is_a?(Hash)
         raise DataFormatError, "Data should be given as a hash"
       end
+    end
+    
+    # chco
+    def chco
+      colors.join(',') unless colors.nil?
     end
   end
 end

@@ -1,5 +1,5 @@
 module SmartChart
-  class Radar < BaseChart
+  class Radar < SingleDataSetChart
   
     private # ---------------------------------------------------------------
     

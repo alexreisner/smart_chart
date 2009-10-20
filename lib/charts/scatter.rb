@@ -1,5 +1,5 @@
 module SmartChart
-  class Scatter < BaseChart
+  class Scatter < MultipleDataSetChart
   
     private # ---------------------------------------------------------------
     

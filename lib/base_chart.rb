@@ -18,9 +18,6 @@ module SmartChart
     # chart data
     attr_accessor :data
     
-    # chart labels
-    attr_accessor :labels
-    
     # chart background
     attr_accessor :background
 
@@ -105,6 +102,14 @@ module SmartChart
     end
     
     ##
+    # Get an array of values to be graphed.
+    # Subclasses *must* implement this method.
+    #
+    def data_values
+      fail 
+    end
+    
+    ##
     # Array of names of required attributes.
     #
     def required_attrs
@@ -133,18 +138,21 @@ module SmartChart
     # Make sure chart dimensions are within Google's 300,000 pixel limit.
     #
     def validate_dimensions
-      unless width * height <= 300000
-        raise DimensionsError
-      end
+      raise DimensionsError unless width * height <= 300000
     end
     
     ##
-    # Raise an exception unless the provided data is given as an array.
+    # Validate data format.
+    # Subclasses *must* implement this method.
     #
     def validate_data_format
-      unless data.is_a?(Array)
-        raise DataFormatError, "Data set(s) should be given as an array"
-      end
+      fail
+    end
+    
+    ##
+    # Make sure labels are specified in proper format
+    #
+    def validate_labels
     end
     
     
@@ -205,23 +213,6 @@ module SmartChart
       end
     end
     
-    ##
-    # Make sure labels are specified in proper format
-    #
-    def validate_labels
-    end
-    
-    ##
-    # Extract an array of arrays (data sets) from the +data+ attribute.
-    #
-    def data_set_values
-      if [Array, Hash].include?(data.first.class)
-        data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
-      else
-        [data]
-      end
-    end
-
     
     # --- URL parameter list and methods ------------------------------------
     
@@ -281,7 +272,7 @@ module SmartChart
     
     # chd
     def chd
-      Encoder.encode(data_set_values)
+      Encoder.encode(data_values)
     end
     
     # chco

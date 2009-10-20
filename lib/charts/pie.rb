@@ -1,5 +1,5 @@
 module SmartChart
-  class Pie < BaseChart
+  class Pie < SingleDataSetChart
   
     private # ---------------------------------------------------------------
     
