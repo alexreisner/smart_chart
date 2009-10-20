@@ -5,8 +5,11 @@ class SmartChartTest < Test::Unit::TestCase
   # --- barcode ------------------------------------------------------------
   
   def test_barcode
-    g = SmartChart::Barcode.new(:width => 200, :height => 200, :data => "some data")
-    assert_equal "cht=qr&chs=200x200&chl=some data&choe=UTF-8", g.to_query_string(false)
+    g = SmartChart::Barcode.new(
+      :width => 200, :height => 200,
+      :data => "some data", :encoding => :iso88591)
+    assert_equal "cht=qr&chs=200x200&chl=some data&choe=ISO-8859-1",
+      g.to_query_string(false)
   end
   
   
@@ -34,7 +37,8 @@ class SmartChartTest < Test::Unit::TestCase
   
   def test_map
     c = map_chart(:data => [1, 2, 3, 4, 5])
-    assert_equal "cht=t&chs=400x200&chd=s:APet9", c.to_query_string(false)
+    assert_equal "cht=t&chs=400x200&chd=s:APet9&chtm=world",
+      c.to_query_string(false)
   end
   
   def test_data_point_colors
@@ -43,6 +47,23 @@ class SmartChartTest < Test::Unit::TestCase
       :style => {:color => ["111111", "222222", "333333"]}
     }])
     assert_equal "111111|222222|333333", c.send(:chco)
+  end
+  
+  def test_region_validation
+    invalids = ['middle east', 'china', 'USA']
+    valids   = ['africa', 'usa']
+    code     = lambda{ |region|
+      SmartChart::Map.new(
+        :width => 400, :height => 200,
+        :data => [1,2,3], :region => region
+      ).validate!
+    }
+    invalids.each do |region|
+      assert_raise(SmartChart::DataFormatError) { code.call(region) }
+    end
+    valids.each do |region|
+      assert_nothing_raised { code.call(region) }
+    end
   end
   
   
@@ -136,25 +157,20 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   def test_color_validation
-    valids = %w[fcfcfc FCFCFC 123456 a1b2c3]
+    valids   = %w[fcfcfc FCFCFC 123456 a1b2c3]
     invalids = %w[fcf 012 12345q 1234567]
+    code     = lambda{ |color|
+      line_graph(:data => [{
+          :values => [1,2,3],
+          :style => {:color => color}
+        }]
+      ).validate!
+    }
     invalids.each do |color|
-      assert_raise SmartChart::ColorFormatError do
-        line_graph(:data => [{
-            :values => [1,2,3],
-            :style => {:color => color}
-          }]
-        ).validate!
-      end
+      assert_raise(SmartChart::ColorFormatError) { code.call(color) }
     end
     valids.each do |color|
-      assert_nothing_raised SmartChart::ColorFormatError do
-        line_graph(:data => [{
-            :values => [1,2,3],
-            :style => {:color => color}
-          }]
-        ).validate!
-      end
+      assert_nothing_raised { code.call(color) }
     end
   end
   

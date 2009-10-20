@@ -30,7 +30,7 @@ module SmartChart
     # radar -- nil (default) or :filled
     attr_accessor :style
     
-    ##
+   ##
     # Accept attributes and attempt to assign each to an attribute.
     #
     def initialize(options = {})
@@ -224,7 +224,7 @@ module SmartChart
         :cht,   # type
         :chs,   # size
         :chd,   # data
-
+        
         :chco,  # color
         :chf,   # fill
         
@@ -247,6 +247,7 @@ module SmartChart
         :chdl,  # legend
         :chdlp, # legend_position
         
+        :chtm,  # map region
         :choe,  # QR encoding
         
         :chds   # data_scaling -- never used
@@ -360,6 +361,11 @@ module SmartChart
 
     # chdlp
     def chdlp
+      nil
+    end
+
+    # chtm -- only for map
+    def chtm
       nil
     end
 
