@@ -1,5 +1,12 @@
 module SmartChart
   module Encoder
+  
+    ##
+    # Choose the best encoder, instantiate, and return.
+    #
+    def self.encode(data)
+      Simple.new(data)
+    end
     
     ##
     # The Base encoder defines a public interface for all Encoders. To create

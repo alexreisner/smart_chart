@@ -30,7 +30,8 @@ class Test::Unit::TestCase
     SmartChart::Map.new({
       :width  => 400,
       :height => 200,
-      :data   => [1,2,3]
+      :region => :world,
+      :data   => {:US => 1, :MX => 2, :CA => 3}
     }.merge(values))
   end
 end

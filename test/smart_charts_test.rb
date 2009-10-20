@@ -35,34 +35,54 @@ class SmartChartTest < Test::Unit::TestCase
   
   # --- map -----------------------------------------------------------------
   
-  def test_map
-    c = map_chart(:data => [1, 2, 3, 4, 5])
-    assert_equal "cht=t&chs=400x200&chd=s:APet9&chtm=world",
-      c.to_query_string(false)
-  end
-  
   def test_data_point_colors
-    c = map_chart(:data => [{
-      :values => [1,2,3],
-      :style => {:color => ["111111", "222222", "333333"]}
-    }])
-    assert_equal "111111|222222|333333", c.send(:chco)
+    c = map_chart(:colors => %w[111111 222222 333333])
+    assert_equal "111111,222222,333333", c.send(:chco)
   end
   
   def test_region_validation
     invalids = ['middle east', 'china', 'USA']
-    valids   = ['africa', 'usa']
+    valids   = ['africa', 'europe']
     code     = lambda{ |region|
-      SmartChart::Map.new(
-        :width => 400, :height => 200,
-        :data => [1,2,3], :region => region
-      ).validate!
+      map_chart(:region => region).validate!
     }
-    invalids.each do |region|
-      assert_raise(SmartChart::DataFormatError) { code.call(region) }
+    invalids.each do |i|
+      assert_raise(SmartChart::DataFormatError) { code.call(i) }
     end
-    valids.each do |region|
-      assert_nothing_raised { code.call(region) }
+    valids.each do |v|
+      assert_nothing_raised { code.call(v) }
+    end
+  end
+  
+  def test_country_code_validation
+    invalids = ['USA', 'SW']
+    valids   = ['US', 'CN', :CA]
+    code     = lambda{ |c|
+      map_chart(:data => {
+        :MX => 1,  c => 2
+      }).validate!
+    }
+    invalids.each do |i|
+      assert_raise(SmartChart::DataFormatError) { code.call(i) }
+    end
+    valids.each do |v|
+      assert_nothing_raised { code.call(v) }
+    end
+  end
+  
+  def test_state_code_validation
+    invalids = ['JJ', 'DC']
+    valids   = ['AL', 'MS', :GA]
+    code     = lambda{ |s|
+      map_chart(:region => :usa, :data => {
+        :NY => 1, s => 2
+      }).validate!
+    }
+    invalids.each do |i|
+      assert_raise(SmartChart::DataFormatError) { code.call(i) }
+    end
+    valids.each do |v|
+      assert_nothing_raised { code.call(v) }
     end
   end
   

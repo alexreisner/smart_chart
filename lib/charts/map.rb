@@ -1,5 +1,5 @@
 module SmartChart
-  class Map < Base
+  class Map < SingleDataSetChart
   
     ##
     # Array of valid ISO 3166-1-alpha-2 country codes.
@@ -70,6 +70,20 @@ module SmartChart
     end
     
     ##
+    # Countries or states to be indicated on the map.
+    #
+    def chld
+      labels.join
+    end
+    
+    ##
+    # Get the labels (auto-upcase).
+    #
+    def labels
+      super.map{ |i| i.to_s.upcase } unless super.nil?
+    end
+    
+    ##
     # Array of validations to be run on the chart.
     #
     def validations
@@ -91,10 +105,20 @@ module SmartChart
     #
     def validate_labels
       return if labels.nil?
-      invalids = labels.map{ |i| i.to_s.upcase } - Map.country_codes
-      unless invalids.size == 0
-        raise DataFormatError,
-          "Invalid country code(s): #{invalids.join(', ')}"
+      # validate states
+      if region.to_s == "usa"
+        invalids = labels - Map.us_state_codes
+        unless invalids.size == 0
+          raise DataFormatError,
+            "Invalid state code(s): #{invalids.join(', ')}"
+        end
+      # validate countries
+      else
+        invalids = labels - Map.country_codes
+        unless invalids.size == 0
+          raise DataFormatError,
+            "Invalid country code(s): #{invalids.join(', ')}"
+        end
       end
     end
 

@@ -281,7 +281,7 @@ module SmartChart
     
     # chd
     def chd
-      Encoder::Simple.new(data_set_values)
+      Encoder.encode(data_set_values)
     end
     
     # chco
