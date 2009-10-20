@@ -10,14 +10,14 @@ class Test::Unit::TestCase
   ##
   # Create a valid line graph with default values.
   #
-  def line_graph(values)
+  def line_graph(values = {})
     SmartChart::LineGraph.new(default_values.merge(values))
   end
   
   ##
   # Create a valid line graph with default values.
   #
-  def map_chart(values)
+  def map_chart(values = {})
     SmartChart::Map.new(default_values.merge(values))
   end
   
@@ -27,8 +27,8 @@ class Test::Unit::TestCase
   #
   def default_values
     {
-      :width  => 300,
-      :height => 300,
+      :width  => 400,
+      :height => 200,
       :data   => [
         {
           :values => [1,2,3],

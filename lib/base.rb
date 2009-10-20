@@ -266,10 +266,11 @@ module SmartChart
     def chco
       assert_data_is_array!
       data.map{ |d|
-        if (d.is_a?(Hash) and d.has_key?(:style))
-          d[:style][:color]
+        if (d.is_a?(Hash) and d.has_key?(:style)) and c = d[:style][:color]
+          c = [c] unless c.is_a?(Array)
+          c.join('|') # data point delimiter
         end
-      }.compact.join(',')
+      }.compact.join(',') # data set delimiter
     end
     
     # chf

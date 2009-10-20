@@ -92,7 +92,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == To-do List
 
-1. Accept array for color specification ('|'-delimited data point colors for pie, bar, scatter charts, and maps.
+
 
 
 == Functional Requirements

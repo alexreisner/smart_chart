@@ -5,38 +5,36 @@ class SmartChartTest < Test::Unit::TestCase
   # --- line graph ----------------------------------------------------------
   
   def test_line_graph
-    g = SmartChart::LineGraph.new(
-      :width  => 400,
-      :height => 200,
-      :data   => [
-        {
+    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te&chco=552255,225522",
+      line_graph(
+        :data   => [{
           :values => [2,1,3,4,5,9],
           :style  => {
             :color     => '552255'
           }
-        },
-        {
+        },{
           :values => [1,6,4,8,7,5],
           :style  => {
             :color     => '225522'
           }
-        }
-      ]
-    )
-    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te&chco=552255,225522",
-      g.to_query_string(false)
+        }]
+      ).to_query_string(false)
   end
   
   
   # --- map -----------------------------------------------------------------
   
   def test_map
-    g = SmartChart::Map.new(
-      :width  => 400,
-      :height => 200,
-      :data   => [1, 2, 3, 4, 5]
-    )
-    assert_equal "cht=t&chs=400x200&chd=s:APet9", g.to_query_string(false)
+    c = map_chart(:data => [1, 2, 3, 4, 5])
+    assert_equal "cht=t&chs=400x200&chd=s:APet9", c.to_query_string(false)
+  end
+  
+  def test_data_point_colors
+    c = map_chart(:data => [{
+      :values => [1,2,3],
+      :style => {:color => ["111111", "222222", "333333"]}
+    }])
+    assert_equal "111111|222222|333333", c.send(:chco)
   end
   
   
