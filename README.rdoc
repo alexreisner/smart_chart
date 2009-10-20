@@ -92,7 +92,9 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == To-do List
 
+1. Add classes for remaining chart types.
 
+2. Validate country codes for map charts.
 
 
 == Functional Requirements
