@@ -11,22 +11,7 @@ class Test::Unit::TestCase
   # Create a valid line graph with default values.
   #
   def line_graph(values = {})
-    SmartChart::Line.new(default_values.merge(values))
-  end
-  
-  ##
-  # Create a valid line graph with default values.
-  #
-  def map_chart(values = {})
-    SmartChart::Map.new(default_values.merge(values))
-  end
-  
-  ##
-  # Default hash for creating a new chart. This method should not be called
-  # directly--call <tt>line_graph</tt> or <tt>map_chart</tt> instead.
-  #
-  def default_values
-    {
+    SmartChart::Line.new({
       :width  => 400,
       :height => 200,
       :data   => [
@@ -35,6 +20,17 @@ class Test::Unit::TestCase
           :style  => {:color => 'ffccff'}
         }
       ]
-    }
+    }.merge(values))
+  end
+  
+  ##
+  # Create a valid map with default values.
+  #
+  def map_chart(values = {})
+    SmartChart::Map.new({
+      :width  => 400,
+      :height => 200,
+      :data   => [1,2,3]
+    }.merge(values))
   end
 end
