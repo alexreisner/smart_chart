@@ -2,11 +2,11 @@
 require 'cgi'
 
 # common code
-require 'base'
 require 'encoder'
 require 'exceptions'
 
 # chart types
+require 'charts/base' # base first
 require 'charts/bar'
 require 'charts/barcode'
 require 'charts/line'
