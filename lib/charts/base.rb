@@ -18,6 +18,9 @@ module SmartChart
     # chart data
     attr_accessor :data
     
+    # chart labels
+    attr_accessor :labels
+    
     # chart background
     attr_accessor :background
 
@@ -119,8 +122,9 @@ module SmartChart
       [
         :required_attrs,
         :dimensions,
-        :colors,
         :data_format,
+        :labels,
+        :colors,
         :url_length
       ]
     end
@@ -199,6 +203,12 @@ module SmartChart
           raise ColorFormatError unless c.match(/^[0-9A-Fa-f]{6}$/)
         end
       end
+    end
+    
+    ##
+    # Make sure labels are specified in proper format
+    #
+    def validate_labels
     end
     
     ##
