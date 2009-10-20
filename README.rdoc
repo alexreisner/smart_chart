@@ -90,11 +90,9 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   g.to_html
 
 
-== Prioritized To-do List
+== To-do List
 
-1. Validate color specifications.
-
-2. Accept array for color specification ('|'-delimited data point colors for pie, bar, scatter charts, and maps.
+1. Accept array for color specification ('|'-delimited data point colors for pie, bar, scatter charts, and maps.
 
 
 == Functional Requirements

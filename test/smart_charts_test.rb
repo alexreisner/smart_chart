@@ -12,19 +12,13 @@ class SmartChartTest < Test::Unit::TestCase
         {
           :values => [2,1,3,4,5,9],
           :style  => {
-            :thickness => 2,
-            :color     => '552255',
-            :solid     => 3,
-            :gap       => 2
+            :color     => '552255'
           }
         },
         {
           :values => [1,6,4,8,7,5],
           :style  => {
-            :thickness => 2,
-            :color     => '225522',
-            :solid     => 3,
-            :gap       => 2
+            :color     => '225522'
           }
         }
       ]
@@ -101,7 +95,8 @@ class SmartChartTest < Test::Unit::TestCase
       :height => 200,
       :data   => [ [2,1,3,4,5,9], {:values => [1,6,4,8,7,5]} ]
     )
-    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te", g.to_query_string(false)
+    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te",
+      g.to_query_string(false)
   end
   
 
@@ -114,35 +109,46 @@ class SmartChartTest < Test::Unit::TestCase
     assert_raise SmartChart::MissingRequiredAttributeError do
       SmartChart::Map.new(:data => []).validate!
     end
-    assert_nothing_raised do
-      SmartChart::Map.new(:data => [], :width => 50, :height => 50).validate!
-    end
   end
 
   def test_map_width_validation
     assert_raise SmartChart::DimensionsError do
-      SmartChart::Map.new(:data => [], :width => 500, :height => 50).validate!
-    end
-    assert_nothing_raised do
-      SmartChart::Map.new(:data => [], :width => 400, :height => 50).validate!
+      map_chart(:width => 500).validate!
     end
   end
 
   def test_map_height_validation
     assert_raise SmartChart::DimensionsError do
-      SmartChart::Map.new(:data => [], :width => 50, :height => 300).validate!
-    end
-    assert_nothing_raised do
-      SmartChart::Map.new(:data => [], :width => 50, :height => 200).validate!
+      map_chart(:height => 300).validate!
     end
   end
   
   def test_dimensions_validation
     assert_raise SmartChart::DimensionsError do
-      SmartChart::LineGraph.new(:data => [], :width => 800, :height => 600).validate!
+      line_graph(:width => 800, :height => 600).validate!
     end
-    assert_nothing_raised do
-      SmartChart::LineGraph.new(:data => [], :width => 400, :height => 600).validate!
+  end
+  
+  def test_color_validation
+    valids = %w[fcfcfc FCFCFC 123456 a1b2c3]
+    invalids = %w[fcf 012 12345q 1234567]
+    invalids.each do |color|
+      assert_raise SmartChart::ColorFormatError do
+        line_graph(:data => [{
+            :values => [1,2,3],
+            :style => {:color => color}
+          }]
+        ).validate!
+      end
+    end
+    valids.each do |color|
+      assert_nothing_raised SmartChart::ColorFormatError do
+        line_graph(:data => [{
+            :values => [1,2,3],
+            :style => {:color => color}
+          }]
+        ).validate!
+      end
     end
   end
   
@@ -151,7 +157,7 @@ class SmartChartTest < Test::Unit::TestCase
   
   def test_chart_attribute_error
     assert_raise SmartChart::NoAttributeError do
-      SmartChart::LineGraph.new(:asdf => "hi")
+      line_graph(:asdf => "hi")
     end
   end
 end

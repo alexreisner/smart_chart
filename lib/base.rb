@@ -46,7 +46,8 @@ module SmartChart
     # Get the full chart URL.
     #
     def to_url(encode = true, validation = true)
-      "http://chart.apis.google.com/chart?" + to_query_string(encode, validation)
+      "http://chart.apis.google.com/chart?" +
+        to_query_string(encode, validation)
     end
     
     ##
@@ -109,6 +110,7 @@ module SmartChart
       [
         :required_attrs,
         :dimensions,
+        :colors,
         :url_length
       ]
     end
@@ -167,6 +169,17 @@ module SmartChart
     #
     def validate_url_length
       raise UrlLengthError unless to_url(true, false).size <= URL_MAX_LENGTH
+    end
+    
+    ##
+    # Make sure colors are valid hex codes.
+    #
+    def validate_colors
+      data.each do |d|
+        if d.is_a?(Hash) and d.has_key?(:style) and c = d[:style][:color]
+          raise ColorFormatError unless c.match(/^[0-9A-Fa-f]{6}$/)
+        end
+      end
     end
     
     ##
