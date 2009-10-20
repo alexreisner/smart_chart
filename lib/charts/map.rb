@@ -42,7 +42,7 @@ module SmartChart
     # Make sure chart dimensions are within Google's 440x220 limit.
     #
     def validate_dimensions
-      if @width > 440 or @height > 220
+      if width > 440 or height > 220
         raise DimensionsError, "Map dimensions may not exceed 440x220 pixels"
       end
     end
