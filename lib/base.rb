@@ -169,6 +169,27 @@ module SmartChart
       raise UrlLengthError unless to_url(true, false).size <= URL_MAX_LENGTH
     end
     
+    ##
+    # Raise an exception unless the provided data is given as an array.
+    #
+    def assert_data_is_array!
+      unless data.is_a?(Array)
+        raise DataFormatError, "Data set(s) should be given as an array"
+      end
+    end
+    
+    ##
+    # Extract an array of arrays (data sets) from the +data+ attribute.
+    #
+    def data_set_values
+      assert_data_is_array!
+      if [Array, Hash].include?(data.first.class)
+        data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
+      else
+        [data]
+      end
+    end
+
     
     # --- URL parameter list and methods ------------------------------------
     
@@ -225,12 +246,17 @@ module SmartChart
     
     # chd
     def chd
-      ChartData.new(data)
+      Encoder::Simple.new(data_set_values)
     end
     
     # chco
     def chco
-      nil
+      assert_data_is_array!
+      data.map{ |d|
+        if (d.is_a?(Hash) and d.has_key?(:style))
+          d[:style][:color]
+        end
+      }.compact.join(',')
     end
     
     # chf

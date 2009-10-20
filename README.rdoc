@@ -28,18 +28,18 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     :data => [
       {
         :values => [1,2,3,4],
-        :style => {
+        :style  => {
           :thickness => 2,
-          :color => '552255',
-          :solid => 3,
-          :gap   => 2
+          :color     => '552255',
+          :solid     => 3,
+          :gap       => 2
         }
       },
       {
         :values => [2,4,6,8],
         :style => {
           :thickness => 2,
-          :color => 'aabbcc'
+          :color     => 'aabbcc'
         }
       }
     ],
@@ -53,7 +53,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     
     # options for HTML tag
     :html => {
-      :id => "stock_graph",
+      :id    => "stock_graph",
       :class => "graph" }
   )
   
@@ -63,7 +63,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
       :solid => 4,
       :gap   => 2,
       :color => ['3f3f3f', '222222'] },
-    :background => 
+    :background => '999999'
   )
 
   SmartChart::PieChart.new(
@@ -92,7 +92,9 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == Prioritized To-do List
 
-1. Subclasses of Base should implement whatever parameter methods they need. Use modules as mix-ins to package common parameter method implementations.
+1. Validate color specifications.
+
+2. Accept array for color specification ('|'-delimited data point colors for pie, bar, scatter charts, and maps.
 
 
 == Functional Requirements

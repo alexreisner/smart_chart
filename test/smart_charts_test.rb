@@ -8,9 +8,29 @@ class SmartChartTest < Test::Unit::TestCase
     g = SmartChart::LineGraph.new(
       :width  => 400,
       :height => 200,
-      :data   => [1, 2, 3, 4, 5]
+      :data   => [
+        {
+          :values => [2,1,3,4,5,9],
+          :style  => {
+            :thickness => 2,
+            :color     => '552255',
+            :solid     => 3,
+            :gap       => 2
+          }
+        },
+        {
+          :values => [1,6,4,8,7,5],
+          :style  => {
+            :thickness => 2,
+            :color     => '225522',
+            :solid     => 3,
+            :gap       => 2
+          }
+        }
+      ]
     )
-    assert_equal "cht=lc&chs=400x200&chd=s:APet9", g.to_query_string(false)
+    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te&chco=552255,225522",
+      g.to_query_string(false)
   end
   
   
@@ -73,6 +93,15 @@ class SmartChartTest < Test::Unit::TestCase
   def test_encoding_multiple_data_sets
     assert_equal "s:ANbo,GUhv",
       SmartChart::Encoder::Simple.new([[1,3,5,7], [2,4,6,8]], 1, 10).to_s
+  end
+  
+  def test_mixed_data_set_formats
+    g = SmartChart::LineGraph.new(
+      :width  => 400,
+      :height => 200,
+      :data   => [ [2,1,3,4,5,9], {:values => [1,6,4,8,7,5]} ]
+    )
+    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te", g.to_query_string(false)
   end
   
 

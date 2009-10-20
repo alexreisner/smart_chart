@@ -6,6 +6,9 @@ module SmartChart
   class DataFormatError < SmartChartError #:nodoc:
   end
   
+  class ColorFormatError < SmartChartError #:nodoc:
+  end
+  
   class NoAttributeError < SmartChartError #:nodoc:
     def initialize(chart, param)
       chart_type = chart.class.to_s.sub(/^SmartChart::/, "")
