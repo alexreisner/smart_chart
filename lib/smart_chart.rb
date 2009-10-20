@@ -5,9 +5,9 @@ require 'cgi'
 require 'encoder'
 require 'exceptions'
 
-# chart bases
-require 'charts/base'
-require 'charts/single_data_set_chart'
+# chart parents
+require 'base_chart'
+require 'single_data_set_chart'
 
 # chart types
 require 'charts/bar'

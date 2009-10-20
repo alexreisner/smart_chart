@@ -1,5 +1,5 @@
 module SmartChart
-  class Line < Base
+  class Line < BaseChart
   
     private # ---------------------------------------------------------------
     

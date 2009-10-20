@@ -1,5 +1,5 @@
 module SmartChart
-  class Meter < Base
+  class Meter < BaseChart
   
     private # ---------------------------------------------------------------
     

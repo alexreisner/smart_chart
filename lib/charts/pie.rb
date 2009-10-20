@@ -1,5 +1,5 @@
 module SmartChart
-  class Pie < Base
+  class Pie < BaseChart
   
     private # ---------------------------------------------------------------
     

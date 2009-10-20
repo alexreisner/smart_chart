@@ -1,5 +1,5 @@
 module SmartChart
-  class SingleDataSetChart < Base
+  class SingleDataSetChart < BaseChart
 
     # colors to be used
     attr_accessor :colors

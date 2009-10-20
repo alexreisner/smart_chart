@@ -1,5 +1,5 @@
 module SmartChart
-  class Barcode < Base
+  class Barcode < BaseChart
   
     # output encoding -- :utf8 (default), :shift_jis, :iso88591
     attr_accessor :encoding

@@ -1,5 +1,5 @@
 module SmartChart
-  class Venn < Base
+  class Venn < BaseChart
   
     private # ---------------------------------------------------------------
     

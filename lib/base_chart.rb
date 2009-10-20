@@ -10,7 +10,7 @@ module SmartChart
   # Use attr_writers for all attributes, and wrte readers so
   # they instantiate the correct object type.
   #
-  class Base
+  class BaseChart
     
     # dimensions of chart image, in pixels
     attr_accessor :width, :height
