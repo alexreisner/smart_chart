@@ -1,5 +1,5 @@
 module SmartChart
-  class LineGraph < Base
+  class Scatter < Base
   
     private # ---------------------------------------------------------------
     
@@ -7,7 +7,7 @@ module SmartChart
     # Specify the Google Chart type.
     #
     def type
-      :lc
+      "s"
     end
   end
 end

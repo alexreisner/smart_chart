@@ -15,11 +15,20 @@ module SmartChart
     # dimensions of chart image, in pixels
     attr_accessor :width, :height
     
+    # chart data
+    attr_accessor :data
+    
     # chart background
     attr_accessor :background
 
-    # chart data
-    attr_accessor :data
+    # bar chart orientation -- :vertical (default) or :horizontal
+    # pie chart orientation -- degrees of rotation
+    attr_accessor :orientation
+    
+    # bar   -- :grouped (default) or :stacked
+    # pie   -- nil (2D, default), "3d", or :concentric
+    # radar -- nil (default) or :filled
+    attr_accessor :style
     
     ##
     # Accept attributes and attempt to assign each to an attribute.
@@ -111,6 +120,7 @@ module SmartChart
         :required_attrs,
         :dimensions,
         :colors,
+        :data_format,
         :url_length
       ]
     end
@@ -121,6 +131,15 @@ module SmartChart
     def validate_dimensions
       unless width * height <= 300000
         raise DimensionsError
+      end
+    end
+    
+    ##
+    # Raise an exception unless the provided data is given as an array.
+    #
+    def validate_data_format
+      unless data.is_a?(Array)
+        raise DataFormatError, "Data set(s) should be given as an array"
       end
     end
     
@@ -183,19 +202,9 @@ module SmartChart
     end
     
     ##
-    # Raise an exception unless the provided data is given as an array.
-    #
-    def assert_data_is_array!
-      unless data.is_a?(Array)
-        raise DataFormatError, "Data set(s) should be given as an array"
-      end
-    end
-    
-    ##
     # Extract an array of arrays (data sets) from the +data+ attribute.
     #
     def data_set_values
-      assert_data_is_array!
       if [Array, Hash].include?(data.first.class)
         data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
       else
@@ -228,7 +237,7 @@ module SmartChart
         :chma,  # margins
         
         :chbh,  # bar_spacing
-        :chp,   # bar_chart_zero_line
+        :chp,   # bar_chart_zero_line, pie chart rotation
 
         :chm,   # markers
         :chls,  # line_styles
@@ -237,6 +246,8 @@ module SmartChart
         :chtt,  # title
         :chdl,  # legend
         :chdlp, # legend_position
+        
+        :choe,  # QR encoding
         
         :chds   # data_scaling -- never used
       ]
@@ -264,7 +275,6 @@ module SmartChart
     
     # chco
     def chco
-      assert_data_is_array!
       data.map{ |d|
         if (d.is_a?(Hash) and d.has_key?(:style)) and c = d[:style][:color]
           c = [c] unless c.is_a?(Array)
@@ -350,6 +360,11 @@ module SmartChart
 
     # chdlp
     def chdlp
+      nil
+    end
+
+    # choe -- only for barcode
+    def choe
       nil
     end
 

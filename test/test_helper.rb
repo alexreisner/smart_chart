@@ -11,7 +11,7 @@ class Test::Unit::TestCase
   # Create a valid line graph with default values.
   #
   def line_graph(values = {})
-    SmartChart::LineGraph.new(default_values.merge(values))
+    SmartChart::Line.new(default_values.merge(values))
   end
   
   ##

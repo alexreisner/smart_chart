@@ -2,6 +2,14 @@ require 'test_helper'
 
 class SmartChartTest < Test::Unit::TestCase
 
+  # --- barcode ------------------------------------------------------------
+  
+  def test_barcode
+    g = SmartChart::Barcode.new(:width => 200, :height => 200, :data => "some data")
+    assert_equal "cht=qr&chs=200x200&chl=some data&choe=UTF-8", g.to_query_string(false)
+  end
+  
+  
   # --- line graph ----------------------------------------------------------
   
   def test_line_graph
@@ -88,7 +96,7 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   def test_mixed_data_set_formats
-    g = SmartChart::LineGraph.new(
+    g = SmartChart::Line.new(
       :width  => 400,
       :height => 200,
       :data   => [ [2,1,3,4,5,9], {:values => [1,6,4,8,7,5]} ]

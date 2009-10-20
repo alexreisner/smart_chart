@@ -18,7 +18,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == Examples
 
-  SmartChart::LineGraph.new(
+  SmartChart::Line.new(
 
     # y-axis range
     :y_max  => 80,
@@ -66,35 +66,41 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     :background => '999999'
   )
 
-  SmartChart::PieChart.new(
+  SmartChart::Pie.new(
     :3d => false,
     ...
   )
 
   # specify style of grid line or data line:
-  SmartChart::Components::Line.new(
+  {
     :solid => 2,
     :gap   => 4,
     :width => 1,
     :color => '999999'
-  )
+  }
   
   # or use shortcut:
-  SmartChart::Components::Line.new(
-    :dashed, 1, '999999'
-  )
+  [ :dashed, 1, '999999' ]
   
   # display
-  g = SmartChart::LineGraph.new(...)
+  g = SmartChart::Line.new(...)
   g.to_url
   g.to_html
+  
+  # QR Code
+  g = SmartChart::Barcode.new(:data => "some data").to_s
 
 
 == To-do List
 
-1. Add classes for remaining chart types.
+* Map
+  * validate country codes
 
-2. Validate country codes for map charts.
+* Barcode
+  * margin (chld)
+  * data length validation for given EC level and character type
+    * see table: http://code.google.com/apis/chart/types.html#qrcodes
+    * may be irrelevant because URL_MAX_LENGTH == 2074
 
 
 == Functional Requirements
