@@ -32,6 +32,11 @@ class SmartChartTest < Test::Unit::TestCase
       ).to_query_string(false)
   end
   
+  def test_line_graph_background_color
+    c = line_graph(:background => "000000")
+    assert_equal "bg,s,000000", c.send(:chf)
+  end
+
   
   # --- map -----------------------------------------------------------------
   
