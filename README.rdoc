@@ -93,7 +93,11 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == To-do List
 
-* document SingleDataSetChart attributes format
+* general
+  * support advanced background ("fill") options like gradients
+
+* SingleDataSetChart
+  * document attributes
 
 * Map
   * prevent error when only one data point provided
