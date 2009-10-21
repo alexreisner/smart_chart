@@ -151,8 +151,17 @@ module SmartChart
     
     ##
     # Make sure labels are specified in proper format
+    # Subclasses *must* implement this method.
     #
     def validate_labels
+    end
+    
+    ##
+    # Make sure colors are valid hex codes.
+    # Subclasses should probably implement this method.
+    #
+    def validate_colors
+      validate_color(background) 
     end
     
     
@@ -203,14 +212,10 @@ module SmartChart
     end
     
     ##
-    # Make sure colors are valid hex codes.
+    # Validate a single color (this is not a normal validator).
     #
-    def validate_colors
-      data.each do |d|
-        if d.is_a?(Hash) and d.has_key?(:style) and c = d[:style][:color]
-          raise ColorFormatError unless c.match(/^[0-9A-Fa-f]{6}$/)
-        end
-      end
+    def validate_color(c)
+      raise ColorFormatError unless (c.nil? or c.match(/^[0-9A-Fa-f]{6}$/))
     end
     
     
@@ -287,7 +292,7 @@ module SmartChart
     
     # chf
     def chf
-      nil
+      "bg,s,#{background}" if background
     end
 
     # chl

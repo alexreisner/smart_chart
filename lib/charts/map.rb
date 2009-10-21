@@ -49,8 +49,11 @@ module SmartChart
       ]
     end
     
-    # region to be depicted
+    # region to be depicted (default "world", see Map.regions for choices)
     attr_accessor :region
+    
+    # color of countries or states with no data (default white)
+    attr_accessor :foreground
     
      
     private # ---------------------------------------------------------------
@@ -77,6 +80,13 @@ module SmartChart
     end
     
     ##
+    # Chart color parameter: default ("foreground") plus gradient.
+    #
+    def chco
+      ([foreground || "FFFFFF"] + super.to_a).join(",")
+    end
+    
+    ##
     # Get the labels (auto-upcase).
     #
     def labels
@@ -100,6 +110,14 @@ module SmartChart
       end
     end
     
+    ##
+    # Make sure colors are valid hex codes.
+    #
+    def validate_colors
+      super
+      validate_color(foreground) if foreground
+    end
+
     ##
     # Make sure the given country codes are specified by ISO 3316.
     #

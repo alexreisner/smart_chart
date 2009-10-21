@@ -30,6 +30,15 @@ module SmartChart
       end
     end
     
+    ##
+    # Make sure colors are valid hex codes.
+    #
+    def validate_colors
+      super
+      return if colors.nil?
+      colors.each{ |c| validate_color(c) }
+    end
+
     # chco
     def chco
       colors.join(',') unless colors.nil?

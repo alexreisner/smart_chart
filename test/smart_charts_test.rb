@@ -35,9 +35,19 @@ class SmartChartTest < Test::Unit::TestCase
   
   # --- map -----------------------------------------------------------------
   
-  def test_data_point_colors
+  def test_map_data_point_colors
     c = map_chart(:colors => %w[111111 222222 333333])
-    assert_equal "111111,222222,333333", c.send(:chco)
+    assert_equal "FFFFFF,111111,222222,333333", c.send(:chco)
+  end
+  
+  def test_map_foreground_color
+    c = map_chart(:colors => %w[111111 222222 333333], :foreground => "BBBBBB")
+    assert_equal "BBBBBB,111111,222222,333333", c.send(:chco)
+  end
+  
+  def test_map_background_color
+    c = map_chart(:background => "000000")
+    assert_equal "bg,s,000000", c.send(:chf)
   end
   
   def test_region_validation
@@ -58,9 +68,7 @@ class SmartChartTest < Test::Unit::TestCase
     invalids = ['USA', 'SW']
     valids   = ['US', 'CN', :CA]
     code     = lambda{ |c|
-      map_chart(:data => {
-        :MX => 1,  c => 2
-      }).validate!
+      map_chart(:data => {:MX => 1,  c => 2}).validate!
     }
     invalids.each do |i|
       assert_raise(SmartChart::DataFormatError) { code.call(i) }
@@ -74,9 +82,7 @@ class SmartChartTest < Test::Unit::TestCase
     invalids = ['JJ', 'DC']
     valids   = ['AL', 'MS', :GA]
     code     = lambda{ |s|
-      map_chart(:region => :usa, :data => {
-        :NY => 1, s => 2
-      }).validate!
+      map_chart(:region => :usa, :data => {:NY => 1, s => 2}).validate!
     }
     invalids.each do |i|
       assert_raise(SmartChart::DataFormatError) { code.call(i) }

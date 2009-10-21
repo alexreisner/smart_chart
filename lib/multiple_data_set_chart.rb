@@ -26,5 +26,17 @@ module SmartChart
         raise DataFormatError, "Data set(s) should be given as an array"
       end
     end
+
+    ##
+    # Make sure colors are valid hex codes.
+    #
+    def validate_colors
+      super
+      data.each do |d|
+        if d.is_a?(Hash) and d.has_key?(:style) and c = d[:style][:color]
+          validate_color(c)
+        end
+      end
+    end
   end
 end
