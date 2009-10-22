@@ -253,9 +253,6 @@ module SmartChart
         :chdl,  # legend
         :chdlp, # legend_position
         
-        :chtm,  # map region
-        :choe,  # QR encoding
-        
         :chds   # data_scaling -- never used
       ]
     end
@@ -367,16 +364,6 @@ module SmartChart
 
     # chdlp
     def chdlp
-      nil
-    end
-
-    # chtm -- only for map
-    def chtm
-      nil
-    end
-
-    # choe -- only for barcode
-    def choe
       nil
     end
 

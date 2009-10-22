@@ -18,6 +18,13 @@ module SmartChart
     end
     
     ##
+    # Array of all possible query string parameters.
+    #
+    def query_string_params
+      super + [:choe]  # encoding
+    end
+    
+    ##
     # Raise an exception unless the provided data is given as a string and
     # not too long.
     #

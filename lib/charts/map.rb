@@ -66,6 +66,16 @@ module SmartChart
     end
     
     ##
+    # Array of all possible query string parameters.
+    #
+    def query_string_params
+      super + [
+        :chtm,  # region
+        :chld,  # countries/states
+      ]
+    end
+    
+    ##
     # Map region query string parameter.
     #
     def chtm

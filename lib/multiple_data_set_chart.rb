@@ -5,7 +5,7 @@ module SmartChart
     attr_accessor :labels
     
     
-    private # -----------------------------------------------------------------
+    private # ---------------------------------------------------------------
     
     ##
     # Extract an array of arrays (data sets) from the +data+ attribute.

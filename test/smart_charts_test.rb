@@ -45,6 +45,18 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "FFFFFF,111111,222222,333333", c.send(:chco)
   end
   
+  def test_map_data_and_labels
+    c = map_chart(:data => [
+      [:CA, 81],
+      [:US, 49],
+      [:AU, 96],
+      [:RU, 45],
+      [:MX, 14]
+    ])
+    assert_equal "s:xa9XA", c.send(:chd).to_s
+    assert_equal "CAUSAURUMX", c.send(:chld).to_s
+  end
+  
   def test_map_foreground_color
     c = map_chart(:colors => %w[111111 222222 333333], :foreground => "BBBBBB")
     assert_equal "BBBBBB,111111,222222,333333", c.send(:chco)
