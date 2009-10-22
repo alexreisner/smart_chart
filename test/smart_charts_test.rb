@@ -57,6 +57,11 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "CAUSAURUMX", c.send(:chld).to_s
   end
   
+  def test_map_with_one_data_point
+    c = map_chart(:data => {:US => 7})
+    assert_nothing_raised {c.validate!}
+  end
+  
   def test_map_foreground_color
     c = map_chart(:colors => %w[111111 222222 333333], :foreground => "BBBBBB")
     assert_equal "BBBBBB,111111,222222,333333", c.send(:chco)

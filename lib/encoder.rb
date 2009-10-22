@@ -49,12 +49,17 @@ module SmartChart
           encoded[i] = []
           set.each do |d|
             if d.nil?
-              encoded[i] << missing
+              char = missing
             else
-              n = (d - min).to_f / (max - min).to_f
-              n = (n * (digits.size - 1)).floor
-              encoded[i] << digits[n]
+              if min == max # don't die when only one data point given
+                char = digits.last
+              else
+                n = (d - min).to_f / (max - min).to_f
+                n = (n * (digits.size - 1)).floor
+                char = digits[n]
+              end
             end
+            encoded[i] << char
           end
         end
         encoded.map{ |set| set.join(delimiter) }.join(separator)
