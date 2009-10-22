@@ -28,44 +28,44 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     :data => [
       {
         :values => [1,2,3,4],
-        :style  => {
+        :line   => {
           :thickness => 2,
           :color     => '552255',
-          :solid     => 3,
-          :gap       => 2
+          :style     => {:solid => 3, :blank => 2}
         }
       },
       {
         :values => [2,4,6,8],
-        :style => {
+        :line   => {
           :thickness => 2,
           :color     => 'aabbcc'
+          :style     => :solid
         }
       }
     ],
     
-    # x-gridlines (style specified by LineStyle hash or symbol)
+    # x-gridlines
     :x_grid => {
       :step   => 10,
       :offset => 2,
-      :style  => :dashed
+      :style  => :dashed  # equivalent to {:solid => 3, :blank => 2}
     },
+    
+    # x-labels
+    :x_labels => {
+      1  => "Jan",
+      4  => "Apr",
+      7  => "Jul",
+      10 => "Oct"
+    }
     
     # options for HTML tag
     :html => {
       :id    => "stock_graph",
-      :class => "graph" }
+      :class => "graph"
+    }
   )
   
-  SmartChart::SparkBar.new(
-    :data => [22,7,6,9,23,6],
-    :bars => {
-      :solid => 4,
-      :gap   => 2,
-      :color => ['3f3f3f', '222222'] },
-    :background => '999999'
-  )
-
   SmartChart::Pie.new(
     :3d => false,
     ...
@@ -74,7 +74,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   # specify style of grid line or data line:
   {
     :solid => 2,
-    :gap   => 4,
+    :blank => 4,
     :width => 1,
     :color => '999999'
   }
@@ -92,6 +92,13 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 
 == To-do List
+
+* LineGraph
+  * explicit y_min/max
+  * grid lines
+  * labels
+  * hide axis lines (cht=ls "sparkline")
+    * :axes => false
 
 * general
   * support advanced background ("fill") options like gradients
@@ -142,7 +149,8 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   or:
   :x_labels => {:at_grid => true, :text => %w[Jan Feb Mar Apr]}
 
-* Simulate sparkline bar graphs (SparkBar) by hiding 1px from left and bottom of image (display as bg image of a div when to_html is called).
+* Simulate sparkline bar graphs by hiding 1px from left and bottom of image (display as bg image of a div when to_html is called).
+  * use by setting :axes => false (or something like that)
 
 
 == References
