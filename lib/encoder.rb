@@ -4,8 +4,8 @@ module SmartChart
     ##
     # Choose the best encoder, instantiate, and return.
     #
-    def self.encode(data)
-      Simple.new(data)
+    def self.encode(data, min = nil, max = nil)
+      Simple.new(data, min, max)
     end
     
     ##

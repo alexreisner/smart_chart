@@ -4,6 +4,9 @@ module SmartChart
     # chart labels
     attr_accessor :labels
     
+    # min and max values along y-axis
+    attr_accessor :y_min, :y_max
+    
     
     private # ---------------------------------------------------------------
     
@@ -18,6 +21,13 @@ module SmartChart
       end
     end
 
+    ##
+    # Chart data parameter, with support for explicit mix/max.
+    #
+    def chd
+      Encoder.encode(data_values, y_min, y_max)
+    end
+    
     ##
     # Raise an exception unless the provided data is given as an array.
     #

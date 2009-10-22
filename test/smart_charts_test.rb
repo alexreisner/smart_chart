@@ -16,27 +16,37 @@ class SmartChartTest < Test::Unit::TestCase
   # --- line graph ----------------------------------------------------------
   
   def test_line_graph
+    c = line_graph(
+      :data   => [{
+        :values => [2,1,3,4,5,9],
+        :style  => {
+          :color     => '552255'
+        }
+      },{
+        :values => [1,6,4,8,7,5],
+        :style  => {
+          :color     => '225522'
+        }
+      }]
+    )
     assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te&chco=552255,225522",
-      line_graph(
-        :data   => [{
-          :values => [2,1,3,4,5,9],
-          :style  => {
-            :color     => '552255'
-          }
-        },{
-          :values => [1,6,4,8,7,5],
-          :style  => {
-            :color     => '225522'
-          }
-        }]
-      ).to_query_string(false)
+      c.to_query_string(false)
   end
   
   def test_line_graph_background_color
     c = line_graph(:background => "000000")
     assert_equal "bg,s,000000", c.send(:chf)
   end
-
+  
+  def test_encoding_with_y_min_and_max
+    c = line_graph(
+      :y_min  => -20,
+      :y_max  => 10,
+      :data   => [2,1,3,4,5,9]
+    )
+    assert_equal "s:squwy6", c.send(:chd).to_s
+  end
+  
   
   # --- map -----------------------------------------------------------------
   

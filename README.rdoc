@@ -94,7 +94,6 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 == To-do List
 
 * LineGraph
-  * explicit y_min/max
   * grid lines
   * labels
   * hide axis lines (cht=ls "sparkline")
