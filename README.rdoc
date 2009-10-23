@@ -2,7 +2,7 @@
 
 SmartChart is an easy way to render charts on web pages. It uses the Google Charts engine so there are no server-side dependencies or performance issues--just install and go.
 
-<b>SmartChart is still in the very early stages of development. It does not work at all yet. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
+<b>SmartChart is still in the early stages of development. Only maps, barcodes, and line charts (partially) are working at all. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
 
 
 == Key Benefits
@@ -21,8 +21,8 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   SmartChart::Line.new(
 
     # y-axis range
-    :y_max  => 80,
     :y_min  => -40,
+    :y_max  => 80,
 
     # data (specify line/bar styles with data)
     :data => [
@@ -30,7 +30,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
         :values => [1,2,3,4],
         :line   => {
           :thickness => 2,
-          :color     => '552255',
+          :color     => '550055',
           :style     => {:solid => 3, :blank => 2}
         }
       },
@@ -38,20 +38,20 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
         :values => [2,4,6,8],
         :line   => {
           :thickness => 2,
-          :color     => 'aabbcc'
-          :style     => :solid
+          :color     => 'AABBCC',
+          :style     => :dotted
         }
       }
     ],
     
-    # x-gridlines
-    :x_grid => {
-      :step   => 10,
-      :offset => 2,
-      :style  => :dashed  # equivalent to {:solid => 3, :blank => 2}
+    # grid lines
+    :grid => {
+      :x    => {:every => 10, :offset => 2}, # based on number of data points
+      :y    => {:every => 5},                # based on numeric data range
+      :line => {:style => :dashed}           # no :color or :thickness
     },
     
-    # x-labels
+    # labels
     :x_labels => {
       1  => "Jan",
       4  => "Apr",
@@ -93,8 +93,12 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == To-do List
 
+* validations
+  * margins and legend dimensions are integers
+  * grid line attributes
+  
 * LineGraph
-  * grid lines
+  * x/y grid line offsets
   * labels
   * hide axis lines (cht=ls "sparkline")
     * :axes => false
