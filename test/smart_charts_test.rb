@@ -124,6 +124,22 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   
+  # --- pie -----------------------------------------------------------------
+  
+  def test_rotation
+    c = pie_chart(:rotate => 45)
+    assert_equal "5.498", c.send(:chp)
+
+    # 90-degree rotation is Google default
+    c.rotate = -90
+    assert_equal "3.142", c.send(:chp)
+
+    # 90-degree rotation is Google default
+    c.rotate = 90
+    assert_nil c.send(:chp)
+  end
+  
+  
   # --- map -----------------------------------------------------------------
   
   def test_map_data_point_colors

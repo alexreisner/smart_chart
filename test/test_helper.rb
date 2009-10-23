@@ -35,4 +35,8 @@ class Test::Unit::TestCase
       :colors => ["CCCCCC", "CC3333"]
     }.merge(values))
   end
+  
+  def pie_chart(values = {})
+    SmartChart::Pie.new({}.merge(values))
+  end
 end

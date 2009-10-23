@@ -67,7 +67,8 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   )
   
   SmartChart::Pie.new(
-    :style => "3d",
+    :style  => "3d",
+    :rotate => 45,   # degrees from vertical (start of first slice)
     ...
   )
 

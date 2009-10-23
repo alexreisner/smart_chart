@@ -1,6 +1,10 @@
 module SmartChart
   class Pie < SingleDataSetChart
   
+    # number of degrees to rotate start of first slice from 12 o'clock
+    attr_accessor :rotate
+    
+    
     private # ---------------------------------------------------------------
     
     ##
@@ -14,8 +18,15 @@ module SmartChart
       end
     end
     
-    # rotation (in radians)
+    ##
+    # Rotation. Google expects radians from 3 o'clock.
+    #
     def chp
+      r = rotate || 0
+      s = SmartChart.decimal_string(
+        ((r - 90) % 360) * Math::PI / 180.0
+      )
+      s == "0" ? nil : s # omit parameter if zero
     end
   end
 end
