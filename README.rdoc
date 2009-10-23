@@ -67,21 +67,10 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   )
   
   SmartChart::Pie.new(
-    :3d => false,
+    :style => "3d",
     ...
   )
 
-  # specify style of grid line or data line:
-  {
-    :solid => 2,
-    :blank => 4,
-    :width => 1,
-    :color => '999999'
-  }
-  
-  # or use shortcut:
-  [ :dashed, 1, '999999' ]
-  
   # display
   g = SmartChart::Line.new(...)
   g.to_url
