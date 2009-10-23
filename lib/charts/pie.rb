@@ -7,10 +7,10 @@ module SmartChart
     # Specify the Google Chart type.
     #
     def type
-      case style
-        when :concentric: "pc"
-        when "3d":        "p3"
-        else              "p"
+      case style.to_s
+        when "concentric": "pc"
+        when "3d":         "p3"
+        else               "p"
       end
     end
     
