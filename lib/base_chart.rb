@@ -6,6 +6,17 @@ module SmartChart
   URL_MAX_LENGTH = 2074
 
   ##
+  # Takes a decimal number and returns a string with up to +frac+
+  # digits to the right of the '.'.
+  #
+  def self.decimal_string(num, frac = 3)
+    str = "%.#{frac}f" % num
+    str = str[0...-1] while str[-1,1] == "0"
+    str = str[0...-1] if str[-1,1] == "." # leave zeros left of .
+    str
+  end
+  
+  ##
   # Method names are called attributes, data for URL are called parameters.
   # Use attr_writers for all attributes, and wrte readers so
   # they instantiate the correct object type.
@@ -39,7 +50,7 @@ module SmartChart
     # radar -- nil (default) or :filled
     attr_accessor :style
     
-   ##
+    ##
     # Accept attributes and attempt to assign each to an attribute.
     #
     def initialize(options = {})

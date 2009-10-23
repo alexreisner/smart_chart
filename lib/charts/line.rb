@@ -26,29 +26,33 @@ module SmartChart
     #
     def chg
       return nil unless (grid.is_a?(Hash) and (grid[:x] or grid[:y]))
-
       style  = line_style_to_array(grid[:line])
-
-      parts  = []
-      parts << grid_x_step || 0
-      parts << (grid[:y] ? (grid[:y][:every] || 0) : 0)
-      parts << style[1]
-      parts << style[2]
-      parts << (grid[:x] ? (grid[:x][:offset] || 0) : 0)
-      parts << (grid[:y] ? (grid[:y][:offset] || 0) : 0)
-      parts.join(",")
+      [ grid_x_step || 0,
+        grid_y_step || 0,
+        style[1],
+        style[2],
+        (grid[:x] ? (grid[:x][:offset] || 0) : 0),
+        (grid[:y] ? (grid[:y][:offset] || 0) : 0)
+      ].join(",")
     end
     
     ##
-    # Compute efficient grid x_step string (up to 3 decimal places).
+    # Compute efficient grid x_step string.
     #
     def grid_x_step
       return nil unless grid.is_a?(Hash)
-      return nil unless (grid[:x].is_a?(Hash) and step = grid[:x][:every])
-      step = "%.3f" % (step.to_f * 100 / data_values_count.to_f)
-      step = step[0...-1] while step[-1,1] == "0"
-      step = step[0...-1] if step[-1,1] == "." # leave zeros left of .
-      step
+      return nil unless (grid[:x].is_a?(Hash) and s = grid[:x][:every])
+      SmartChart.decimal_string(s.to_f * 100 / data_values_count.to_f)
+    end
+    
+    ##
+    # Compute efficient grid y_step string.
+    #
+    def grid_y_step
+      return nil unless grid.is_a?(Hash)
+      return nil unless (grid[:y].is_a?(Hash) and s = grid[:y][:every])
+      range = y_max - y_min
+      SmartChart.decimal_string(s.to_f * 100 / range.to_f)
     end
   end
 end
