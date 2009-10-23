@@ -92,7 +92,6 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   * grid line attributes
   
 * LineGraph
-  * x/y grid line offsets
   * labels
   * hide axis lines (cht=ls "sparkline")
     * :axes => false
