@@ -95,6 +95,12 @@ class SmartChartTest < Test::Unit::TestCase
     # apply line style by name
     c.data[0][:line][:style] = :dotted
     assert_equal "4,4,4|1,1,0", c.send(:chls).to_s
+    
+    # raise exception on invalid style name
+    assert_raise(SmartChart::LineStyleNameError) do
+      c.data[0][:line][:style] = :asdf
+      c.validate!
+    end
 
     # omit chls parameter if no styles specified
     c.data[0][:line] = nil

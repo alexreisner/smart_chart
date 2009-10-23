@@ -32,9 +32,7 @@ module SmartChart
     # Array of all possible query string parameters.
     #
     def query_string_params
-      super + [
-        :chls  # line style
-      ]
+      super + [:chls]
     end
     
     ##
@@ -79,13 +77,28 @@ module SmartChart
     
     ##
     # Translate a symbol into a line style: a two-element array (solid line
-    # length, blank line length).
+    # length, blank line length). Takes a style name and line thickness.
     #
     def line_style_definition(symbol, thickness = 1)
-      { :dotted => [thickness, thickness]
-      }[symbol]
+      self.class.line_styles(thickness)[symbol]
     end
     
+    ##
+    # Get a hash of line style definitions.
+    #
+    def self.line_styles(thickness = 1)
+      {
+        :dotted => [thickness, thickness]
+      }
+    end
+    
+    ##
+    # Array of validations to be run on the chart.
+    #
+    def validations
+      [:line_style_names] + super
+    end
+
     ##
     # Raise an exception unless the provided data is given as an array.
     #
@@ -106,5 +119,23 @@ module SmartChart
         end
       end
     end
+    
+    def validate_line_style_names
+      data.each do |d|
+        if d.is_a?(Hash) and d[:line].is_a?(Hash)
+          if (style = d[:line][:style]).is_a?(Symbol)
+            unless self.class.line_styles.keys.include?(style)
+              raise LineStyleNameError,
+                "Line style name '#{style}' is not valid. " +
+                "Try one of: #{self.class.line_styles.keys.join(', ')}"
+            end
+          end
+        end
+      end
+    end
+  end
+
+  
+  class LineStyleNameError < ValidationError #:nodoc:
   end
 end
