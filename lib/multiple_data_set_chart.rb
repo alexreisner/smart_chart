@@ -41,7 +41,7 @@ module SmartChart
     def chd
       Encoder.encode(data_values, y_min, y_max)
     end
-    
+
     ##
     # Line style parameter.
     #
@@ -62,7 +62,10 @@ module SmartChart
     end
     
     ##
-    # Translate a line style to a two-element array: [solid, blank].
+    # Translate a line style to a three-element array:
+    #
+    #   [thickness, solid, blank]
+    #
     # Takes a hash or a symbol (shortcut for a pre-defined look).
     #
     def line_style_to_array(line)

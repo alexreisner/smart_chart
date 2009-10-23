@@ -107,6 +107,18 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "", c.send(:chls).to_s
   end
   
+  def test_grid_lines
+    c = line_graph(
+      :data => [1, 2, 3, 4, 5, 6, 7, 8],
+      :grid => {
+        :x    => {:every => 2, :offset => 1},
+        :y    => {:every => 5},
+        :line => {:color => "AABBCC", :style => :dotted}
+      }
+    )
+    assert_equal "2,5,1,1,1,0", c.send(:chg).to_s
+  end
+  
   
   # --- map -----------------------------------------------------------------
   
