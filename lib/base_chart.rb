@@ -18,6 +18,9 @@ module SmartChart
     # chart data
     attr_accessor :data
     
+    # chart range
+    attr_accessor :y_min, :y_max
+    
     # chart background
     attr_accessor :background
     
@@ -113,6 +116,20 @@ module SmartChart
     #
     def data_values
       fail 
+    end
+    
+    ##
+    # Get the minimum Y-value for the chart (from data or explicitly set).
+    #
+    def y_min
+      @y_min || data_values.flatten.compact.min
+    end
+    
+    ##
+    # Get the maximum Y-value for the chart (from data or explicitly set).
+    #
+    def y_max
+      @y_max || data_values.flatten.compact.max
     end
     
     ##
@@ -278,7 +295,7 @@ module SmartChart
     
     # chd
     def chd
-      Encoder.encode(data_values)
+      Encoder.encode(data_values, y_min, y_max)
     end
     
     # chco
