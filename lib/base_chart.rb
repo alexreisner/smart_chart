@@ -20,6 +20,12 @@ module SmartChart
     
     # chart background
     attr_accessor :background
+    
+    # chart margins
+    attr_accessor :margins
+
+    # legend properties
+    attr_accessor :legend
 
     # bar chart orientation -- :vertical (default) or :horizontal
     # pie chart orientation -- degrees of rotation
@@ -322,9 +328,26 @@ module SmartChart
       nil
     end
 
+    ##
+    # Are legend dimensions specified?
+    #
+    def legend_dimensions_given?
+      legend.is_a?(Hash) and (legend[:width] or legend[:height])
+    end
+
     # chma
     def chma
-      nil
+      return nil unless (margins or legend_dimensions_given?)
+      value = ""
+      if margins.is_a?(Hash)
+        pixels = [:left, :right, :top, :bottom].map{ |i| margins[i] || 0 }
+        value << pixels.join(',')
+      end
+      if legend_dimensions_given?
+        value << "0,0,0,0" if value == ""
+        value << "|#{legend[:width] || 0},#{legend[:height] || 0}"
+      end
+      value
     end
 
     # chbh

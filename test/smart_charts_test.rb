@@ -47,6 +47,28 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "s:squwy6", c.send(:chd).to_s
   end
   
+  def test_margins
+    c = line_graph(
+      :margins => {
+        :top => 10,
+        :bottom => 10,
+        :left => 5,
+        :right => 25
+      }
+    )
+    assert_equal "5,25,10,10", c.send(:chma).to_s
+  end
+  
+  def test_legend_dimensions
+    c = line_graph(
+      :legend => {
+        :width  => 50,
+        :height => 20
+      }
+    )
+    assert_equal "0,0,0,0|50,20", c.send(:chma).to_s
+  end
+  
   
   # --- map -----------------------------------------------------------------
   
