@@ -252,7 +252,6 @@ module SmartChart
         :chp,   # bar_chart_zero_line, pie chart rotation
 
         :chm,   # markers
-        :chls,  # line_styles
         :chg,   # grid_lines
 
         :chtt,  # title
@@ -362,11 +361,6 @@ module SmartChart
 
     # chm
     def chm
-      nil
-    end
-
-    # chls
-    def chls
       nil
     end
 

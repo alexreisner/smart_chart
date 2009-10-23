@@ -69,6 +69,38 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "0,0,0,0|50,20", c.send(:chma).to_s
   end
   
+  def test_line_styles
+    c = line_graph(
+      :data => [{
+        :values => [1,2,3],
+        :line   => {
+          :thickness => 4,
+          :style => {:solid => 3, :blank => 2}
+        }
+      },{
+        :values => [3,1,2],
+        :line   => {
+          :thickness => 2,
+          :style => {:solid => 1, :blank => 3}
+        }
+      }]
+    )
+    # handle multiple data sets correctly
+    assert_equal "4,3,2|2,1,3", c.send(:chls).to_s
+    
+    # apply default line style automatically
+    c.data[1][:line] = nil
+    assert_equal "4,3,2|1,1,0", c.send(:chls).to_s
+    
+    # apply line style by name
+    c.data[0][:line][:style] = :dotted
+    assert_equal "4,4,4|1,1,0", c.send(:chls).to_s
+
+    # omit chls parameter if no styles specified
+    c.data[0][:line] = nil
+    assert_equal "", c.send(:chls).to_s
+  end
+  
   
   # --- map -----------------------------------------------------------------
   

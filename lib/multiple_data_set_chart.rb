@@ -14,18 +14,76 @@ module SmartChart
     # Extract an array of arrays (data sets) from the +data+ attribute.
     #
     def data_values
-      if [Array, Hash].include?(data.first.class)
-        data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
-      else
+      if bare_data_set?
         [data]
+      else
+        data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
       end
     end
 
+    ##
+    # Is the data given as a single bare array of values?
+    #
+    def bare_data_set?
+      ![Array, Hash].include?(data.first.class)
+    end
+
+    ##
+    # Array of all possible query string parameters.
+    #
+    def query_string_params
+      super + [
+        :chls  # line style
+      ]
+    end
+    
     ##
     # Chart data parameter, with support for explicit mix/max.
     #
     def chd
       Encoder.encode(data_values, y_min, y_max)
+    end
+    
+    ##
+    # Line style parameter.
+    #
+    def chls
+      validate_data_format
+      return nil if bare_data_set?
+      lines = data.map do |set|
+        if set.is_a?(Hash) and set[:line].is_a?(Hash)
+          line_style_to_array(set[:line])
+        else
+          [1, 1, 0]
+        end
+      end
+      # only return non-nil if styles other than default are given
+      if lines.map{ |l| l == [1,1,0] ? nil : 1 }.compact.size > 0
+        lines.map{ |s| s.join(",") }.join("|")
+      end
+    end
+    
+    ##
+    # Translate a line style to a two-element array: [solid, blank].
+    # Takes a hash or a symbol (shortcut for a pre-defined look).
+    #
+    def line_style_to_array(line)
+      thickness = line[:thickness] || 1
+      style = line[:style]
+      [thickness] + case style
+        when Hash:   [style[:solid], style[:blank]]
+        when Symbol: line_style_definition(style, thickness)
+        else         [1, 0]
+      end
+    end
+    
+    ##
+    # Translate a symbol into a line style: a two-element array (solid line
+    # length, blank line length).
+    #
+    def line_style_definition(symbol, thickness = 1)
+      { :dotted => [thickness, thickness]
+      }[symbol]
     end
     
     ##
