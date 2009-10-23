@@ -116,7 +116,11 @@ class SmartChartTest < Test::Unit::TestCase
         :line => {:color => "AABBCC", :style => :dotted}
       }
     )
-    assert_equal "2,5,1,1,1,0", c.send(:chg).to_s
+    assert_equal "25,5,1,1,1,0", c.send(:chg).to_s
+    
+    # test x-step decimal points
+    c.data = [1, 2, 3, 4, 5, 6]
+    assert_equal "33.333,5,1,1,1,0", c.send(:chg).to_s
   end
   
   

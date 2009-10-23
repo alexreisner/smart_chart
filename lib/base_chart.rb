@@ -119,6 +119,13 @@ module SmartChart
     end
     
     ##
+    # The number of data points represented along the x-axis.
+    #
+    def data_values_count
+      data_values.map{ |set| set.size }.max
+    end
+    
+    ##
     # Get the minimum Y-value for the chart (from data or explicitly set).
     #
     def y_min
