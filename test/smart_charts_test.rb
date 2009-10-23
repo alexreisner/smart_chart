@@ -112,15 +112,15 @@ class SmartChartTest < Test::Unit::TestCase
       :data => [0, 2, 3, 4, 5, 6, 7, 8],
       :grid => {
         :x    => {:every => 2, :offset => 1},
-        :y    => {:every => 4},
+        :y    => {:every => 4, :offset => 2},
         :line => {:color => "AABBCC", :style => :dotted}
       }
     )
-    assert_equal "25,50,1,1,1,0", c.send(:chg).to_s
+    assert_equal "25,50,1,1,12.5,25", c.send(:chg).to_s
     
     # test x/y-step decimal points
     c.data = [0, 2, 3, 4, 5, 6]
-    assert_equal "33.333,66.667,1,1,1,0", c.send(:chg).to_s
+    assert_equal "33.333,66.667,1,1,16.667,33.333", c.send(:chg).to_s
   end
   
   

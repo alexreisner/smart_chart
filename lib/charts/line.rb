@@ -27,30 +27,30 @@ module SmartChart
     def chg
       return nil unless (grid.is_a?(Hash) and (grid[:x] or grid[:y]))
       style  = line_style_to_array(grid[:line])
-      [ grid_x_step || 0,
-        grid_y_step || 0,
+      [ x_grid_property(:every) || 0,
+        y_grid_property(:every) || 0,
         style[1],
         style[2],
-        (grid[:x] ? (grid[:x][:offset] || 0) : 0),
-        (grid[:y] ? (grid[:y][:offset] || 0) : 0)
+        x_grid_property(:offset) || 0,
+        y_grid_property(:offset) || 0
       ].join(",")
     end
     
     ##
-    # Compute efficient grid x_step string.
+    # Compute x-grid :every or :offset (as a string).
     #
-    def grid_x_step
+    def x_grid_property(property)
       return nil unless grid.is_a?(Hash)
-      return nil unless (grid[:x].is_a?(Hash) and s = grid[:x][:every])
+      return nil unless (grid[:x].is_a?(Hash) and s = grid[:x][property])
       SmartChart.decimal_string(s.to_f * 100 / data_values_count.to_f)
     end
     
     ##
-    # Compute efficient grid y_step string.
+    # Compute y-grid :every or :offset (as a string).
     #
-    def grid_y_step
+    def y_grid_property(property)
       return nil unless grid.is_a?(Hash)
-      return nil unless (grid[:y].is_a?(Hash) and s = grid[:y][:every])
+      return nil unless (grid[:y].is_a?(Hash) and s = grid[:y][property])
       range = y_max - y_min
       SmartChart.decimal_string(s.to_f * 100 / range.to_f)
     end
