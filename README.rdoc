@@ -91,6 +91,11 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   g = SmartChart::Barcode.new(:data => "some data").to_s
 
 
+== Special Cases
+
+<b>If you want a line graph with data sets along multiple y-scales within the same graph,</b> you have to simulate multiple y-scales you must map one of your data sets onto the range of the other and place the labels manually. Support for this functionality with a nicer syntax could be added in the future by the use of a +data2+ attribute with its own set of labels.
+
+
 == To-do List
 
 * validations
