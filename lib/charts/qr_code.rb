@@ -1,5 +1,5 @@
 module SmartChart
-  class Barcode < SingleDataSetChart
+  class QRCode < SingleDataSetChart
   
     # output encoding -- :utf8 (default), :shift_jis, :iso88591
     attr_accessor :encoding

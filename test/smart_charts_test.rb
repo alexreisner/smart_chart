@@ -2,10 +2,10 @@ require 'test_helper'
 
 class SmartChartTest < Test::Unit::TestCase
 
-  # --- barcode ------------------------------------------------------------
+  # --- qr code ------------------------------------------------------------
   
-  def test_barcode
-    g = SmartChart::Barcode.new(
+  def test_qr_code
+    g = SmartChart::QRCode.new(
       :width => 200, :height => 200,
       :data => "some data", :encoding => :iso88591)
     assert_equal "cht=qr&chs=200x200&chl=some data&choe=ISO-8859-1",
