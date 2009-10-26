@@ -48,10 +48,9 @@ module SmartChart
     # Labels parameter.
     #
     def chdl
-      if bare_data_set?
-        nil
-      else
-        data.map{ |d| d.is_a?(Hash) ? d[:label] : "" }.join("|")
+      unless bare_data_set?
+        labels = data.map{ |d| d.is_a?(Hash) ? d[:label] : nil }
+        labels.compact.size > 0 ? labels.join("|") : nil
       end
     end
     
