@@ -28,7 +28,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     :data => [
       {
         :values => [1,2,3,4],
-        :style  => {
+        :line   => {
           :thickness => 2,
           :color     => '552255',
           :solid     => 3,
@@ -88,7 +88,46 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   g.to_html
   
   # QR Code
-  g = SmartChart::Barcode.new(:data => "some data").to_s
+  g = SmartChart::QRCode.new(:data => "some data").to_s
+
+
+== Specifying Data
+
+Data is specified in slightly different ways for different charts. In the simplest case, a QR code (<tt>SmartChart::QRCode</tt>), the data is simply a string:
+
+  chart.data = "A sentence full of data."
+
+Another simple case is a map (<tt>SmartChart::Map</tt>), where data is specified as a hash of region-value pairs:
+
+  chart.data = {
+    :US => 74,
+    :CA => 81,
+    :MX => 52,
+    :RU => 19,
+    :AU => 41
+  }
+
+Data can be passed to pie charts in a similar way. For more complex graphs depicting multiple series, data and other information about each series is given as a hash (in an array if there is more than one), for example for a line graph:
+
+  chart.data = [
+    {
+      :values => [23, 26, 46, 52, 51, 78],
+      :label  => "Stock price",
+      :line   => {
+        :thickness => 2,
+        :color     => '0099FF'
+      }
+    },
+    {
+      :values => [65, 64, 58, 52, 63, 79],
+      :label  => "Consumer interest",
+      :line   => {
+        :thickness => 1,
+        :color     => 'FF0099',
+        :style     => :dotted
+      }
+    }
+  ]
 
 
 == To-do List
@@ -102,7 +141,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 * Map
   * prevent error when only one data point provided
 
-* Barcode
+* QRCode
   * margin (chld)
   * data length validation for given EC level and character type
     * see table: http://code.google.com/apis/chart/types.html#qrcodes
