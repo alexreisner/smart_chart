@@ -62,6 +62,7 @@ module SmartChart
     # Takes a hash or a symbol (shortcut for a pre-defined look).
     #
     def line_style_to_array(line)
+      return [1, 1, 0] if line.nil?
       thickness = line[:thickness] || 1
       style = line[:style]
       [thickness] + case style
