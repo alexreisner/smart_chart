@@ -5,11 +5,11 @@ class SmartChartTest < Test::Unit::TestCase
   # --- barcode ------------------------------------------------------------
   
   def test_barcode
-    g = SmartChart::Barcode.new(
+    c = SmartChart::Barcode.new(
       :width => 200, :height => 200,
       :data => "some data", :encoding => :iso88591)
-    assert_equal "cht=qr&chs=200x200&chl=some data&choe=ISO-8859-1",
-      g.to_query_string(false)
+    assert_equal "some data", c.send(:chl)
+    assert_equal "ISO-8859-1", c.send(:choe)
   end
   
   
@@ -29,8 +29,19 @@ class SmartChartTest < Test::Unit::TestCase
         }
       }]
     )
-    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te&chco=552255,225522",
-      c.to_query_string(false)
+    assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
+    assert_equal "552255,225522", c.send(:chco)
+  end
+  
+  def test_line_graph_labels
+    c = line_graph(:data => [{
+      :values => [1,2,3],
+      :label  => "One"
+    },{
+      :values => [4,5,6],
+      :label  => "Two"
+    }])
+    assert_equal "One|Two", c.send(:chdl)
   end
   
   def test_line_graph_background_color
@@ -267,13 +278,12 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   def test_mixed_data_set_formats
-    g = SmartChart::Line.new(
+    c = SmartChart::Line.new(
       :width  => 400,
       :height => 200,
       :data   => [ [2,1,3,4,5,9], {:values => [1,6,4,8,7,5]} ]
     )
-    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te",
-      g.to_query_string(false)
+    assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
   end
   
 

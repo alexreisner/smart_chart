@@ -19,13 +19,6 @@ module SmartChart
     end
 
     ##
-    # Is the data given as a single bare array of values?
-    #
-    def bare_data_set?
-      ![Array, Hash].include?(data.first.class)
-    end
-
-    ##
     # Array of all possible query string parameters.
     #
     def query_string_params
@@ -48,6 +41,17 @@ module SmartChart
       # only return non-nil if styles other than default are given
       if lines.map{ |l| l == [1,1,0] ? nil : 1 }.compact.size > 0
         lines.map{ |s| s.join(",") }.join("|")
+      end
+    end
+    
+    ##
+    # Labels parameter.
+    #
+    def chdl
+      if bare_data_set?
+        nil
+      else
+        data.map{ |d| d.is_a?(Hash) ? d[:label] : "" }.join("|")
       end
     end
     

@@ -28,6 +28,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     :data => [
       {
         :values => [1,2,3,4],
+        :label  => "Profit",
         :line   => {
           :thickness => 2,
           :color     => '550055',
@@ -36,6 +37,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
       },
       {
         :values => [2,4,6,8],
+        :label  => "Reputation",
         :line   => {
           :thickness => 2,
           :color     => 'AABBCC',

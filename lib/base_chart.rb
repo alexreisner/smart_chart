@@ -228,6 +228,13 @@ module SmartChart
     end
     
     ##
+    # Is the data given as a single bare array of values?
+    #
+    def bare_data_set?
+      data.is_a?(Array) and ![Array, Hash].include?(data.first.class)
+    end
+
+    ##
     # Run all validations on the chart attributes.
     #
     def validate

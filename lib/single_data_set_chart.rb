@@ -41,6 +41,13 @@ module SmartChart
       colors.each{ |c| validate_color(c) }
     end
 
+    ##
+    # Labels parameter.
+    #
+    def chdl
+      data.is_a?(Array) ? nil : data.keys.join("|")
+    end
+    
     # chco
     def chco
       colors.join(',') unless colors.nil?
