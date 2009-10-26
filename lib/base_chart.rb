@@ -6,6 +6,17 @@ module SmartChart
   URL_MAX_LENGTH = 2074
 
   ##
+  # Takes a decimal number and returns a string with up to +frac+
+  # digits to the right of the '.'.
+  #
+  def self.decimal_string(num, frac = 3)
+    str = "%.#{frac}f" % num
+    str = str[0...-1] while str[-1,1] == "0"
+    str = str[0...-1] if str[-1,1] == "." # leave zeros left of .
+    str
+  end
+  
+  ##
   # Method names are called attributes, data for URL are called parameters.
   # Use attr_writers for all attributes, and wrte readers so
   # they instantiate the correct object type.
@@ -18,8 +29,17 @@ module SmartChart
     # chart data
     attr_accessor :data
     
+    # chart range
+    attr_accessor :y_min, :y_max
+    
     # chart background
     attr_accessor :background
+    
+    # chart margins
+    attr_accessor :margins
+
+    # legend properties
+    attr_accessor :legend
 
     # bar chart orientation -- :vertical (default) or :horizontal
     # pie chart orientation -- degrees of rotation
@@ -30,7 +50,7 @@ module SmartChart
     # radar -- nil (default) or :filled
     attr_accessor :style
     
-   ##
+    ##
     # Accept attributes and attempt to assign each to an attribute.
     #
     def initialize(options = {})
@@ -107,6 +127,27 @@ module SmartChart
     #
     def data_values
       fail 
+    end
+    
+    ##
+    # The number of data points represented along the x-axis.
+    #
+    def data_values_count
+      data_values.map{ |set| set.size }.max
+    end
+    
+    ##
+    # Get the minimum Y-value for the chart (from data or explicitly set).
+    #
+    def y_min
+      @y_min || data_values.flatten.compact.min
+    end
+    
+    ##
+    # Get the maximum Y-value for the chart (from data or explicitly set).
+    #
+    def y_max
+      @y_max || data_values.flatten.compact.max
     end
     
     ##
@@ -187,6 +228,13 @@ module SmartChart
     end
     
     ##
+    # Is the data given as a single bare array of values?
+    #
+    def bare_data_set?
+      data.is_a?(Array) and ![Array, Hash].include?(data.first.class)
+    end
+
+    ##
     # Run all validations on the chart attributes.
     #
     def validate
@@ -246,15 +294,10 @@ module SmartChart
         :chp,   # bar_chart_zero_line, pie chart rotation
 
         :chm,   # markers
-        :chls,  # line_styles
-        :chg,   # grid_lines
 
         :chtt,  # title
         :chdl,  # legend
         :chdlp, # legend_position
-        
-        :chtm,  # map region
-        :choe,  # QR encoding
         
         :chds   # data_scaling -- never used
       ]
@@ -277,7 +320,7 @@ module SmartChart
     
     # chd
     def chd
-      Encoder.encode(data_values)
+      Encoder.encode(data_values, y_min, y_max)
     end
     
     # chco
@@ -325,9 +368,26 @@ module SmartChart
       nil
     end
 
+    ##
+    # Are legend dimensions specified?
+    #
+    def legend_dimensions_given?
+      legend.is_a?(Hash) and (legend[:width] or legend[:height])
+    end
+
     # chma
     def chma
-      nil
+      return nil unless (margins or legend_dimensions_given?)
+      value = ""
+      if margins.is_a?(Hash)
+        pixels = [:left, :right, :top, :bottom].map{ |i| margins[i] || 0 }
+        value << pixels.join(',')
+      end
+      if legend_dimensions_given?
+        value << "0,0,0,0" if value == ""
+        value << "|#{legend[:width] || 0},#{legend[:height] || 0}"
+      end
+      value
     end
 
     # chbh
@@ -345,16 +405,6 @@ module SmartChart
       nil
     end
 
-    # chls
-    def chls
-      nil
-    end
-
-    # chg
-    def chg
-      nil
-    end
-
     # chtt
     def chtt
       nil
@@ -367,16 +417,6 @@ module SmartChart
 
     # chdlp
     def chdlp
-      nil
-    end
-
-    # chtm -- only for map
-    def chtm
-      nil
-    end
-
-    # choe -- only for barcode
-    def choe
       nil
     end
 

@@ -31,7 +31,12 @@ class Test::Unit::TestCase
       :width  => 400,
       :height => 200,
       :region => :world,
-      :data   => {:US => 1, :MX => 2, :CA => 3}
+      :data   => {:US => 1, :MX => 2, :CA => 3},
+      :colors => ["CCCCCC", "CC3333"]
     }.merge(values))
+  end
+  
+  def pie_chart(values = {})
+    SmartChart::Pie.new({}.merge(values))
   end
 end

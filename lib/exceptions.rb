@@ -37,7 +37,7 @@ module SmartChart
   
   class UrlLengthError < ValidationError #:nodoc:
     def initialize(message = nil)
-      super("URL too long (must not exceed #{SmartChart::URL_MAX_LENGTH} characters)")
+      super(message || "URL too long (must not exceed #{SmartChart::URL_MAX_LENGTH} characters)")
     end
   end
 end

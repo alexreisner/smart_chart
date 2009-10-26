@@ -8,41 +8,171 @@ class SmartChartTest < Test::Unit::TestCase
     g = SmartChart::QRCode.new(
       :width => 200, :height => 200,
       :data => "some data", :encoding => :iso88591)
-    assert_equal "cht=qr&chs=200x200&chl=some data&choe=ISO-8859-1",
-      g.to_query_string(false)
+    assert_equal "some data", c.send(:chl)
+    assert_equal "ISO-8859-1", c.send(:choe)
   end
   
   
   # --- line graph ----------------------------------------------------------
   
   def test_line_graph
-    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te&chco=552255,225522",
-      line_graph(
-        :data   => [{
-          :values => [2,1,3,4,5,9],
-          :style  => {
-            :color     => '552255'
-          }
-        },{
-          :values => [1,6,4,8,7,5],
-          :style  => {
-            :color     => '225522'
-          }
-        }]
-      ).to_query_string(false)
+    c = line_graph(
+      :data   => [{
+        :values => [2,1,3,4,5,9],
+        :style  => {
+          :color     => '552255'
+        }
+      },{
+        :values => [1,6,4,8,7,5],
+        :style  => {
+          :color     => '225522'
+        }
+      }]
+    )
+    assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
+    assert_equal "552255,225522", c.send(:chco)
+  end
+  
+  def test_line_graph_labels
+    c = line_graph(:data => [{
+      :values => [1,2,3],
+      :label  => "One"
+    },{
+      :values => [4,5,6],
+      :label  => "Two"
+    }])
+    assert_equal "One|Two", c.send(:chdl)
   end
   
   def test_line_graph_background_color
     c = line_graph(:background => "000000")
     assert_equal "bg,s,000000", c.send(:chf)
   end
+  
+  def test_encoding_with_y_min_and_max
+    c = line_graph(
+      :y_min  => -20,
+      :y_max  => 10,
+      :data   => [2,1,3,4,5,9]
+    )
+    assert_equal "s:squwy6", c.send(:chd).to_s
+  end
+  
+  def test_margins
+    c = line_graph(
+      :margins => {
+        :top => 10,
+        :bottom => 10,
+        :left => 5,
+        :right => 25
+      }
+    )
+    assert_equal "5,25,10,10", c.send(:chma).to_s
+  end
+  
+  def test_legend_dimensions
+    c = line_graph(
+      :legend => {
+        :width  => 50,
+        :height => 20
+      }
+    )
+    assert_equal "0,0,0,0|50,20", c.send(:chma).to_s
+  end
+  
+  def test_line_styles
+    c = line_graph(
+      :data => [{
+        :values => [1,2,3],
+        :line   => {
+          :thickness => 4,
+          :style => {:solid => 3, :blank => 2}
+        }
+      },{
+        :values => [3,1,2],
+        :line   => {
+          :thickness => 2,
+          :style => {:solid => 1, :blank => 3}
+        }
+      }]
+    )
+    # handle multiple data sets correctly
+    assert_equal "4,3,2|2,1,3", c.send(:chls).to_s
+    
+    # apply default line style automatically
+    c.data[1][:line] = nil
+    assert_equal "4,3,2|1,1,0", c.send(:chls).to_s
+    
+    # apply line style by name
+    c.data[0][:line][:style] = :dotted
+    assert_equal "4,4,4|1,1,0", c.send(:chls).to_s
+    
+    # raise exception on invalid style name
+    assert_raise(SmartChart::LineStyleNameError) do
+      c.data[0][:line][:style] = :asdf
+      c.validate!
+    end
 
+    # omit chls parameter if no styles specified
+    c.data[0][:line] = nil
+    assert_equal "", c.send(:chls).to_s
+  end
+  
+  def test_grid_lines
+    c = line_graph(
+      :data => [0, 2, 3, 4, 5, 6, 7, 8],
+      :grid => {
+        :x    => {:every => 2, :offset => 1},
+        :y    => {:every => 4, :offset => 2},
+        :line => {:color => "AABBCC", :style => :dotted}
+      }
+    )
+    assert_equal "25,50,1,1,12.5,25", c.send(:chg).to_s
+    
+    # test x/y-step decimal points
+    c.data = [0, 2, 3, 4, 5, 6]
+    assert_equal "33.333,66.667,1,1,16.667,33.333", c.send(:chg).to_s
+  end
+  
+  
+  # --- pie -----------------------------------------------------------------
+  
+  def test_rotation
+    c = pie_chart(:rotate => 45)
+    assert_equal "5.498", c.send(:chp)
+
+    # 90-degree rotation is Google default
+    c.rotate = -90
+    assert_equal "3.142", c.send(:chp)
+
+    # 90-degree rotation is Google default
+    c.rotate = 90
+    assert_nil c.send(:chp)
+  end
+  
   
   # --- map -----------------------------------------------------------------
   
   def test_map_data_point_colors
     c = map_chart(:colors => %w[111111 222222 333333])
     assert_equal "FFFFFF,111111,222222,333333", c.send(:chco)
+  end
+  
+  def test_map_data_and_labels
+    c = map_chart(:data => [
+      [:CA, 81],
+      [:US, 49],
+      [:AU, 96],
+      [:RU, 45],
+      [:MX, 14]
+    ])
+    assert_equal "s:xa9XA", c.send(:chd).to_s
+    assert_equal "CAUSAURUMX", c.send(:chld).to_s
+  end
+  
+  def test_map_with_one_data_point
+    c = map_chart(:data => {:US => 7})
+    assert_nothing_raised {c.validate!}
   end
   
   def test_map_foreground_color
@@ -148,13 +278,12 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   def test_mixed_data_set_formats
-    g = SmartChart::Line.new(
+    c = SmartChart::Line.new(
       :width  => 400,
       :height => 200,
       :data   => [ [2,1,3,4,5,9], {:values => [1,6,4,8,7,5]} ]
     )
-    assert_equal "cht=lc&chs=400x200&chd=s:HAPWe9,AmW1te",
-      g.to_query_string(false)
+    assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
   end
   
 

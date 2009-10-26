@@ -5,17 +5,99 @@ module SmartChart
     attr_accessor :labels
     
     
-    private # -----------------------------------------------------------------
+    private # ---------------------------------------------------------------
     
     ##
     # Extract an array of arrays (data sets) from the +data+ attribute.
     #
     def data_values
-      if [Array, Hash].include?(data.first.class)
-        data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
-      else
+      if bare_data_set?
         [data]
+      else
+        data.map{ |set| set.is_a?(Hash) ? set[:values] : set }
       end
+    end
+
+    ##
+    # Array of all possible query string parameters.
+    #
+    def query_string_params
+      super + [:chls]
+    end
+    
+    ##
+    # Line style parameter.
+    #
+    def chls
+      validate_data_format
+      return nil if bare_data_set?
+      lines = data.map do |set|
+        if set.is_a?(Hash) and set[:line].is_a?(Hash)
+          line_style_to_array(set[:line])
+        else
+          [1, 1, 0]
+        end
+      end
+      # only return non-nil if styles other than default are given
+      if lines.map{ |l| l == [1,1,0] ? nil : 1 }.compact.size > 0
+        lines.map{ |s| s.join(",") }.join("|")
+      end
+    end
+    
+    ##
+    # Labels parameter.
+    #
+    def chdl
+      if bare_data_set?
+        nil
+      else
+        data.map{ |d| d.is_a?(Hash) ? d[:label] : "" }.join("|")
+      end
+    end
+    
+    ##
+    # Translate a line style to a three-element array:
+    #
+    #   [thickness, solid, blank]
+    #
+    # Takes a hash or a symbol (shortcut for a pre-defined look).
+    #
+    def line_style_to_array(line)
+      thickness = line[:thickness] || 1
+      style = line[:style]
+      [thickness] + case style
+        when Hash:   [style[:solid], style[:blank]]
+        when Symbol: line_style_definition(style, thickness)
+        else         [1, 0]
+      end
+    end
+    
+    ##
+    # Translate a symbol into a line style: a two-element array (solid line
+    # length, blank line length). Takes a style name and line thickness.
+    #
+    def line_style_definition(symbol, thickness = 1)
+      self.class.line_styles(thickness)[symbol]
+    end
+    
+    ##
+    # Get a hash of line style definitions.
+    #
+    def self.line_styles(thickness = 1)
+      {
+        :solid  => [thickness * 1, thickness * 0],
+        :dotted => [thickness * 1, thickness * 1],
+        :short  => [thickness * 2, thickness * 4],
+        :dashed => [thickness * 4, thickness * 4],
+        :long   => [thickness * 6, thickness * 4]
+      }
+    end
+    
+    ##
+    # Array of validations to be run on the chart.
+    #
+    def validations
+      [:line_style_names] + super
     end
 
     ##
@@ -38,5 +120,23 @@ module SmartChart
         end
       end
     end
+    
+    def validate_line_style_names
+      data.each do |d|
+        if d.is_a?(Hash) and d[:line].is_a?(Hash)
+          if (style = d[:line][:style]).is_a?(Symbol)
+            unless self.class.line_styles.keys.include?(style)
+              raise LineStyleNameError,
+                "Line style name '#{style}' is not valid. " +
+                "Try one of: #{self.class.line_styles.keys.join(', ')}"
+            end
+          end
+        end
+      end
+    end
+  end
+
+  
+  class LineStyleNameError < ValidationError #:nodoc:
   end
 end

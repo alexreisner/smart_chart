@@ -2,7 +2,7 @@
 
 SmartChart is an easy way to render charts on web pages. It uses the Google Charts engine so there are no server-side dependencies or performance issues--just install and go.
 
-<b>SmartChart is still in the very early stages of development. It does not work at all yet. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
+<b>SmartChart is still in the early stages of development. Only maps, barcodes, and line charts (partially) are working at all. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
 
 
 == Key Benefits
@@ -21,67 +21,59 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
   SmartChart::Line.new(
 
     # y-axis range
-    :y_max  => 80,
     :y_min  => -40,
+    :y_max  => 80,
 
     # data (specify line/bar styles with data)
     :data => [
       {
         :values => [1,2,3,4],
+        :label  => "Profit",
         :line   => {
           :thickness => 2,
-          :color     => '552255',
-          :solid     => 3,
-          :gap       => 2
+          :color     => '550055',
+          :style     => {:solid => 3, :blank => 2}
         }
       },
       {
         :values => [2,4,6,8],
-        :style => {
+        :label  => "Reputation",
+        :line   => {
           :thickness => 2,
-          :color     => 'aabbcc'
+          :color     => 'AABBCC',
+          :style     => :dotted
         }
       }
     ],
     
-    # x-gridlines (style specified by LineStyle hash or symbol)
-    :x_grid => {
-      :step   => 10,
-      :offset => 2,
-      :style  => :dashed
+    # grid lines
+    :grid => {
+      :x    => {:every => 10, :offset => 2}, # based on number of data points
+      :y    => {:every => 5},                # based on numeric data range
+      :line => {:style => :dashed}           # no :color or :thickness
     },
+    
+    # labels
+    :x_labels => {
+      1  => "Jan",
+      4  => "Apr",
+      7  => "Jul",
+      10 => "Oct"
+    }
     
     # options for HTML tag
     :html => {
       :id    => "stock_graph",
-      :class => "graph" }
+      :class => "graph"
+    }
   )
   
-  SmartChart::SparkBar.new(
-    :data => [22,7,6,9,23,6],
-    :bars => {
-      :solid => 4,
-      :gap   => 2,
-      :color => ['3f3f3f', '222222'] },
-    :background => '999999'
-  )
-
   SmartChart::Pie.new(
-    :3d => false,
+    :style  => "3d",
+    :rotate => 45,   # degrees from vertical (start of first slice)
     ...
   )
 
-  # specify style of grid line or data line:
-  {
-    :solid => 2,
-    :gap   => 4,
-    :width => 1,
-    :color => '999999'
-  }
-  
-  # or use shortcut:
-  [ :dashed, 1, '999999' ]
-  
   # display
   g = SmartChart::Line.new(...)
   g.to_url
@@ -130,7 +122,21 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
   ]
 
 
+== Special Cases
+
+<b>If you want a line graph with data sets along multiple y-scales within the same graph,</b> you have to simulate multiple y-scales you must map one of your data sets onto the range of the other and place the labels manually. Support for this functionality with a nicer syntax could be added in the future by the use of a +data2+ attribute with its own set of labels.
+
+
 == To-do List
+
+* validations
+  * margins and legend dimensions are integers
+  * grid line attributes
+  
+* LineGraph
+  * labels
+  * hide axis lines (cht=ls "sparkline")
+    * :axes => false
 
 * general
   * support advanced background ("fill") options like gradients
@@ -184,7 +190,8 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
   or:
   :x_labels => {:at_grid => true, :text => %w[Jan Feb Mar Apr]}
 
-* Simulate sparkline bar graphs (SparkBar) by hiding 1px from left and bottom of image (display as bg image of a div when to_html is called).
+* Simulate sparkline bar graphs by hiding 1px from left and bottom of image (display as bg image of a div when to_html is called).
+  * use by setting :axes => false (or something like that)
 
 
 == References

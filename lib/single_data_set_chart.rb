@@ -5,20 +5,22 @@ module SmartChart
     attr_accessor :colors
     
     
-    private # -----------------------------------------------------------------
+    private # ---------------------------------------------------------------
     
     ##
     # Data to be encoded.
     #
     def data_values
-      [data.values]
+      d = data.is_a?(Hash) ? data.to_a : data
+      [d.inject([]){ |values,i| values << i[1] }]
     end
     
     ##
-    # Text of labels (array).
+    # Texts of labels.
     #
     def labels
-      data.keys
+      d = data.is_a?(Hash) ? data.to_a : data
+      d.inject([]){ |values,i| values << i[0] }
     end
 
     ##
@@ -39,6 +41,13 @@ module SmartChart
       colors.each{ |c| validate_color(c) }
     end
 
+    ##
+    # Labels parameter.
+    #
+    def chdl
+      data.is_a?(Array) ? nil : data.keys.join("|")
+    end
+    
     # chco
     def chco
       colors.join(',') unless colors.nil?
