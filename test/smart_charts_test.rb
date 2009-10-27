@@ -5,7 +5,7 @@ class SmartChartTest < Test::Unit::TestCase
   # --- qr code ------------------------------------------------------------
   
   def test_qr_code
-    g = SmartChart::QRCode.new(
+    c = SmartChart::QRCode.new(
       :width => 200, :height => 200,
       :data => "some data", :encoding => :iso88591)
     assert_equal "some data", c.send(:chl)
