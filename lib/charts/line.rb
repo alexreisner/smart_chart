@@ -26,7 +26,7 @@ module SmartChart
     #
     def chg
       return nil unless (grid.is_a?(Hash) and (grid[:x] or grid[:y]))
-      style = line_style_to_array(grid[:line])
+      style = line_style_to_array(grid)
       [ x_grid_property(:every) || 0,
         y_grid_property(:every) || 0,
         style[1],

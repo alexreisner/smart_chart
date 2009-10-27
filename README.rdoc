@@ -27,30 +27,26 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     # data (specify line/bar styles with data)
     :data => [
       {
-        :values => [1,2,3,4],
-        :label  => "Profit",
-        :line   => {
-          :thickness => 2,
-          :color     => '550055',
-          :style     => {:solid => 3, :blank => 2}
-        }
+        :values    => [1,2,3,4],
+        :label     => "Profit",
+        :thickness => 2,
+        :color     => '550055',
+        :style     => {:solid => 3, :blank => 2}
       },
       {
-        :values => [2,4,6,8],
-        :label  => "Reputation",
-        :line   => {
-          :thickness => 2,
-          :color     => 'AABBCC',
-          :style     => :dotted
-        }
+        :values    => [2,4,6,8],
+        :label     => "Reputation",
+        :thickness => 2,
+        :color     => 'AABBCC',
+        :style     => :dotted
       }
     ],
     
     # grid lines
     :grid => {
-      :x    => {:every => 10, :offset => 2}, # based on number of data points
-      :y    => {:every => 5},                # based on numeric data range
-      :line => {:style => :dashed}           # no :color or :thickness
+      :x     => {:every => 10, :offset => 2}, # based on number of data points
+      :y     => {:every => 5},                # based on numeric data range
+      :style => :dashed                       # no :color or :thickness
     },
     
     # labels
@@ -103,20 +99,17 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
 
   chart.data = [
     {
-      :values => [23, 26, 46, 52, 51, 78],
-      :label  => "Stock price",
-      :line   => {
-        :thickness => 2,
-        :color     => '0099FF'
-      }
+      :values    => [23, 26, 46, 52, 51, 78],
+      :label     => "Stock price",
+      :thickness => 2,
+      :color     => '0099FF'
     },
     {
-      :values => [65, 64, 58, 52, 63, 79],
-      :label  => "Consumer interest",
-      :line   => {
-        :thickness => 1,
-        :color     => 'FF0099',
-        :style     => :dotted
+      :values    => [65, 64, 58, 52, 63, 79],
+      :label     => "Consumer interest",
+      :thickness => 1,
+      :color     => 'FF0099',
+      :style     => :dotted
       }
     }
   ]
@@ -162,21 +155,13 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
 
 * multiple rows of labels on same axis
 
+* easy placement of y-gridline at zero, if exists
+
 * "padding" at chart top and bottom
   * have to scale data into smaller window of total range
   * allow specifying :y_min, :y_max, :x_min, :x_max
 
-* Gridlines and labels can be placed by two methods:
-
-  # 1. even distribution
-  :step => 30, :offset => 4
-
-  # 2. manual placement at data indices
-  {1 => "Jan", 32 => "Feb", 50 => "Mar", 81 => "Apr", ...}
-
 * Inline legends (line up with ends of lines). See http://code.google.com/p/graphy/wiki/UserGuide
-
-* Shortcuts for gridline styles (eg: ":style => :dashed") may be given, or use a GridLine object for full configurability.
 
 * data granularity adjustment (curve smoothing, rolling average?)
   * see bottom: http://code.google.com/apis/chart/formats.html
@@ -184,11 +169,6 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
 
 * note: invisible data series available for marker positioning
   see: http://code.google.com/apis/chart/formats.html#multiple_data_series
-
-* sync labels with gridlines or vice versa:
-  :x_grid => {:at_labels => true, :style => :dashed}
-  or:
-  :x_labels => {:at_grid => true, :text => %w[Jan Feb Mar Apr]}
 
 * Simulate sparkline bar graphs by hiding 1px from left and bottom of image (display as bg image of a div when to_html is called).
   * use by setting :axes => false (or something like that)

@@ -326,7 +326,7 @@ module SmartChart
     # chco
     def chco
       data.map{ |d|
-        if (d.is_a?(Hash) and d.has_key?(:style)) and c = d[:style][:color]
+        if d.is_a?(Hash) and c = d[:color]
           c = [c] unless c.is_a?(Array)
           c.join('|') # data point delimiter
         end

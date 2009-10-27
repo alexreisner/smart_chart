@@ -32,8 +32,8 @@ module SmartChart
       validate_data_format
       return nil if bare_data_set?
       lines = data.map do |set|
-        if set.is_a?(Hash) and set[:line].is_a?(Hash)
-          line_style_to_array(set[:line])
+        if set.is_a?(Hash)
+          line_style_to_array(set)
         else
           [1, 1, 0]
         end
@@ -61,15 +61,13 @@ module SmartChart
     #
     # Takes a hash or a symbol (shortcut for a pre-defined look).
     #
-    def line_style_to_array(line)
-      return [1, 1, 0] if line.nil?
-      thickness = line[:thickness] || 1
-      style = line[:style]
-      [thickness] + case style
-        when Hash:   [style[:solid], style[:blank]]
-        when Symbol: line_style_definition(style, thickness)
-        else         [1, 0]
-      end
+    def line_style_to_array(data)
+      return [1, 1, 0] if data.nil?
+      thickness = data[:thickness] || 1
+      style     = data[:style]
+      style_arr = style.is_a?(Hash) ? [style[:solid], style[:blank]] :
+        line_style_definition(style, thickness)
+      [thickness] + style_arr
     end
     
     ##
@@ -77,7 +75,7 @@ module SmartChart
     # length, blank line length). Takes a style name and line thickness.
     #
     def line_style_definition(symbol, thickness = 1)
-      self.class.line_styles(thickness)[symbol]
+      self.class.line_styles(thickness)[symbol] || [1, 0]
     end
     
     ##
@@ -115,7 +113,7 @@ module SmartChart
     def validate_colors
       super
       data.each do |d|
-        if d.is_a?(Hash) and d.has_key?(:style) and c = d[:style][:color]
+        if d.is_a?(Hash) and c = d[:color]
           validate_color(c)
         end
       end
@@ -123,8 +121,8 @@ module SmartChart
     
     def validate_line_style_names
       data.each do |d|
-        if d.is_a?(Hash) and d[:line].is_a?(Hash)
-          if (style = d[:line][:style]).is_a?(Symbol)
+        if d.is_a?(Hash) and d.is_a?(Hash)
+          if (style = d[:style]).is_a?(Symbol)
             unless self.class.line_styles.keys.include?(style)
               raise LineStyleNameError,
                 "Line style name '#{style}' is not valid. " +
