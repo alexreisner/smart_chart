@@ -7,7 +7,7 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
 
 == Key Benefits
 
-<b>1. Designed as a chart-making interface, not as a Google Charts wrapper.</b> Other APIs effectively just give Google Chart parameters different names, leading you to wonder: why learn an API to an API? SmartChart is an intelligent chart-authoring syntax that happens to use Google Charts as a back-end.
+<b>1. Designed as a chart-making interface, not as a Google Charts wrapper.</b> Other APIs effectively just give Google Chart parameters different names, leading you to wonder: why am I learning an API to an API? SmartChart is an intelligent chart-authoring syntax that happens to use Google Charts as a back-end. It may support other charting engines in the future.
 
 <b>2. Place chart elements with respect to data points, not chart size.</b> If you want horizontal axis lines on your graph every 10 units (along the Y-axis) you simply specify this. If you've worked much with the native Google Charts interface you know you have to do several calculations to get this to work, and any library that simply "wraps" Google Charts suffers from this same annoyance.
 
@@ -115,11 +115,6 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
   ]
 
 
-== Special Cases
-
-<b>If you want a line graph with data sets along multiple y-scales within the same graph,</b> you have to simulate multiple y-scales you must map one of your data sets onto the range of the other and place the labels manually. Support for this functionality with a nicer syntax could be added in the future by the use of a +data2+ attribute with its own set of labels.
-
-
 == To-do List
 
 * validations
@@ -131,8 +126,28 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
   * hide axis lines (cht=ls "sparkline")
     * :axes => false
 
+* grids
+  * easy placement of y-gridline at zero, if exists
+
+* axes
+  * chxr parameter
+  * hide all ("sparklines") by setting :axis => false
+  * hide bar graph axes by hiding 1px from left and bottom of image when to_html is called
+
+* labels
+  * labels on other axes (top and right)
+  * multiple rows of labels on same axis
+
+* legend
+  * size, position
+  * inline legends (line up with ends of lines -- see http://code.google.com/p/graphy/wiki/UserGuide)
+
 * general
   * support advanced background ("fill") options like gradients
+
+* markers
+  * note: invisible data series available for marker positioning
+    see: http://code.google.com/apis/chart/formats.html#multiple_data_series
 
 * SingleDataSetChart
   * document attributes
@@ -146,60 +161,18 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
     * see table: http://code.google.com/apis/chart/types.html#qrcodes
     * may be irrelevant because URL_MAX_LENGTH == 2074
 
+* data and encoding
+  * The best encoding type should be selected automatically (whatever is shortest with enough granularity). Avoid URLs longer than 2074 characters. Default to Extended, but use Simple if (1) URL would be too long, (2) image is less than 100px tall, or (3) not enough data point to justify it.
+  * data granularity adjustment (curve smoothing, rolling average?)
+    * see bottom: http://code.google.com/apis/chart/formats.html
+    * at least 1 pixel per data point
 
-== Functional Requirements
-
-* The best encoding type should be selected automatically (whatever is shortest with enough granularity). Avoid URLs longer than 2074 characters. Default to Extended, but use Simple if (1) URL would be too long, (2) image is less than 100px tall, or (3) not enough data point to justify it.
-
-* labels on other axes (top and right)
-
-* multiple rows of labels on same axis
-
-* easy placement of y-gridline at zero, if exists
-
-* "padding" at chart top and bottom
-  * have to scale data into smaller window of total range
-  * allow specifying :y_min, :y_max, :x_min, :x_max
-
-* Inline legends (line up with ends of lines). See http://code.google.com/p/graphy/wiki/UserGuide
-
-* data granularity adjustment (curve smoothing, rolling average?)
-  * see bottom: http://code.google.com/apis/chart/formats.html
-  * at least 1 pixel per data point
-
-* note: invisible data series available for marker positioning
-  see: http://code.google.com/apis/chart/formats.html#multiple_data_series
-
-* Simulate sparkline bar graphs by hiding 1px from left and bottom of image (display as bg image of a div when to_html is called).
-  * use by setting :axes => false (or something like that)
 
 
 == References
 
-See what other libraries do:
+Other Google Charts APIs:
 http://groups.google.com/group/google-chart-api/web/useful-links-to-api-libraries
-
-Encoding/scaling: confirm that 40 is actually 40/61 or 40/4096.
-
-  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=e:Bkaa
-  http://chart.apis.google.com/chart?cht=lc&chd=
-  http://chart.apis.google.com/chart?cht=lc&chd=
-  http://chart.apis.google.com/chart?cht=lc&chd=
-
-
-chxr parameter: does it really give us access to data instead of width percentage?
-
-  http://chart.apis.google.com/chart?cht=lc&chd=
-
-
-What happens when data sets have different numbers of points?
-
-  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=s:Bkaq,rZ5w
-  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=s:Bkaq,rZ5_
-  http://chart.apis.google.com/chart?cht=lc&chs=250x100&chd=t:65,20,35,-1|20,80,10,45
-
-  # answer: need to use underscore (or -1 in text encoding) to fill in missing points
-
 
 
 Copyright (c) 2009 Alex Reisner. See LICENSE for details.
