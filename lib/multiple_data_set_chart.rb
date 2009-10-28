@@ -1,9 +1,6 @@
 module SmartChart
   class MultipleDataSetChart < BaseChart
-
-    # chart labels
-    attr_accessor :labels
-    
+    include Labels
     
     private # ---------------------------------------------------------------
     
@@ -41,16 +38,6 @@ module SmartChart
       # only return non-nil if styles other than default are given
       if lines.map{ |l| l == [1,1,0] ? nil : 1 }.compact.size > 0
         lines.map{ |s| s.join(",") }.join("|")
-      end
-    end
-    
-    ##
-    # Labels parameter.
-    #
-    def chdl
-      unless bare_data_set?
-        labels = data.map{ |d| d.is_a?(Hash) ? d[:label] : nil }
-        labels.compact.size > 0 ? labels.join("|") : nil
       end
     end
     
