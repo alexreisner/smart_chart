@@ -10,6 +10,9 @@ require 'base_chart'
 require 'single_data_set_chart'
 require 'multiple_data_set_chart'
 
+# features
+require 'features/grid_lines'
+
 # chart types
 require 'charts/bar'
 require 'charts/line'
