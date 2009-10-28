@@ -6,6 +6,7 @@ require 'encoder'
 require 'exceptions'
 
 # features
+require 'features/axis_lines'
 require 'features/grid_lines'
 require 'features/labels'
 

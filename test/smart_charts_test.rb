@@ -110,6 +110,31 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   
+  # --- axis lines ----------------------------------------------------------
+  
+  def test_axis_lines
+    c = line_graph(
+      :data => [0, 2, 3, 4, 5, 6, 7, 8],
+      :axis => {
+        :color => "AABBCC",
+        :style => :dotted
+      }
+    )
+    assert_nil c.send(:chxt)
+    assert_equal "???", c.send(:chxs).to_s
+    
+    # test axis side specification
+    c.axis[:sides] = [:left, :bottom, :right]
+    assert_equal "???", c.send(:chxt).to_s
+    
+    # test no axis specification
+    c.axis[:sides] = []
+    assert_equal "ls", c.send(:cht).to_s
+    assert_nil c.send(:chxt)
+    assert_nil c.send(:chxs)
+  end
+  
+  
   # --- pie -----------------------------------------------------------------
   
   def test_pie_chart_rotation

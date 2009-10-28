@@ -1,6 +1,7 @@
 module SmartChart
   class MultipleDataSetChart < BaseChart
     include Labels
+    include AxisLines
     
     private # ---------------------------------------------------------------
     

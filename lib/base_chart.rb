@@ -284,10 +284,10 @@ module SmartChart
         
         :chl,   # labels
         :chxt,  # axis_type
+        :chxs,  # axis_style
         :chxl,  # axis_labels
         :chxp,  # axis_label_positions
         :chxr,  # axis_range
-        :chxs,  # axis_style
         :chma,  # margins
         
         :chbh,  # bar_spacing
