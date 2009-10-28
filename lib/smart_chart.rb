@@ -1,6 +1,8 @@
 # external dependencies
 require 'cgi'
 
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "smart_chart"))
+
 # common code
 require 'encoder'
 require 'exceptions'
