@@ -1,10 +1,12 @@
 module SmartChart
   class QRCode < SingleDataSetChart
   
-    # output encoding -- :utf8 (default), :shift_jis, :iso88591
+    # output encoding
+    # :utf8 (default), :shift_jis, :iso88591
     attr_accessor :encoding
     
-    # error correction level: :l (default), :m, :q, or :h
+    # error correction level
+    # :l (default), :m, :q, or :h
     attr_accessor :ec_level
     
   
@@ -21,7 +23,7 @@ module SmartChart
     # Array of all possible query string parameters.
     #
     def query_string_params
-      super + [:choe]  # encoding
+      [:cht, :chs, :chl, :chld, :choe]
     end
     
     ##
@@ -40,13 +42,6 @@ module SmartChart
       #end
     end
     
-    ##
-    # Chart data query string parameter (chd).
-    #
-    def chd
-      nil
-    end
-
     ##
     # Label query string parameter (text to be encoded).
     #
