@@ -9,6 +9,9 @@ module SmartChart
     # :l (default), :m, :q, or :h
     attr_accessor :ec_level
     
+    # chart margin, in rows/columns
+    attr_accessor :margin
+    
   
     private # ---------------------------------------------------------------
     
@@ -53,7 +56,14 @@ module SmartChart
     # Error correction and margins.
     #
     def chld
-      ec_level
+      # only return non-nil if non-default value given
+      return nil unless (
+        (ec_level and ![:l, "l", "L"].include?(ec_level)) or
+        (margin and margin != 4)
+      )
+      ec = ec_level || "L"
+      m  = margin || 4
+      ec.to_s.upcase + (m != 4 ? "|#{m}" : "")
     end
     
     ##

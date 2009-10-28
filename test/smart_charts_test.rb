@@ -130,10 +130,28 @@ class SmartChartTest < Test::Unit::TestCase
   
   def test_qr_code
     c = SmartChart::QRCode.new(
-      :width => 200, :height => 200,
-      :data => "some data", :encoding => :iso88591)
+      :width    => 200, :height => 200,
+      :data     => "some data",
+      :encoding => :iso88591)
     assert_equal "some data", c.send(:chl)
     assert_equal "ISO-8859-1", c.send(:choe)
+    assert_nil c.send(:chld)
+    
+    # omit default margin
+    c.margin = 4
+    assert_nil c.send(:chld)
+    
+    # print non-default margin
+    c.margin = 6
+    assert_equal "L|6", c.send(:chld)
+    
+    # print non-default margin
+    c.ec_level = :m
+    assert_equal "M|6", c.send(:chld)
+    
+    # don't print default margin
+    c.margin = 4
+    assert_equal "M", c.send(:chld)
   end
   
   
