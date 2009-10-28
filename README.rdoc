@@ -156,7 +156,6 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
   * prevent error when only one data point provided
 
 * QRCode
-  * EC Level validation
   * data length validation for given EC level and character type
     * see table: http://code.google.com/apis/chart/types.html#qrcodes
     * may be irrelevant because URL_MAX_LENGTH == 2074
