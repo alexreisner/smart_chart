@@ -129,6 +129,9 @@ Actual output is limited by Google's requirements. For example, while Google pro
 
 == To-do List
 
+* query_string_params should be a class variable so feature modules can
+  auto-add their parameters
+
 * validations
   * margins and legend dimensions are integers
   * grid line attributes
