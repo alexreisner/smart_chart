@@ -117,6 +117,10 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
 
 == To-do List
 
+* see OEmbed.com for ideas about embedding graphs
+* check out flotomatic (http://github.com/xdotcommer/flotomatic)
+* add /examples directory with...examples
+* use :section: directive in RDoc comments
 * validations
   * margins and legend dimensions are integers
   * grid line attributes
