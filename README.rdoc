@@ -42,6 +42,13 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
       }
     ],
     
+    # axis lines
+    :axis => {
+      :sides => [:left, :right, :bottom],     # empty array for none
+      :color => 'DDDDDD',
+      :style => :dashed
+    }
+    
     # grid lines
     :grid => {
       :x     => {:every => 10, :offset => 2}, # based on number of data points
@@ -115,30 +122,36 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
   ]
 
 
+== Axis Lines
+
+Actual output is limited by Google's requirements. For example, while Google provides for a line chart with no axis lines ("sparkline"), there is no analogous bar chart type. However, SmartChart will simulate this for you by cropping the chart image using a <div> when you call the chart.to_html method.
+
+
 == To-do List
 
 * see OEmbed.com for ideas about embedding graphs
 * check out flotomatic (http://github.com/xdotcommer/flotomatic)
 * add /examples directory with...examples
 * use :section: directive in RDoc comments
+* query_string_params should be a class variable so feature modules can
+  auto-add their parameters
+
 * validations
   * margins and legend dimensions are integers
   * grid line attributes
   
-* LineGraph
-  * labels
-  * hide axis lines (cht=ls "sparkline")
-    * :axes => false
-
 * grids
   * easy placement of y-gridline at zero, if exists
+  * easy placement of gridlines at label positions
 
-* axes
-  * chxr parameter
-  * hide all ("sparklines") by setting :axis => false
+* axis lines
+  * specify which ones to print
+  * hide all ("sparklines")
   * hide bar graph axes by hiding 1px from left and bottom of image when to_html is called
+  * chxr parameter?
 
 * labels
+  * on line, scatter, bar graphs
   * labels on other axes (top and right)
   * multiple rows of labels on same axis
 
@@ -156,11 +169,7 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
 * SingleDataSetChart
   * document attributes
 
-* Map
-  * prevent error when only one data point provided
-
 * QRCode
-  * margin (chld)
   * data length validation for given EC level and character type
     * see table: http://code.google.com/apis/chart/types.html#qrcodes
     * may be irrelevant because URL_MAX_LENGTH == 2074

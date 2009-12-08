@@ -1,9 +1,16 @@
 # external dependencies
 require 'cgi'
 
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "smart_chart"))
+
 # common code
 require 'encoder'
 require 'exceptions'
+
+# features
+require 'features/axis_lines'
+require 'features/grid_lines'
+require 'features/labels'
 
 # chart parents
 require 'base_chart'

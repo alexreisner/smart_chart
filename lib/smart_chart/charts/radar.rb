@@ -1,5 +1,6 @@
 module SmartChart
-  class Scatter < MultipleDataSetChart
+  class Radar < MultipleDataSetChart
+    include GridLines
   
     private # ---------------------------------------------------------------
     
@@ -7,7 +8,7 @@ module SmartChart
     # Specify the Google Chart type.
     #
     def type
-      "s"
+      "r" + (style == :filled ? "s" : "")
     end
   end
 end

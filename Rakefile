@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name        = "smart_chart"
     gem.summary     = %Q{Easily create charts and graphs for the web (uses Google Charts).}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.description = %Q{Easily create charts and graphs for the web (uses Google Charts).}
     gem.email       = "alex@alexreisner.com"
     gem.homepage    = "http://github.com/alexreisner/smart_chart"
     gem.authors = ["Alex Reisner"]

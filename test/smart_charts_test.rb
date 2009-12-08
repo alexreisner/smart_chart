@@ -2,32 +2,7 @@ require 'test_helper'
 
 class SmartChartTest < Test::Unit::TestCase
 
-  # --- qr code ------------------------------------------------------------
-  
-  def test_qr_code
-    c = SmartChart::QRCode.new(
-      :width => 200, :height => 200,
-      :data => "some data", :encoding => :iso88591)
-    assert_equal "some data", c.send(:chl)
-    assert_equal "ISO-8859-1", c.send(:choe)
-  end
-  
-  
-  # --- line graph ----------------------------------------------------------
-  
-  def test_line_graph
-    c = line_graph(
-      :data   => [{
-        :values => [2,1,3,4,5,9],
-        :color     => '552255'
-      },{
-        :values => [1,6,4,8,7,5],
-        :color     => '225522'
-      }]
-    )
-    assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
-    assert_equal "552255,225522", c.send(:chco)
-  end
+  # --- labels --------------------------------------------------------------
   
   def test_line_graph_labels
     c = line_graph(:data => [{
@@ -40,31 +15,31 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "One|Two", c.send(:chdl)
   end
   
+  
+  # --- background color ----------------------------------------------------
+  
   def test_line_graph_background_color
     c = line_graph(:background => "000000")
     assert_equal "bg,s,000000", c.send(:chf)
   end
   
-  def test_encoding_with_y_min_and_max
-    c = line_graph(
-      :y_min  => -20,
-      :y_max  => 10,
-      :data   => [2,1,3,4,5,9]
-    )
-    assert_equal "s:squwy6", c.send(:chd).to_s
-  end
+
+  # --- margins -------------------------------------------------------------
   
   def test_margins
     c = line_graph(
       :margins => {
-        :top => 10,
-        :bottom => 10,
-        :left => 5,
-        :right => 25
+        :top    => 10,
+        :bottom => 15,
+        :left   => 5,
+        :right  => 25
       }
     )
-    assert_equal "5,25,10,10", c.send(:chma).to_s
+    assert_equal "5,25,10,15", c.send(:chma).to_s
   end
+  
+
+  # --- legend --------------------------------------------------------------
   
   def test_legend_dimensions
     c = line_graph(
@@ -75,6 +50,9 @@ class SmartChartTest < Test::Unit::TestCase
     )
     assert_equal "0,0,0,0|50,20", c.send(:chma).to_s
   end
+  
+
+  # --- line styles ---------------------------------------------------------
   
   def test_line_styles
     c = line_graph(
@@ -111,6 +89,9 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "", c.send(:chls).to_s
   end
   
+
+  # --- grid lines ----------------------------------------------------------
+  
   def test_grid_lines
     c = line_graph(
       :data => [0, 2, 3, 4, 5, 6, 7, 8],
@@ -129,9 +110,34 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   
+  # --- axis lines ----------------------------------------------------------
+  
+  def test_axis_lines
+    c = line_graph(
+      :data => [0, 2, 3, 4, 5, 6, 7, 8],
+      :axis => {
+        :color => "AABBCC",
+        :style => :dotted
+      }
+    )
+    assert_nil c.send(:chxt)
+    assert_equal "???", c.send(:chxs).to_s
+    
+    # test axis side specification
+    c.axis[:sides] = [:left, :bottom, :right]
+    assert_equal "???", c.send(:chxt).to_s
+    
+    # test no axis specification
+    c.axis[:sides] = []
+    assert_equal "ls", c.send(:cht).to_s
+    assert_nil c.send(:chxt)
+    assert_nil c.send(:chxs)
+  end
+  
+  
   # --- pie -----------------------------------------------------------------
   
-  def test_rotation
+  def test_pie_chart_rotation
     c = pie_chart(:rotate => 45)
     assert_equal "5.498", c.send(:chp)
 
@@ -145,6 +151,52 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   
+  # --- qr code ------------------------------------------------------------
+  
+  def test_qr_code
+    c = SmartChart::QRCode.new(
+      :width    => 200, :height => 200,
+      :data     => "some data",
+      :encoding => :iso88591)
+    assert_equal "some data", c.send(:chl)
+    assert_equal "ISO-8859-1", c.send(:choe)
+    assert_nil c.send(:chld)
+    
+    # omit default margin
+    c.margin = 4
+    assert_nil c.send(:chld)
+    
+    # print non-default margin
+    c.margin = 6
+    assert_equal "L|6", c.send(:chld)
+    
+    # print non-default margin
+    c.ec_level = :m
+    assert_equal "M|6", c.send(:chld)
+    
+    # don't print default margin
+    c.margin = 4
+    assert_equal "M", c.send(:chld)
+  end
+  
+  
+  # --- line graph ----------------------------------------------------------
+  
+  def test_line_graph
+    c = line_graph(
+      :data   => [{
+        :values => [2,1,3,4,5,9],
+        :color  => '552255'
+      },{
+        :values => [1,6,4,8,7,5],
+        :color  => '225522'
+      }]
+    )
+    assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
+    assert_equal "552255,225522", c.send(:chco)
+  end
+  
+
   # --- map -----------------------------------------------------------------
   
   def test_map_data_point_colors
@@ -278,6 +330,15 @@ class SmartChartTest < Test::Unit::TestCase
       :data   => [ [2,1,3,4,5,9], {:values => [1,6,4,8,7,5]} ]
     )
     assert_equal "s:HAPWe9,AmW1te", c.send(:chd).to_s
+  end
+  
+  def test_encoding_with_y_min_and_max
+    c = line_graph(
+      :y_min  => -20,
+      :y_max  => 10,
+      :data   => [2,1,3,4,5,9]
+    )
+    assert_equal "s:squwy6", c.send(:chd).to_s
   end
   
 

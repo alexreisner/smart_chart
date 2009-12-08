@@ -1,26 +1,15 @@
 module SmartChart
-  class Line < MultipleDataSetChart
-    
-    # grid lines
-    attr_accessor :grid
-  
-  
-    private # ---------------------------------------------------------------
-    
-    ##
-    # Specify the Google Chart type.
-    #
-    def type
-      "lc"
+  module GridLines
+
+    def self.included(base)
+      base.class_eval do
+        attr_accessor :grid
+      end
     end
 
-    ##
-    # Array of all possible query string parameters.
-    #
-    def query_string_params
-      super + [:chg]
-    end
-    
+
+    private # ---------------------------------------------------------------
+  
     ##
     # Grid lines parameter.
     #
@@ -35,7 +24,7 @@ module SmartChart
         y_grid_property(:offset) || 0
       ].join(",")
     end
-    
+  
     ##
     # Compute x-grid :every or :offset (as a string).
     #
@@ -44,7 +33,7 @@ module SmartChart
       return nil unless (grid[:x].is_a?(Hash) and s = grid[:x][property])
       SmartChart.decimal_string(s.to_f * 100 / data_values_count.to_f)
     end
-    
+  
     ##
     # Compute y-grid :every or :offset (as a string).
     #
