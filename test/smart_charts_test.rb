@@ -121,11 +121,11 @@ class SmartChartTest < Test::Unit::TestCase
       }
     )
     assert_nil c.send(:chxt)
-    assert_equal "???", c.send(:chxs).to_s
+    assert_equal "", c.send(:chxs).to_s
     
     # test axis side specification
     c.axis[:sides] = [:left, :bottom, :right]
-    assert_equal "???", c.send(:chxt).to_s
+    assert_equal "y,x,r", c.send(:chxt).to_s
     
     # test no axis specification
     c.axis[:sides] = []

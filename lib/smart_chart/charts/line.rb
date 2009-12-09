@@ -6,10 +6,11 @@ module SmartChart
     private # ---------------------------------------------------------------
     
     ##
-    # Specify the Google Chart type.
+    # Specify the Google Chart type. Should be "lc" unless axes are
+    # explicitly hidden, then "ls".
     #
     def type
-      "lc"
+      hide_axes?? "ls" : "lc"
     end
 
     ##
