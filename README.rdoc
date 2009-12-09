@@ -42,11 +42,20 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
       }
     ],
     
-    # axis lines
+    # axis lines and labels
     :axis => {
-      :sides => [:left, :right, :bottom],     # empty array for none
-      :color => 'DDDDDD',
-      :style => :dashed
+      :bottom => {
+        :color      => 'DDDDDD',
+        :ticks      => true,
+        :font_size  => 12,
+        :text_align => :left,
+        :labels     => {
+          1  => "Jan",
+          4  => "Apr",
+          7  => "Jul",
+          10 => "Oct"
+        }
+      }
     }
     
     # grid lines
@@ -55,14 +64,6 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
       :y     => {:every => 5},                # based on numeric data range
       :style => :dashed                       # no :color or :thickness
     },
-    
-    # labels
-    :x_labels => {
-      1  => "Jan",
-      4  => "Apr",
-      7  => "Jul",
-      10 => "Oct"
-    }
     
     # options for HTML tag
     :html => {
@@ -124,14 +125,13 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
 
 == Axis Lines
 
-Actual output is limited by Google's requirements. For example, while Google provides for a line chart with no axis lines ("sparkline"), there is no analogous bar chart type. However, SmartChart will simulate this for you by cropping the chart image using a <div> when you call the chart.to_html method.
+Actual output is limited by Google's requirements. For example, while Google provides for a line chart with no axis lines ("sparkline"), there is no analogous bar chart type. However, SmartChart will simulate this for you by cropping the chart image using a <div> when you call the +to_html+ method.
 
 
 == To-do List
 
-* see OEmbed.com for ideas about embedding graphs
+* support OEmbed (oembed.com)
 * check out flotomatic (http://github.com/xdotcommer/flotomatic)
-* add /examples directory with...examples
 * use :section: directive in RDoc comments
 * query_string_params should be a class variable so feature modules can
   auto-add their parameters
@@ -145,9 +145,9 @@ Actual output is limited by Google's requirements. For example, while Google pro
   * easy placement of gridlines at label positions
 
 * axis lines
-  * specify which ones to print
-  * hide all ("sparklines")
+  * validate colors, font sizes, and alignments
   * hide bar graph axes by hiding 1px from left and bottom of image when to_html is called
+  * chxs parameter
   * chxr parameter?
 
 * labels
