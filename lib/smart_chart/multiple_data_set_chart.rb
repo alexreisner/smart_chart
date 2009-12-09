@@ -72,7 +72,7 @@ module SmartChart
     def self.line_styles(thickness = 1)
       {
         :solid  => [thickness * 1, thickness * 0],
-        :dotted => [thickness * 1, thickness * 1],
+        :dotted => [thickness * 1, thickness * 3],
         :short  => [thickness * 2, thickness * 4],
         :dashed => [thickness * 4, thickness * 4],
         :long   => [thickness * 6, thickness * 4]
