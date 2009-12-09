@@ -1,6 +1,5 @@
 module SmartChart
   class Radar < MultipleDataSetChart
-    include GridLines
   
     private # ---------------------------------------------------------------
     

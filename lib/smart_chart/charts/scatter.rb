@@ -1,6 +1,5 @@
 module SmartChart
   class Scatter < MultipleDataSetChart
-    include GridLines
   
     private # ---------------------------------------------------------------
     

@@ -1,7 +1,5 @@
 module SmartChart
   class Line < MultipleDataSetChart
-    include GridLines
-    
   
     private # ---------------------------------------------------------------
     
