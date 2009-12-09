@@ -8,7 +8,7 @@ module SmartChart
     # explicitly hidden, then "ls".
     #
     def type
-      hide_axes?? "ls" : "lc"
+      show_axes?? "lc" : "ls"
     end
 
     ##

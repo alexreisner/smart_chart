@@ -3,7 +3,11 @@ module SmartChart
 
     def self.included(base)
       base.class_eval do
+      
+        # grid axis style
         attr_accessor :axis
+        
+        # grid axis labels
         attr_accessor :labels
       end
     end
@@ -25,18 +29,14 @@ module SmartChart
     # Axis type parameter.
     #
     def chxt
-      return nil unless (
-        axis.is_a?(Hash) and
-        axis[:sides].is_a?(Array) and
-        axis[:sides].size > 0
-      )
+      return nil unless show_axes?
       values = {
         :left   => "y",
         :right  => "r",
         :top    => "t",
         :bottom => "x"
       }
-      axis[:sides].map{ |i| values[i] }.join(',')
+      axis.keys.map{ |i| values[i] }.join(',')
     end
 
     ##
@@ -50,10 +50,8 @@ module SmartChart
     ##
     # Should axes be omitted?
     #
-    def hide_axes?
-      axis.is_a?(Hash) and
-        axis[:sides].is_a?(Array) and
-        axis[:sides].size == 0
+    def show_axes?
+      axis.is_a?(Hash) and axis.keys.size > 0
     end
   end  
 end
