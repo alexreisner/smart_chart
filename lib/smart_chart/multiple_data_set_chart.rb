@@ -24,6 +24,13 @@ module SmartChart
     end
     
     ##
+    # Default line style provided by Google if no chls parameter is given.
+    #
+    def default_line_style
+      [1.5, 1, 0]
+    end
+    
+    ##
     # Line style parameter.
     #
     def chls
@@ -33,25 +40,25 @@ module SmartChart
         if set.is_a?(Hash)
           line_style_to_array(set)
         else
-          [1, 1, 0]
+          default_line_style
         end
       end
       # only return non-nil if styles other than default are given
-      if lines.map{ |l| l == [1,1,0] ? nil : 1 }.compact.size > 0
+      if lines.map{ |l| l == default_line_style ? nil : 1 }.compact.size > 0
         lines.map{ |s| s.join(",") }.join("|")
       end
     end
     
     ##
     # Translate a line style to a three-element array:
-    #
+    # 
     #   [thickness, solid, blank]
-    #
+    # 
     # Takes a hash or a symbol (shortcut for a pre-defined look).
     #
     def line_style_to_array(data)
-      return [1, 1, 0] if data.nil?
-      thickness = data[:thickness] || 1
+      return default_line_style if data.nil?
+      thickness = data[:thickness] || default_line_style.first
       style     = data[:style]
       style_arr = style.is_a?(Hash) ? [style[:solid], style[:blank]] :
         line_style_definition(style, thickness)
@@ -63,7 +70,7 @@ module SmartChart
     # length, blank line length). Takes a style name and line thickness.
     #
     def line_style_definition(symbol, thickness = 1)
-      self.class.line_styles(thickness)[symbol] || [1, 0]
+      self.class.line_styles(thickness)[symbol] || default_line_style[1..2]
     end
     
     ##

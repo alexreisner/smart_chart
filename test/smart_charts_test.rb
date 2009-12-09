@@ -72,11 +72,11 @@ class SmartChartTest < Test::Unit::TestCase
     # apply default line style automatically
     c.data[1][:thickness] = nil
     c.data[1][:style] = nil
-    assert_equal "4,3,2|1,1,0", c.send(:chls).to_s
+    assert_equal "4,3,2|1.5,1,0", c.send(:chls).to_s
     
     # apply line style by name
     c.data[0][:style] = :dotted
-    assert_equal "4,4,12|1,1,0", c.send(:chls).to_s
+    assert_equal "4,4,12|1.5,1,0", c.send(:chls).to_s
     
     # raise exception on invalid style name
     assert_raise(SmartChart::LineStyleNameError) do
@@ -102,11 +102,11 @@ class SmartChartTest < Test::Unit::TestCase
         :style => :dotted
       }
     )
-    assert_equal "25,50,1,3,12.5,25", c.send(:chg).to_s
+    assert_equal "25,50,1.5,4.5,12.5,25", c.send(:chg).to_s
     
     # test x/y-step decimal points
     c.data = [0, 2, 3, 4, 5, 6]
-    assert_equal "33.333,66.667,1,3,16.667,33.333", c.send(:chg).to_s
+    assert_equal "33.333,66.667,1.5,4.5,16.667,33.333", c.send(:chg).to_s
   end
   
   
