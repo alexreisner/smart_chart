@@ -88,7 +88,13 @@ c = SmartChart::Line.new(
   :width  => 600,
   :height => 230,
   :data   => data,
-  :grid   => {:x => {:every => 30}},
+  :y_min  => -50,
+  :y_max  => 30,
+  :grid   => {
+    :x => {:every => 30},
+    :y => {:every => 10},
+  :style => :dotted
+  },
   :labels => {:x => {}}
 )
 puts c.to_url
