@@ -47,13 +47,13 @@ module SmartChart
       data = []
       axis.values.each_with_index do |side,i|
         data << [
-          i + 1,                   # index
+          i + 1,             # index
           side[:color],      # color
           side[:font_size],  # font size
           side[:text_align]  # alignment
         ].map{ |i| i.to_s }
       end
-      out = data.inject(""){ |str,i| str + i.join(',') + "|" }
+      out = data.map{ |i| i.join(',') }.join("|")
       out == "" ? nil : out
     end
     

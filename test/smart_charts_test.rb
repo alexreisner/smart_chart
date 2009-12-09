@@ -127,7 +127,7 @@ class SmartChartTest < Test::Unit::TestCase
     }
     assert_equal "lc", c.send(:cht).to_s
     assert_equal "x", c.send(:chxt).to_s
-    assert_equal "1,aabbcc,,|", c.send(:chxs)
+    assert_equal "1,aabbcc,,", c.send(:chxs)
   end
   
   
