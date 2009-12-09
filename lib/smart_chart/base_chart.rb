@@ -270,7 +270,7 @@ module SmartChart
     # --- URL parameter list and methods ------------------------------------
     
     ##
-    # Array of names of all possible query string parameters in the order
+    # Array of universal query string parameters in the order
     # in which they are output (for easier testing).
     #
     def query_string_params
@@ -297,9 +297,9 @@ module SmartChart
 
         :chtt,  # title
         :chdl,  # legend
-        :chdlp, # legend_position
+        :chdlp  # legend_position
         
-        :chds   # data_scaling -- never used
+        #:chds   # data_scaling -- never used
       ]
     end
 
@@ -417,11 +417,6 @@ module SmartChart
 
     # chdlp
     def chdlp
-      nil
-    end
-
-    # chds -- never used
-    def chds          
       nil
     end
   end
