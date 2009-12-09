@@ -8,9 +8,8 @@ require 'encoder'
 require 'exceptions'
 
 # features
-require 'features/axis_lines'
+require 'features/axes'
 require 'features/grid_lines'
-require 'features/labels'
 
 # chart parents
 require 'base_chart'
