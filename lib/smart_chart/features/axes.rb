@@ -47,14 +47,28 @@ module SmartChart
       data = []
       axis.values.each_with_index do |side,i|
         data << [
-          i + 1,             # index
-          side[:color],      # color
-          side[:font_size],  # font size
-          side[:text_align]  # alignment
+          i + 1,                        # index
+          side[:color],                 # color
+          side[:font_size],             # font size
+          alignment(side[:text_align]), # alignment
+          (side[:color] ? "l" : "") +
+            (side[:ticks] ? "t" : ""),  # drawing control
+          side[:ticks]                  # tick mark color
         ].map{ |i| i.to_s }
       end
       out = data.map{ |i| i.join(',') }.join("|")
       out == "" ? nil : out
+    end
+    
+    ##
+    # Translate an alignment name into a URL parameter value.
+    #
+    def alignment(name)
+      {
+        "left"   => -1,
+        "center" => 0,
+        "right"  => 1
+      }[name.to_s]
     end
     
     ##

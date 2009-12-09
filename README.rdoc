@@ -45,8 +45,8 @@ SmartChart is an easy way to render charts on web pages. It uses the Google Char
     # axis lines and labels
     :axis => {
       :bottom => {
-        :color      => 'DDDDDD',
-        :ticks      => true,
+        :color      => 'DDDDDD',              # false or nil for hidden
+        :ticks      => 'DDDDDD',              # false or nil for hidden
         :font_size  => 12,
         :text_align => :left,
         :labels     => {

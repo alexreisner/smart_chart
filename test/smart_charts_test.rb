@@ -121,13 +121,32 @@ class SmartChartTest < Test::Unit::TestCase
     assert_nil c.send(:chxt)
     assert_equal "", c.send(:chxs).to_s
     
-    # test axis side specification
+    # test with bottom axis
     c.axis[:bottom] = {
       :color => "aabbcc"
     }
     assert_equal "lc", c.send(:cht).to_s
     assert_equal "x", c.send(:chxt).to_s
-    assert_equal "1,aabbcc,,", c.send(:chxs)
+    assert_equal "1,aabbcc,,,l,", c.send(:chxs)
+  end
+  
+  def test_complex_axis_configuration
+    c = line_graph(
+      :data => [0, 2, 3, 4, 5, 6, 7, 8],
+      :axis => {
+        :bottom => {
+          :color => "999999",
+          :ticks => "888888",
+          :font_size  => 12,
+          :text_align => :left
+        },
+        :left => {
+          :color => "666666"
+        }
+      }
+    )
+    assert_equal "x,y", c.send(:chxt).to_s
+    assert_equal "1,999999,12,-1,lt,888888|2,666666,,,l,", c.send(:chxs)
   end
   
   
