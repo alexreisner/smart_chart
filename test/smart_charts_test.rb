@@ -110,7 +110,7 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   
-  # --- axis lines ----------------------------------------------------------
+  # --- axes ----------------------------------------------------------------
   
   def test_axis_lines
     c = line_graph(
