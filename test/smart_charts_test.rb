@@ -122,10 +122,12 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "", c.send(:chxs).to_s
     
     # test axis side specification
-    c.axis[:bottom] = {}
+    c.axis[:bottom] = {
+      :color => "aabbcc"
+    }
     assert_equal "lc", c.send(:cht).to_s
     assert_equal "x", c.send(:chxt).to_s
-    assert_nil c.send(:chxs)
+    assert_equal "1,aabbcc,,|", c.send(:chxs)
   end
   
   

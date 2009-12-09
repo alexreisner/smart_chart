@@ -43,15 +43,26 @@ module SmartChart
     # Axis style parameter.
     #
     def chxs
-      #return nil unless (axis.is_a?(Hash) and axis[:color] or axis[:style]))
-      "TODO"
+      return nil unless show_axes?
+      data = []
+      axis.values.each_with_index do |side,i|
+        data << [
+          i + 1,                   # index
+          side[:color],      # color
+          side[:font_size],  # font size
+          side[:text_align]  # alignment
+        ].map{ |i| i.to_s }
+      end
+      out = data.inject(""){ |str,i| str + i.join(',') + "|" }
+      out == "" ? nil : out
     end
     
     ##
     # Should axes be omitted?
     #
     def show_axes?
-      axis.is_a?(Hash) and axis.keys.size > 0
+      axis.is_a?(Hash) and axis.keys.size > 0 and
+        axis.values.reject{ |i| i.nil? or i == {} }.size > 0
     end
   end  
 end
