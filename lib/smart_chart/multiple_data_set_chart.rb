@@ -134,8 +134,4 @@ module SmartChart
       end
     end
   end
-
-  
-  class LineStyleNameError < ValidationError #:nodoc:
-  end
 end

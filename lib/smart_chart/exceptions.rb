@@ -22,6 +22,9 @@ module SmartChart
   class ValidationError < SmartChartError #:nodoc:
   end
   
+  class LineStyleNameError < ValidationError #:nodoc:
+  end
+  
   class MissingRequiredAttributeError < ValidationError #:nodoc:
     def initialize(chart, param)
       chart_type = chart.class.to_s.sub(/^SmartChart::/, "")
