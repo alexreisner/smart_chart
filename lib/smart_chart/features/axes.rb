@@ -61,13 +61,13 @@ module SmartChart
     end
     
     ##
-    # Axis labels parameter.
+    # Axis label text parameter.
     #
     def chxl
       return nil unless show_axes?
       labels = []
-      axis.values.each_with_index do |axis,i|
-        axis[:labels].each do |pos,text|
+      axis.values.each_with_index do |a,i|
+        a[:labels].each do |pos,text|
           labels[i] ||= "#{i}:"
           labels[i] << "|" + text
         end
@@ -76,15 +76,18 @@ module SmartChart
     end
     
     ##
-    # Axis labels parameter.
+    # Axis label positions parameter.
     #
     def chxp
       return nil unless show_axes?
       labels = []
-      axis.values.each_with_index do |axis,i|
-        axis[:labels].each do |pos,text|
-          labels[i] ||= "#{i}"
-          labels[i] << "," + pos.to_s
+      axis.values.each_with_index do |a,i|
+        a[:labels].each do |pos,text|
+          # figure out whether are we on a vertical or horizontal axis
+          dir = [:left, :right].include?(axis.keys[i]) ? "y" : "x"
+          p = eval("#{dir}_axis_position(pos)")
+          labels[i] ||= i.to_s
+          labels[i] << "," + SmartChart.decimal_string(p)
         end
       end
       labels.join('|')

@@ -151,6 +151,22 @@ module SmartChart
     end
     
     ##
+    # Translate a number to a position on the x-axis (percentage). Numbers
+    # start at 0 so the maximum allowed number is sample size minus one.
+    #
+    def x_axis_position(num)
+      num.to_f * 100 / data_values_count.to_f
+    end
+    
+    ##
+    # Translate a number to a position on the y-axis (percentage). Range
+    # of the axis is y_min to y_max.
+    #
+    def y_axis_position(num)
+      100.0 * (num.to_f - y_min.to_f) / (y_max - y_min).to_f
+    end
+    
+    ##
     # Array of names of required attributes.
     #
     def required_attrs

@@ -99,18 +99,30 @@ chart = SmartChart::Line.new(
     :x     => {:every => 30},
     :y     => {:every => 10},
     :style => :dotted
-  }#,
-#  :axis => {
-#    :bottom => {
-#      :labels => {
-#        32 => "May"
-#      }
-#    },
-#    :left => {
-#      :labels => {
-#      }
-#    }
-#  }
+  },
+  :axis => {
+    :bottom => {
+      :labels => {
+        15  => "Apr",
+        45  => "May",
+        75  => "Jun",
+        105 => "Jul",
+        135 => "Aug",
+        165 => "Sep"
+      }
+    },
+    :left => {
+      :labels => {
+        -40 => "-40",
+        -30 => "-30",
+        -20 => "-20",
+        -10 => "-10",
+          0 => "0",
+         10 => "+10",
+         20 => "+20"
+      }
+    }
+  }
 )
 puts chart.to_url
 
