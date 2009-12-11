@@ -3,6 +3,21 @@ module SmartChart
     include GridLines
     include Axes
     
+    ##
+    # Hash mapping line style names to two-element arrays. This is a class
+    # method so exceptions can access it to print a list of valid style names.
+    #
+    def self.line_styles(thickness = 1)
+      {
+        :solid  => [thickness * 1, thickness * 0],
+        :dotted => [thickness * 1, thickness * 2],
+        :short  => [thickness * 2, thickness * 4],
+        :dashed => [thickness * 4, thickness * 4],
+        :long   => [thickness * 6, thickness * 4]
+      }
+    end
+    
+
     private # ---------------------------------------------------------------
     
     ##
@@ -50,40 +65,28 @@ module SmartChart
     end
     
     ##
-    # Translate a line style to a three-element array:
+    # Build a three-element array describing a line style:
     # 
-    #   [thickness, solid, blank]
+    #   [thickness, solid_segment_length, blank_segment_length]
     # 
-    # Takes a hash or a symbol (shortcut for a pre-defined look).
+    # Takes a data set hash or a symbol (shortcut for a pre-defined look).
     #
     def line_style_to_array(data)
       return default_line_style if data.nil?
       thickness = data[:thickness] || default_line_style.first
       style     = data[:style]
       style_arr = style.is_a?(Hash) ? [style[:solid], style[:blank]] :
-        line_style_definition(style, thickness)
+                  line_style_definition(style, thickness)
       [thickness] + style_arr
     end
     
     ##
-    # Translate a symbol into a line style: a two-element array (solid line
-    # length, blank line length). Takes a style name and line thickness.
+    # Translate a line style name (symbol) into a line style array
+    # (two integers: solid segment length, blank segment length).
+    # Takes a style name and line thickness.
     #
     def line_style_definition(symbol, thickness = 1)
       self.class.line_styles(thickness)[symbol] || default_line_style[1..2]
-    end
-    
-    ##
-    # Get a hash of line style definitions.
-    #
-    def self.line_styles(thickness = 1)
-      {
-        :solid  => [thickness * 1, thickness * 0],
-        :dotted => [thickness * 1, thickness * 2],
-        :short  => [thickness * 2, thickness * 4],
-        :dashed => [thickness * 4, thickness * 4],
-        :long   => [thickness * 6, thickness * 4]
-      }
     end
     
     ##
@@ -114,6 +117,9 @@ module SmartChart
       end
     end
     
+    ##
+    # Make sure line style names are real.
+    #
     def validate_line_style_names
       data.each do |d|
         if d.is_a?(Hash) and d.is_a?(Hash)
