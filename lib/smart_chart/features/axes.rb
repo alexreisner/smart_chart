@@ -61,6 +61,36 @@ module SmartChart
     end
     
     ##
+    # Axis labels parameter.
+    #
+    def chxl
+      return nil unless show_axes?
+      labels = []
+      axis.values.each_with_index do |axis,i|
+        axis[:labels].each do |pos,text|
+          labels[i] ||= "#{i}:"
+          labels[i] << "|" + text
+        end
+      end
+      labels.join('|')
+    end
+    
+    ##
+    # Axis labels parameter.
+    #
+    def chxp
+      return nil unless show_axes?
+      labels = []
+      axis.values.each_with_index do |axis,i|
+        axis[:labels].each do |pos,text|
+          labels[i] ||= "#{i}"
+          labels[i] << "," + pos.to_s
+        end
+      end
+      labels.join('|')
+    end
+    
+    ##
     # Translate an alignment name into a URL parameter value.
     #
     def alignment(name)
