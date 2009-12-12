@@ -289,6 +289,15 @@ class SmartChartTest < Test::Unit::TestCase
   end
   
   
+  # --- html ----------------------------------------------------------------
+  
+  def test_tag_attributes
+    c = map_chart
+    tag = c.to_html(true, true, :style => "display:none;")
+    assert tag.match(/<img.*style="display:none;".*\/>/)
+  end
+
+  
   # --- encoding ------------------------------------------------------------
   
   def test_simple_encoding

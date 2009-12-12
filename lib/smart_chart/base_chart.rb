@@ -82,10 +82,10 @@ module SmartChart
     ##
     # Chart as an HTML tag.
     #
-    def to_html(encode = true, validation = true)
-      '<img src="%s" />' % to_url(encode, validation)
+    def to_html(encode = true, validation = true, attributes = {})
+      '<img src="%s"%s />' % [to_url(encode, validation), tag_attributes(attributes)]
     end
-    
+
     ##
     # Run validation (may raise exceptions).
     #
@@ -280,6 +280,17 @@ module SmartChart
     #
     def validate_color(c)
       raise ColorFormatError unless (c.nil? or c.match(/^[0-9A-Fa-f]{6}$/))
+    end
+    
+    ##
+    # Render attributes of an HTML tag.
+    #
+    def tag_attributes(attributes)
+      attrs = []
+      attributes.each_pair do |key, value|
+        attrs << %(#{key}="#{value.to_s.gsub('"', '\"')}") unless value.nil?
+      end
+      " #{attrs.sort * ' '}" unless attrs.empty?
     end
     
     
