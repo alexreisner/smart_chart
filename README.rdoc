@@ -2,7 +2,7 @@
 
 SmartChart is an easy way to render charts on web pages. It uses the Google Charts engine so there are no server-side dependencies or performance issues--just install and go.
 
-<b>SmartChart is still in the early stages of development. Only maps, barcodes, and line charts (partially) are working at all. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
+<b>SmartChart is still in the early stages of development. Only maps, barcodes, and line charts are working. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
 
 
 == Key Benefits
@@ -133,34 +133,42 @@ Actual output is limited by Google's requirements. For example, while Google pro
 
 == To-do List
 
-* support OEmbed (oembed.com)
-* check out flotomatic (http://github.com/xdotcommer/flotomatic)
-* use :section: directive in RDoc comments
-* query_string_params should be a class variable so feature modules can
-  auto-add their parameters
-
-* validations
-  * margins and legend dimensions are integers
-  * grid line attributes
-  
-* grids
-  * easy placement of y-gridline at zero, if exists
-  * easy placement of gridlines at label positions
-
-* axis lines
-  * validate colors, font sizes, and alignments
-  * hide bar graph axes by hiding 1px from left and bottom of image when to_html is called
-  * chxs parameter
-  * chxr parameter?
+* bar graphs
+  * get examples/bar_chart_sparkline.rb to work
+  * bar width, spacing
+  * bar colors
 
 * labels
   * on line, scatter, bar graphs
   * labels on other axes (top and right)
   * multiple rows of labels on same axis
 
+* axes
+  * hide bar graph axes by hiding 1px from left and bottom of image when to_html is called
+  * eliminate unnecessary characters from chxs parameter
+  * chxr parameter? if :auto is given for labels
+  * tests for chxl and chxp parameters
+  * make sure labels are escaped (commas, pipes, etc)
+
+* support OEmbed (oembed.com)
+* check out flotomatic (http://github.com/xdotcommer/flotomatic)
+* use :section: directive in RDoc comments
+* classes should use inheritable query_string_params (like ActiveRecord
+  validations) so features can add params
+* change arguments to to_html method so attributes are easier to pass
+
+* validations
+  * axis colors, font sizes, and alignments
+  * margins and legend dimensions are integers
+  * grid line attributes
+  
 * legend
   * size, position
   * inline legends (line up with ends of lines -- see http://code.google.com/p/graphy/wiki/UserGuide)
+
+* grids
+  * easy placement of y-gridline at zero, if exists
+  * easy placement of gridlines at label positions
 
 * general
   * support advanced background ("fill") options like gradients
