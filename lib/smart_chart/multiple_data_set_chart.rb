@@ -122,13 +122,11 @@ module SmartChart
     #
     def validate_line_style_names
       data.each do |d|
-        if d.is_a?(Hash) and d.is_a?(Hash)
-          if (style = d[:style]).is_a?(Symbol)
-            unless self.class.line_styles.keys.include?(style)
-              raise LineStyleNameError,
-                "Line style name '#{style}' is not valid. " +
-                "Try one of: #{self.class.line_styles.keys.join(', ')}"
-            end
+        if d.is_a?(Hash) and (style = d[:style]).is_a?(Symbol)
+          unless self.class.line_styles.keys.include?(style)
+            raise LineStyleNameError,
+              "Line style name '#{style}' is not valid. " +
+              "Try one of: #{self.class.line_styles.keys.join(', ')}"
           end
         end
       end
