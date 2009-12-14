@@ -2,7 +2,7 @@
 
 SmartChart is an easy way to render charts on web pages. It uses the Google Charts engine so there are no server-side dependencies or performance issues--just install and go.
 
-<b>SmartChart is still in the early stages of development. Only maps, barcodes, and line charts are working. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
+<b>SmartChart is still in the early stages of development. Only bar charts, line graphs, maps, and barcodes are working. However, much of the interface is described below (plus to-do list) and if you'd like to contribute, please do.</b>
 
 
 == Key Benefits
@@ -134,9 +134,8 @@ Actual output is limited by Google's requirements. For example, while Google pro
 == To-do List
 
 * bar graphs
-  * get examples/bar_chart_sparkline.rb to work
-  * bar width, spacing
-  * bar colors
+  * add chbh tests
+  * style and orientation tests
 
 * labels
   * on line, scatter, bar graphs
