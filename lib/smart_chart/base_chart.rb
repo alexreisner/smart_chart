@@ -317,7 +317,6 @@ module SmartChart
         :chxr,  # axis_range
         :chma,  # margins
         
-        :chbh,  # bar_spacing
         :chp,   # bar_chart_zero_line, pie chart rotation
 
         :chm,   # markers
