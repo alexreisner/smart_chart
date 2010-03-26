@@ -69,7 +69,7 @@ module SmartChart
       axis.values.each_with_index do |a,i|
         a[:labels].each do |pos,text|
           labels[i] ||= "#{i}:"
-          labels[i] << "|" + text
+          labels[i] << "|" + text.to_s
         end
       end
       labels.join('|')
