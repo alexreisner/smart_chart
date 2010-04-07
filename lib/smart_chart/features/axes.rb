@@ -82,9 +82,13 @@ module SmartChart
       return nil unless show_axes?
       labels = []
       axis.values.each_with_index do |a,i|
-        a[:labels].each do |pos,text|
-          labels[i] ||= "#{i}:"
-          labels[i] << "|" + text.to_s
+        if a[:labels][:positions] == :auto
+          labels[i] = "#{i}:|" + auto_labels(a).values.join("|")
+        else
+          a[:labels].each do |pos,text|
+            labels[i] ||= "#{i}:"
+            labels[i] << "|" + text.to_s
+          end
         end
       end
       labels.join('|')
@@ -97,7 +101,9 @@ module SmartChart
       return nil unless show_axes?
       labels = []
       axis.values.each_with_index do |a,i|
-        if [:left, :right].include?(axis.keys[i])
+        if a[:labels][:positions] == :auto
+          l = auto_labels(a).keys
+        elsif [:left, :right].include?(axis.keys[i])
           l = label_positions_by_values(a)
         else
           l = label_positions_by_data_points(a)
@@ -105,6 +111,47 @@ module SmartChart
         labels << "#{i}," + l.join(',')
       end
       labels.join('|')
+    end
+    
+    ##
+    # Automatically generate numeric labels based on the given min and max.
+    #
+    def auto_labels(axis)
+      options = axis[:labels]
+      min = options[:min]
+      max = options[:max]
+      range  = max - min
+      int = options[:interval] ||
+        SmartChart::Axes.auto_label_interval(range)
+      labels = {}
+      labels[0]   = min unless options[:omit_first]
+      labels[100] = max unless options[:omit_last]
+
+      # advance cursor to first label position (min + int/2)
+      l = first_auto_label_position(min, int)
+      
+      # add labels until within int/2 of max
+      until l > (max - int / 2.0)
+        pos = 100.0 * (l - min) / range
+        labels[pos] = l
+        l += int
+      end
+      
+      # format if required
+      if options[:format]
+        labels.each{ |p,l| labels[p] = options[:format].call(l) }
+      end
+      
+      labels
+    end
+    
+    ##
+    # Find the first "round number" above the given minimum.
+    #
+    def first_auto_label_position(min, int)
+      i = int
+      i += int while i < min + int / 2.0
+      i
     end
     
     ##
