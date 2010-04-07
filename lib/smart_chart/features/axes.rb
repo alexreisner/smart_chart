@@ -97,15 +97,34 @@ module SmartChart
       return nil unless show_axes?
       labels = []
       axis.values.each_with_index do |a,i|
-        a[:labels].each do |pos,text|
-          # figure out whether are we on a vertical or horizontal axis
-          dir = [:left, :right].include?(axis.keys[i]) ? "y" : "x"
-          p = eval("#{dir}_axis_position(pos)")
-          labels[i] ||= i.to_s
-          labels[i] << "," + SmartChart.decimal_string(p)
+        if [:left, :right].include?(axis.keys[i])
+          l = label_positions_by_values(a)
+        else
+          l = label_positions_by_data_points(a)
         end
+        labels << "#{i}," + l.join(',')
       end
       labels.join('|')
+    end
+    
+    ##
+    # Generate label position values, interpreting given label positions
+    # as data point indices.
+    #
+    def label_positions_by_data_points(axis)
+      axis[:labels].map do |pos,text|
+        SmartChart.decimal_string(x_axis_position(pos))
+      end
+    end
+    
+    ##
+    # Generate label position values, interpreting given label positions
+    # as data point values.
+    #
+    def label_positions_by_values(axis)
+      axis[:labels].map do |pos,text|
+        SmartChart.decimal_string(y_axis_position(pos))
+      end
     end
     
     ##
