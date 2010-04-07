@@ -11,6 +11,21 @@ module SmartChart
         attr_accessor :labels
       end
     end
+    
+    ##
+    # Determine a nice interval between labels based on the range of
+    # axis values.
+    #
+    def self.auto_label_interval(range)
+      return nil if range == 0
+      # position of decimal point
+      exp = Math.log10(range).floor
+      # first two non-zero digits
+      digits = (range.to_s + "00").sub(/^[\.0]*/, "")[0,2].to_i
+      # the digits are in either 10..55 or 56..99
+      # divide the base in half if they're in the lower half
+      10**exp * (digits > 55 ? 1 : 0.5)
+    end
 
 
     private # ---------------------------------------------------------------
