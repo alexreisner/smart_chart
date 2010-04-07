@@ -162,6 +162,20 @@ class SmartChartTest < Test::Unit::TestCase
     end
   end
   
+  def test_x_axis_label_position
+    c = line_graph(
+      :data => [{:values => [1,2,3,9,25,18,4,67,108,43,62]}], # data points
+      :axis => {
+        :x  => {
+          :labels => {
+            10 => "last"
+          }
+        }
+      }
+    )
+    assert_equal "0,100", c.send(:chxp)
+  end
+  
   
   # --- pie -----------------------------------------------------------------
   
