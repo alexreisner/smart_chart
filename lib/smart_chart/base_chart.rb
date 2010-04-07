@@ -133,7 +133,7 @@ module SmartChart
     # The number of data points represented along the x-axis.
     #
     def data_values_count
-      data_values.map{ |set| set.size }.max
+      data_values.map{ |set| set.size }.max.to_i
     end
     
     ##
@@ -155,7 +155,7 @@ module SmartChart
     # start at 0 so the maximum allowed number is sample size minus one.
     #
     def x_axis_position(num)
-      num.to_f * 100 / (data_values_count.to_f - 1)
+      num.to_f * 100 / (data_values_count - 1)
     end
     
     ##
