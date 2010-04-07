@@ -155,7 +155,7 @@ module SmartChart
     # start at 0 so the maximum allowed number is sample size minus one.
     #
     def x_axis_position(num)
-      num.to_f * 100 / (data_values_count - 1)
+      100.0 * num / (data_values_count - 1)
     end
     
     ##
@@ -163,7 +163,7 @@ module SmartChart
     # of the axis is y_min to y_max.
     #
     def y_axis_position(num)
-      100.0 * (num.to_f - y_min.to_f) / (y_max - y_min).to_f
+      100.0 * (num - y_min) / (y_max - y_min).to_f
     end
     
     ##
