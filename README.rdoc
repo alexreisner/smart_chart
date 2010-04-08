@@ -121,7 +121,6 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
       :thickness => 1,
       :color     => 'FF0099',
       :style     => :dotted
-      }
     }
   ]
 
@@ -132,6 +131,10 @@ Actual output is limited by Google's requirements. For example, while Google pro
 
 
 == To-do List
+
+* validate height and width
+  * must be integers
+  * dimensions must be >= 1px
 
 * bar graphs
   * add chbh tests
@@ -197,5 +200,7 @@ Actual output is limited by Google's requirements. For example, while Google pro
 Other Google Charts APIs:
 http://groups.google.com/group/google-chart-api/web/useful-links-to-api-libraries
 
+Seer:
+http://www.idolhands.com/ruby-on-rails/gems-plugins-and-engines/graphing-for-ruby-on-rails-with-seer
 
 Copyright (c) 2009 Alex Reisner. See LICENSE for details.
