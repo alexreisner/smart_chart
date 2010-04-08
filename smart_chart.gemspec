@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{smart_chart}
-  s.version = "0.0.9"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex Reisner"]
-  s.date = %q{2009-12-14}
+  s.date = %q{2010-04-07}
   s.description = %q{Easily create charts and graphs for the web (uses Google Charts).}
   s.email = %q{alex@alexreisner.com}
   s.extra_rdoc_files = [
@@ -51,7 +51,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/alexreisner/smart_chart}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Easily create charts and graphs for the web (uses Google Charts).}
   s.test_files = [
     "test/smart_charts_test.rb",
