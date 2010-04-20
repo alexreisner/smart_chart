@@ -82,6 +82,9 @@ module SmartChart
       return nil unless show_axes?
       labels = []
       axis.values.each_with_index do |a,i|
+        unless a.has_key?(:labels)
+          raise SmartChartError, "Your axis settings are missing :labels"
+        end
         if a[:labels][:positions] == :auto
           labels[i] = "#{i}:|" + auto_labels(a).values.join("|")
         else
