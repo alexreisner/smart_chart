@@ -153,7 +153,11 @@ module SmartChart
     #
     def first_auto_label_position(min, int)
       i = int
-      i += int while i < min + int / 2.0
+      if min >= 0
+        i += int while i < min + int * 0.5
+      else
+        i -= int while i > min + int * 1.5
+      end
       i
     end
     
