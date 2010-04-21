@@ -229,7 +229,7 @@ module SmartChart
     #
     def query_string(encode = true)
       values = query_string_params.map{ |p| format_param(p, encode) }
-      values.compact.join("&")
+      values.compact.join("&amp;")
     end
     
     ##
