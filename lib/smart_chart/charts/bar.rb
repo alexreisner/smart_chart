@@ -33,7 +33,7 @@ module SmartChart
     # Default bar spacing.
     #
     def default_bar_space
-      8
+      4
     end
     
     ##
