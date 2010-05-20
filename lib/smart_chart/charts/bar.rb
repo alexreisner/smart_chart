@@ -23,21 +23,21 @@ module SmartChart
     end
     
     ##
-    # Google's default bar width.
+    # Default bar width.
     #
     def default_bar_width
-      23
+      "a" # Google's default width is 23
     end
     
     ##
-    # Google's default bar width.
+    # Default bar spacing.
     #
     def default_bar_space
       8
     end
     
     ##
-    # Google's default bar width.
+    # Default bar group spacing.
     #
     def default_bar_group_space
       8
@@ -52,6 +52,7 @@ module SmartChart
 
     # bar width and spacing
     def chbh
+      
       # use bar_space default for group default if only one data set
       group_default = data_values.size == 1 ?
         bar_space : default_bar_group_space
