@@ -12,8 +12,8 @@ module SmartChart
     #
     def type
       case style.to_s
-        when "concentric": "pc"
-        when "3d":         "p3"
+        when "concentric"; "pc"
+        when "3d";         "p3"
         else               "p"
       end
     end

@@ -76,8 +76,8 @@ module SmartChart
     #
     def choe
       case encoding
-      when :shift_jis: "Shift_JIS"
-      when :iso88591:  "ISO-8859-1"
+      when :shift_jis; "Shift_JIS"
+      when :iso88591;  "ISO-8859-1"
       else             "UTF-8"
       end
     end
