@@ -83,6 +83,7 @@ module SmartChart
     # Chart as an HTML tag.
     #
     def to_html(encode = true, validation = true, attributes = {})
+      attributes = {:width => width, :height => height}.merge(attributes)
       '<img src="%s"%s />' % [to_url(encode, validation), tag_attributes(attributes)]
     end
 
