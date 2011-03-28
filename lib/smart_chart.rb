@@ -11,6 +11,9 @@ require 'exceptions'
 require 'features/axes'
 require 'features/grid_lines'
 
+# vendor
+require 'vendor/nice_numbers'
+
 # chart parents
 require 'base_chart'
 require 'single_data_set_chart'

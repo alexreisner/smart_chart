@@ -149,19 +149,6 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "1,999999,12,-1,lt,888888|2,666666,,,l,", c.send(:chxs)
   end
   
-  def test_auto_label_interval
-    {
-      755   => 100,
-      23    => 5,
-      1     => 0.5,
-      0.99  => 0.1,
-      0.456 => 0.05
-    }.each do |range,int|
-      assert_equal int, SmartChart::Axes.auto_label_interval(range),
-        "Axis label interval should be #{int} when range is #{range}"
-    end
-  end
-  
   def test_x_axis_label_position
     c = line_graph(
       :data => [{:values => [1,2,3,9,25,18,4,67,108,43,62]}], # data points

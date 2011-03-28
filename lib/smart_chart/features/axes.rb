@@ -11,21 +11,6 @@ module SmartChart
         attr_accessor :labels
       end
     end
-    
-    ##
-    # Determine a nice interval between labels based on the range of
-    # axis values.
-    #
-    def self.auto_label_interval(range)
-      return nil if range == 0
-      # position of decimal point
-      exp = Math.log10(range).floor
-      # first two non-zero digits
-      digits = (range.to_s + "00").sub(/^[\.0]*/, "")[0,2].to_i
-      # the digits are in either 10..55 or 56..99
-      # divide the base in half if they're in the lower half
-      10**exp * (digits > 55 ? 1 : 0.5)
-    end
 
 
     private # ---------------------------------------------------------------
@@ -115,52 +100,29 @@ module SmartChart
       end
       labels.join('|')
     end
-    
+
     ##
     # Automatically generate numeric labels based on the given min and max.
     #
     def auto_labels(axis)
       options = axis[:labels]
-      min = options[:min]
-      max = options[:max]
-      range  = max - min
-      int = options[:interval] ||
-        SmartChart::Axes.auto_label_interval(range)
-      labels = {}
-      labels[0]   = min unless options[:omit_first]
-      labels[100] = max unless options[:omit_last]
+      labels = NiceNumbers.labels(options[:min], options[:max])
 
-      # advance cursor to first label position (min + int/2)
-      l = first_auto_label_position(min, int)
-      
-      # add labels until within int/2 of max
-      until l > (max - int / 2.0)
-        pos = 100.0 * (l - min) / range
-        labels[pos] = l
-        l += int
-      end
-      
-      # format if required
-      if options[:format]
-        labels.each{ |p,l| labels[p] = options[:format].call(l) }
-      end
-      
-      labels
+      labels.delete_at(0) if options[:omit_first]
+      labels.delete_at(-1) if options[:omit_last]
+
+      range = options[:max] - options[:min]
+      options[:format] ||= lambda{ |i| i }
+
+      labels.map!{ |p,l| [
+        100.0 * (p.to_f - options[:min]) / range, # convert value to axis pct
+        options[:format].call(l)                  # format label if required
+      ] }
+
+      # convert to hash
+      Hash[*labels.flatten]
     end
-    
-    ##
-    # Find the first "round number" above the given minimum.
-    #
-    def first_auto_label_position(min, int)
-      i = int
-      if min >= 0
-        i += int while i < min + int * 0.5
-      else
-        i -= int while i > min + int * 1.5
-      end
-      i
-    end
-    
+
     ##
     # Generate label position values, interpreting given label positions
     # as data point indices.
