@@ -93,7 +93,7 @@ module SmartChart
     # Chart color parameter: default ("foreground") plus gradient.
     #
     def chco
-      ([foreground || "FFFFFF"] + super.to_a).join(",")
+      (foreground || "FFFFFF") + "," + super
     end
     
     ##
