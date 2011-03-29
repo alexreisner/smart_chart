@@ -81,16 +81,37 @@ module SmartChart
       options[:validation] = true unless options.include?(:validation)
       google_charts_base_url + "?" + to_query_string(options)
     end
-    
+
     ##
     # Chart as an HTML tag.
     #
     def to_html(options = {})
       options[:encode] = true unless options.include?(:encode)
       options[:validation] = true unless options.include?(:validation)
-      attributes = options.reject{ |k,v| [:encode, :validation].include?(k) }
-      attributes = {:width => width, :height => height}.merge(attributes)
-      '<img src="%s"%s />' % [to_url(options), tag_attributes(attributes)]
+      attributes = {:width => width, :height => height}
+      attributes.merge! options.reject{ |k,v|
+        [:post, :encode, :validation].include?(k)
+      }
+      if options[:post]
+        require 'base64'
+        src = 'data:image/png;base64,' +
+          Base64.encode64(fetch_raw_image_data.to_s)
+      else
+        src = to_url(options)
+      end
+      '<img src="%s"%s />' % [src, tag_attributes(attributes)]
+    end
+
+    ##
+    # Send a POST request to Google to get chart raw PNG data.
+    #
+    def fetch_raw_image_data
+      require 'uri'
+      require 'net/http'
+      uri = URI.parse(google_charts_base_url)
+      res = Net::HTTP.post_form(uri,
+        Hash[*query_string_values(false).flatten])
+      res.code == "200" ? res.body : nil
     end
 
     ##
