@@ -79,7 +79,7 @@ module SmartChart
     def to_url(options = {})
       options[:encode] = true unless options.include?(:encode)
       options[:validation] = true unless options.include?(:validation)
-      "http://chart.apis.google.com/chart?" + to_query_string(options)
+      google_charts_base_url + "?" + to_query_string(options)
     end
     
     ##
@@ -309,6 +309,10 @@ module SmartChart
         attrs << %(#{key}="#{value.to_s.gsub('"', '\"')}") unless value.nil?
       end
       " #{attrs.sort * ' '}" unless attrs.empty?
+    end
+    
+    def google_charts_base_url
+      'http://chart.apis.google.com/chart'
     end
     
     
