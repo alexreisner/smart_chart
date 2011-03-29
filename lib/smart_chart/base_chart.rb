@@ -69,8 +69,18 @@ module SmartChart
     def to_query_string(options = {})
       options[:encode] = true unless options.include?(:encode)
       options[:validation] = true unless options.include?(:validation)
-      validate if options[:validation]
+      validate(options[:skip_validation]) if options[:validation]
       query_string(options[:encode])
+    end
+
+    ##
+    # Get the chart as raw image data (fetch from Google).
+    #
+    def to_image_data(options = {})
+      options[:validation] = true unless options.include?(:validation)
+      options[:skip_validation] = [:url_length] unless options[:skip_validation]
+      validate(options[:skip_validation]) if options[:validation]
+      fetch_raw_image_data.to_s
     end
     
     ##
@@ -94,24 +104,11 @@ module SmartChart
       }
       if options[:post]
         require 'base64'
-        src = 'data:image/png;base64,' +
-          Base64.encode64(fetch_raw_image_data.to_s)
+        src = 'data:image/png;base64,' + Base64.encode64(to_image_data)
       else
         src = to_url(options)
       end
       '<img src="%s"%s />' % [src, tag_attributes(attributes)]
-    end
-
-    ##
-    # Send a POST request to Google to get chart raw PNG data.
-    #
-    def fetch_raw_image_data
-      require 'uri'
-      require 'net/http'
-      uri = URI.parse(google_charts_base_url)
-      res = Net::HTTP.post_form(uri,
-        Hash[*query_string_values(false).flatten])
-      res.code == "200" ? res.body : nil
     end
 
     ##
@@ -253,6 +250,18 @@ module SmartChart
     # --- subclasses should not overwrite anything below this line ----------
 
     ##
+    # Send a POST request to Google to get chart raw PNG data.
+    #
+    def fetch_raw_image_data
+      require 'uri'
+      require 'net/http'
+      uri = URI.parse(google_charts_base_url)
+      res = Net::HTTP.post_form(uri,
+        Hash[*query_string_values(false).flatten])
+      res.code == "200" ? res.body : nil
+    end
+
+    ##
     # The query string for the chart.
     #
     def query_string(encode = true)
@@ -291,11 +300,15 @@ module SmartChart
 
     ##
     # Run all validations on the chart attributes.
+    # Takes an array of validations to skip.
     #
-    def validate
-      validations.each{ |v| send "validate_#{v}" }
+    def validate(skip = [])
+      skip = [skip] unless skip.is_a?(Array)
+      validations.reject{ |v| skip.include?(v) }.each do |v|
+        send "validate_#{v}"
+      end
     end
-    
+
     ##
     # Make sure all required chart attributes are specified.
     #
