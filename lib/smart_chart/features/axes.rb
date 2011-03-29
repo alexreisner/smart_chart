@@ -119,6 +119,10 @@ module SmartChart
         options[:format].call(l)                  # format label if required
       ] }
 
+      # remove second label on each end if it's very close to the edge
+      labels.delete_at( 1) if labels[ 1][0] <  5 && !options[:omit_first]
+      labels.delete_at(-2) if labels[-2][0] > 95 && !options[:omit_last]
+
       # convert to hash
       Hash[*labels.flatten]
     end
