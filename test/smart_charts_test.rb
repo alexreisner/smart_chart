@@ -260,48 +260,6 @@ class SmartChartTest < Test::Unit::TestCase
     assert_equal "bg,s,000000", c.send(:chf)
   end
   
-  def test_region_validation
-    invalids = ['middle east', 'china', 'USA']
-    valids   = ['africa', 'europe']
-    code     = lambda{ |region|
-      map_chart(:region => region).validate!
-    }
-    invalids.each do |i|
-      assert_raise(SmartChart::DataFormatError) { code.call(i) }
-    end
-    valids.each do |v|
-      assert_nothing_raised { code.call(v) }
-    end
-  end
-  
-  def test_country_code_validation
-    invalids = ['USA', 'SW']
-    valids   = ['US', 'CN', :CA]
-    code     = lambda{ |c|
-      map_chart(:data => {:MX => 1,  c => 2}).validate!
-    }
-    invalids.each do |i|
-      assert_raise(SmartChart::DataFormatError) { code.call(i) }
-    end
-    valids.each do |v|
-      assert_nothing_raised { code.call(v) }
-    end
-  end
-  
-  def test_state_code_validation
-    invalids = ['JJ', 'DC']
-    valids   = ['AL', 'MS', :GA]
-    code     = lambda{ |s|
-      map_chart(:region => :usa, :data => {:NY => 1, s => 2}).validate!
-    }
-    invalids.each do |i|
-      assert_raise(SmartChart::DataFormatError) { code.call(i) }
-    end
-    valids.each do |v|
-      assert_nothing_raised { code.call(v) }
-    end
-  end
-  
   
   # --- html ----------------------------------------------------------------
   
@@ -426,7 +384,59 @@ class SmartChartTest < Test::Unit::TestCase
       assert_nothing_raised { code.call(color) }
     end
   end
+
+  def test_url_length_validation
+    c = SmartChart::Line.new(
+      :width  => 400,
+      :height => 200,
+      :data   => [ ([2] * 2200).map{ |i| rand } ]
+    )
+    assert_raise(SmartChart::UrlLengthError) { c.to_query_string }
+    assert_nothing_raised { c.to_image_data } # URL length validation skipped
+  end
+
+  def test_region_validation
+    invalids = ['middle east', 'china', 'USA']
+    valids   = ['africa', 'europe']
+    code     = lambda{ |region|
+      map_chart(:region => region).validate!
+    }
+    invalids.each do |i|
+      assert_raise(SmartChart::DataFormatError) { code.call(i) }
+    end
+    valids.each do |v|
+      assert_nothing_raised { code.call(v) }
+    end
+  end
   
+  def test_country_code_validation
+    invalids = ['USA', 'SW']
+    valids   = ['US', 'CN', :CA]
+    code     = lambda{ |c|
+      map_chart(:data => {:MX => 1,  c => 2}).validate!
+    }
+    invalids.each do |i|
+      assert_raise(SmartChart::DataFormatError) { code.call(i) }
+    end
+    valids.each do |v|
+      assert_nothing_raised { code.call(v) }
+    end
+  end
+  
+  def test_state_code_validation
+    invalids = ['JJ', 'DC']
+    valids   = ['AL', 'MS', :GA]
+    code     = lambda{ |s|
+      map_chart(:region => :usa, :data => {:NY => 1, s => 2}).validate!
+    }
+    invalids.each do |i|
+      assert_raise(SmartChart::DataFormatError) { code.call(i) }
+    end
+    valids.each do |v|
+      assert_nothing_raised { code.call(v) }
+    end
+  end
+
   
   # --- exceptions ----------------------------------------------------------
   
