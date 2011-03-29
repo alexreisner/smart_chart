@@ -124,6 +124,10 @@ Data can be passed to pie charts in a similar way. For more complex graphs depic
     }
   ]
 
+=== Sending Data via Post Request
+
+If you have a lot of data in your chart you may run into the 2000-or-so character limit on URLs. In this case Google recommends using a POST request instead of a GET request. You can do this with SmartChart by passing <tt>:post => true</tt> to the +to_html+ method. This will cause SmartChart (NOT the web browser) to make a request to Google, download the raw chart data, and embed it in the <img> tag.
+
 
 == Axis Lines
 
