@@ -230,26 +230,37 @@ module SmartChart
     
     
     # --- subclasses should not overwrite anything below this line ----------
-    
+
     ##
     # The query string for the chart.
     #
     def query_string(encode = true)
-      values = query_string_params.map{ |p| format_param(p, encode) }
-      values.compact.join("&")
+      query_string_values(encode).map{ |i| i.map{ |j| j.to_s } * "=" } * "&"
     end
-    
+
     ##
-    # Format a query string parameter for a URL (string: name=value). Uses
-    # %-encoding unless second argument is false.
+    # Array of URL-encoded chart parameters and values
+    # (two-element [key, val] arrays).
     #
-    def format_param(name, encode = true)
-      unless (value = send(name).to_s) == ""
-        value = CGI.escape(value) if encode
-        name.to_s + '=' + value
-      end
+    def query_string_values(encode = true)
+      query_string_params.map{ |p|
+        [p, param_value(p, encode)]
+      }.reject{ |p,v| v.nil? }
     end
-    
+
+    ##
+    # Parameter's current value, URL-encoded unless second argument is false.
+    #
+    def param_value(name, encode = true)
+      value = send(name).to_s
+      if value == ""
+        value = nil
+      else
+        value = CGI.escape(value) if encode
+      end
+      value
+    end
+
     ##
     # Is the data given as a single bare array of values?
     #
