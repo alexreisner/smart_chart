@@ -66,25 +66,31 @@ module SmartChart
     ##
     # Get the chart URL query string.
     #
-    def to_query_string(encode = true, validation = true)
-      validate if validation
-      query_string(encode)
+    def to_query_string(options = {})
+      options[:encode] = true unless options.include?(:encode)
+      options[:validation] = true unless options.include?(:validation)
+      validate if options[:validation]
+      query_string(options[:encode])
     end
     
     ##
     # Get the full chart URL.
     #
-    def to_url(encode = true, validation = true)
-      "http://chart.apis.google.com/chart?" +
-        to_query_string(encode, validation)
+    def to_url(options = {})
+      options[:encode] = true unless options.include?(:encode)
+      options[:validation] = true unless options.include?(:validation)
+      "http://chart.apis.google.com/chart?" + to_query_string(options)
     end
     
     ##
     # Chart as an HTML tag.
     #
-    def to_html(encode = true, validation = true, attributes = {})
+    def to_html(options = {})
+      options[:encode] = true unless options.include?(:encode)
+      options[:validation] = true unless options.include?(:validation)
+      attributes = options.reject{ |k,v| [:encode, :validation].include?(k) }
       attributes = {:width => width, :height => height}.merge(attributes)
-      '<img src="%s"%s />' % [to_url(encode, validation), tag_attributes(attributes)]
+      '<img src="%s"%s />' % [to_url(options), tag_attributes(attributes)]
     end
 
     ##
@@ -273,7 +279,7 @@ module SmartChart
     # Make sure encoded URL is no longer than the maximum allowed length.
     #
     def validate_url_length
-      raise UrlLengthError unless to_url(true, false).size <= URL_MAX_LENGTH
+      raise UrlLengthError unless to_url(:validation => false).size <= URL_MAX_LENGTH
     end
     
     ##

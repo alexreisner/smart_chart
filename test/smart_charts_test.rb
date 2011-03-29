@@ -307,7 +307,7 @@ class SmartChartTest < Test::Unit::TestCase
   
   def test_tag_attributes
     c = map_chart
-    tag = c.to_html(true, true, :style => "display:none;")
+    tag = c.to_html(:style => "display:none;")
     assert tag.match(/<img.*style="display:none;".*\/>/)
   end
 
